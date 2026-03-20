@@ -1,10 +1,18 @@
-const Series = require('../models/Series');
-const Genre = require('../models/Genre');
+const supabase = require('../config/supabase');
 
 exports.getIndex = async (req, res) => {
     try {
-        const allSeries = await Series.findAll({ include: Genre });
-        const plainSeries = allSeries.map(s => s.get({ plain: true }));
+        const { data: allSeries, error } = await supabase
+            .from('Series')
+            .select('*, Genres(*)');
+        
+        if (error) throw error;
+        
+        // Map to match Handlebars expectations (Genre.name instead of Genres.name if needed)
+        const plainSeries = allSeries.map(s => ({
+            ...s,
+            Genre: s.Genres // Handlebars expects Genre.name
+        }));
         
         const watching = plainSeries.filter(s => s.status === 'Watching');
         const watched = plainSeries.filter(s => s.status === 'Watched');
@@ -17,56 +25,86 @@ exports.getIndex = async (req, res) => {
             planToWatch
         });
     } catch (error) {
-        console.error(error);
+        console.error('Error in getIndex:', error.message);
         res.status(500).send('Server Error');
     }
 };
 
 exports.getManagement = async (req, res) => {
     try {
-        const series = await Series.findAll({ include: Genre });
+        const { data: allSeries, error } = await supabase
+            .from('Series')
+            .select('*, Genres(*)');
+
+        if (error) throw error;
+        
         res.render('management', { 
             title: 'Manage Series',
-            series: series.map(s => s.get({ plain: true }))
+            series: allSeries.map(s => ({ ...s, Genre: s.Genres }))
         });
     } catch (error) {
-        console.error(error);
+        console.error('Error in getManagement:', error.message);
         res.status(500).send('Server Error');
     }
 };
 
 exports.getCreate = async (req, res) => {
-    const genres = await Genre.findAll();
-    res.render('form', { 
-        title: 'Add New Series',
-        genres: genres.map(g => g.get({ plain: true }))
-    });
+    try {
+        const { data: genres, error } = await supabase.from('Genres').select('*');
+        if (error) throw error;
+        
+        res.render('form', { 
+            title: 'Add New Series',
+            genres: genres 
+        });
+    } catch (error) {
+        console.error('Error in getCreate:', error.message);
+        res.status(500).send('Server Error');
+    }
 };
 
 exports.postCreate = async (req, res) => {
     try {
         const { title, description, posterUrl, status, GenreId } = req.body;
-        await Series.create({ title, description, posterUrl, status, GenreId });
+        const { error } = await supabase
+            .from('Series')
+            .insert([{ 
+                title, 
+                description, 
+                posterUrl: posterUrl || undefined, 
+                status, 
+                GenreId: GenreId ? parseInt(GenreId) : null 
+            }]);
+            
+        if (error) throw error;
         res.redirect('/management');
     } catch (error) {
-        console.error(error);
+        console.error('Error in postCreate:', error.message);
         res.status(500).send('Error creating series');
     }
 };
 
 exports.getEdit = async (req, res) => {
     try {
-        const series = await Series.findByPk(req.params.id);
-        const genres = await Genre.findAll();
+        const { data: series, error: sError } = await supabase
+            .from('Series')
+            .select('*, Genres(*)')
+            .eq('id', req.params.id)
+            .single();
+            
+        const { data: genres, error: gError } = await supabase.from('Genres').select('*');
+        
+        if (sError || gError) throw (sError || gError);
         if (!series) return res.status(404).send('Series not found');
+        
         res.render('form', { 
             title: 'Edit Series', 
-            series: series.get({ plain: true }),
-            genres: genres.map(g => g.get({ plain: true })),
+            series: { ...series, Genre: series.Genres },
+            genres: genres,
             isEdit: true 
         });
     } catch (error) {
-        console.error(error);
+        console.error('Error in getEdit:', error.message);
         res.status(500).send('Server Error');
     }
 };
@@ -74,25 +112,36 @@ exports.getEdit = async (req, res) => {
 exports.postEdit = async (req, res) => {
     try {
         const { title, description, posterUrl, status, GenreId } = req.body;
-        const series = await Series.findByPk(req.params.id);
-        if (!series) return res.status(404).send('Series not found');
-        
-        await series.update({ title, description, posterUrl, status, GenreId });
+        const { error } = await supabase
+            .from('Series')
+            .update({ 
+                title, 
+                description, 
+                posterUrl, 
+                status, 
+                GenreId: GenreId ? parseInt(GenreId) : null 
+            })
+            .eq('id', req.params.id);
+            
+        if (error) throw error;
         res.redirect('/management');
     } catch (error) {
-        console.error(error);
+        console.error('Error in postEdit:', error.message);
         res.status(500).send('Error updating series');
     }
 };
 
 exports.getDelete = async (req, res) => {
     try {
-        const series = await Series.findByPk(req.params.id);
-        if (!series) return res.status(404).send('Series not found');
-        await series.destroy();
+        const { error } = await supabase
+            .from('Series')
+            .delete()
+            .eq('id', req.params.id);
+            
+        if (error) throw error;
         res.redirect('/management');
     } catch (error) {
-        console.error(error);
+        console.error('Error in getDelete:', error.message);
         res.status(500).send('Error deleting series');
     }
 };

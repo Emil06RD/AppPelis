@@ -1,3 +1,4 @@
+require('dotenv').config();
 const Genre = require('./src/models/Genre');
 const sequelize = require('./src/config/db');
 

@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const seriesController = require('../controllers/SeriesController');
+const supabaseSeriesController = require('../controllers/SupabaseSeriesController');
+
+router.get('/series', supabaseSeriesController.getSeries);
+router.post('/series', supabaseSeriesController.postSeries);
 
 router.get('/', seriesController.getIndex);
 router.get('/management', seriesController.getManagement);

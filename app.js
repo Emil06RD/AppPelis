@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const { engine } = require('express-handlebars');
 const path = require('path');
@@ -32,12 +33,13 @@ app.set('views', path.join(__dirname, 'src/views'));
 app.use('/', seriesRoutes);
 app.use('/genres', genreRoutes);
 
-// Database Sync
-sequelize.sync({ alter: true }).then(() => {
-    console.log('Database synced');
+// Database Sync (Sequelize kept for legacy components if any)
+sequelize.sync().then(() => {
+    console.log('Local Database (SQLite) synced');
     app.listen(PORT, () => {
         console.log(`Server running on http://localhost:${PORT}`);
+        console.log('Supabase Integration: ACTIVE');
     });
 }).catch(err => {
-    console.error('Unable to connect to the database:', err);
+    console.error('Unable to connect to the local database:', err);
 });

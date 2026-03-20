@@ -1,14 +1,16 @@
-const Genre = require('../models/Genre');
+const supabase = require('../config/supabase');
 
 exports.getIndex = async (req, res) => {
     try {
-        const genres = await Genre.findAll();
+        const { data: genres, error } = await supabase.from('Genres').select('*');
+        if (error) throw error;
+        
         res.render('genres/index', { 
             title: 'Manage Genres',
-            genres: genres.map(g => g.get({ plain: true }))
+            genres: genres
         });
     } catch (error) {
-        console.error(error);
+        console.error('Error in GenreController.getIndex:', error.message);
         res.status(500).send('Server Error');
     }
 };
@@ -19,49 +21,66 @@ exports.getCreate = (req, res) => {
 
 exports.postCreate = async (req, res) => {
     try {
-        await Genre.create({ name: req.body.name });
+        const { error } = await supabase
+            .from('Genres')
+            .insert([{ name: req.body.name }]);
+            
+        if (error) throw error;
         res.redirect('/genres');
     } catch (error) {
-        console.error(error);
+        console.error('Error in GenreController.postCreate:', error.message);
         res.status(500).send('Error creating genre');
     }
 };
 
 exports.getEdit = async (req, res) => {
     try {
-        const genre = await Genre.findByPk(req.params.id);
+        const { data: genre, error } = await supabase
+            .from('Genres')
+            .select('*')
+            .eq('id', req.params.id)
+            .single();
+            
+        if (error) throw error;
         if (!genre) return res.status(404).send('Genre not found');
+        
         res.render('genres/form', { 
             title: 'Edit Genre', 
-            genre: genre.get({ plain: true }),
+            genre: genre,
             isEdit: true 
         });
     } catch (error) {
-        console.error(error);
+        console.error('Error in GenreController.getEdit:', error.message);
         res.status(500).send('Server Error');
     }
 };
 
 exports.postEdit = async (req, res) => {
     try {
-        const genre = await Genre.findByPk(req.params.id);
-        if (!genre) return res.status(404).send('Genre not found');
-        await genre.update({ name: req.body.name });
+        const { error } = await supabase
+            .from('Genres')
+            .update({ name: req.body.name })
+            .eq('id', req.params.id);
+            
+        if (error) throw error;
         res.redirect('/genres');
     } catch (error) {
-        console.error(error);
+        console.error('Error in GenreController.postEdit:', error.message);
         res.status(500).send('Error updating genre');
     }
 };
 
 exports.getDelete = async (req, res) => {
     try {
-        const genre = await Genre.findByPk(req.params.id);
-        if (!genre) return res.status(404).send('Genre not found');
-        await genre.destroy();
+        const { error } = await supabase
+            .from('Genres')
+            .delete()
+            .eq('id', req.params.id);
+            
+        if (error) throw error;
         res.redirect('/genres');
     } catch (error) {
-        console.error(error);
+        console.error('Error in GenreController.getDelete:', error.message);
         res.status(500).send('Error deleting genre');
     }
 };
