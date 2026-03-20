@@ -1,0 +1,50 @@
+<div class="fade-in">
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <h1 class="fw-bold">♥ Management <span class="text-secondary fs-4">(Control Panel)</span></h1>
+        <a href="/create" class="btn btn-primary">+ Add New Series</a>
+    </div>
+
+    <div class="glass-card p-0 overflow-hidden">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th class="ps-4 py-3">Title</th>
+                        <th class="py-3">Genre</th>
+                        <th class="py-3">Status</th>
+                        <th class="py-3 text-end pe-4">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each series}}
+                    <tr class="align-middle">
+                        <td class="ps-4">
+                            <div class="d-flex align-items-center gap-3">
+                                <img src="{{posterUrl}}" alt="" style="width: 40px; height: 60px; object-fit: cover; border-radius: 4px;">
+                                <span class="fw-bold">{{title}}</span>
+                            </div>
+                        </td>
+                        <td>{{Genre.name}}</td>
+                        <td>
+                            <span class="badge {{#if (eq status 'Watching')}}bg-primary{{/if}} {{#if (eq status 'Watched')}}bg-success{{/if}} {{#if (eq status 'Plan to Watch')}}bg-secondary{{/if}}">
+                                {{status}}
+                            </span>
+                        </td>
+                        <td class="text-end pe-4">
+                            <div class="d-flex justify-content-end gap-2">
+                                <a href="/edit/{{id}}" class="btn btn-outline-accent btn-sm">Edit</a>
+                                <a href="/delete/{{id}}" class="btn btn-danger btn-sm" onclick="return confirm('Delete this series?')">Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {{/each}}
+                    {{#unless series.length}}
+                    <tr>
+                        <td colspan="5" class="text-center py-5 text-secondary italic">No series found. Click "+ Add New" to start.</td>
+                    </tr>
+                    {{/unless}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

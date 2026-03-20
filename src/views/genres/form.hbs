@@ -1,0 +1,19 @@
+<div class="row justify-content-center fade-in">
+    <div class="col-md-6">
+        <div class="glass-card p-5">
+            <h2 class="fw-bold mb-4">{{#if isEdit}}Edit Genre{{else}}Add New Genre{{/if}}</h2>
+            
+            <form action="{{#if isEdit}}/genres/edit/{{genre.id}}{{else}}/genres/create{{/if}}" method="POST">
+                <div class="mb-4">
+                    <label for="name">Genre Name</label>
+                    <input type="text" class="form-control" id="name" name="name" value="{{genre.name}}" required placeholder="e.g. Science Fiction, Romance">
+                </div>
+
+                <div class="d-flex gap-3">
+                    <button type="submit" class="btn btn-primary flex-grow-1">{{#if isEdit}}Update{{else}}Save{{/if}} Genre</button>
+                    <a href="/genres" class="btn btn-outline-secondary" style="border-radius: 10px; padding: 10px 25px;">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,78 @@
+<div class="row mb-5 fade-in">
+    <div class="col-12 text-center">
+        <h1 class="display-4 fw-bold mb-3">My <span class="text-primary">Collection</span></h1>
+        <p class="text-secondary lead">Manage and track your watching progress.</p>
+    </div>
+</div>
+
+<!-- Section: Watching -->
+<div class="mb-5 fade-in">
+    <h2 class="fw-bold mb-4">♥ Watching (Viendo)</h2>
+    <div class="row g-4">
+        {{#if watching.length}}
+            {{#each watching}}
+            <div class="col-md-6 col-lg-4">
+                <div class="series-name-card position-relative fade-in">
+                    <h5 class="fw-bold mb-0 series-title-hover">{{title}}</h5>
+                    <div class="hover-poster-container">
+                        <img src="{{posterUrl}}" alt="{{title}}" class="hover-poster">
+                        <div class="hover-info">
+                            <p class="mb-0 small fw-bold text-white">{{Genre.name}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        {{else}}
+            <div class="col-12"><p class="text-secondary italic">No series currently being watched.</p></div>
+        {{/if}}
+    </div>
+</div>
+
+<!-- Section: Watched -->
+<div class="mb-5 fade-in">
+    <h2 class="fw-bold mb-4">♥ Watched (Vistas)</h2>
+    <div class="row g-4">
+        {{#if watched.length}}
+            {{#each watched}}
+            <div class="col-md-6 col-lg-4">
+                <div class="series-name-card position-relative fade-in" style="opacity: 0.8;">
+                    <h5 class="fw-bold mb-0 series-title-hover">{{title}}</h5>
+                    <div class="hover-poster-container">
+                        <img src="{{posterUrl}}" alt="{{title}}" class="hover-poster">
+                        <div class="hover-info">
+                            <p class="mb-0 small fw-bold text-white">{{Genre.name}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        {{else}}
+            <div class="col-12"><p class="text-secondary italic">No series watched yet.</p></div>
+        {{/if}}
+    </div>
+</div>
+
+<!-- Section: Plan to Watch -->
+<div class="mb-5 fade-in">
+    <h2 class="fw-bold mb-4">♥ Plan to Watch (Por ver)</h2>
+    <div class="row g-4">
+        {{#if planToWatch.length}}
+            {{#each planToWatch}}
+            <div class="col-md-6 col-lg-4">
+                <div class="series-name-card position-relative fade-in">
+                    <h5 class="fw-bold mb-0 series-title-hover">{{title}}</h5>
+                    <div class="hover-poster-container">
+                        <img src="{{posterUrl}}" alt="{{title}}" class="hover-poster">
+                        <div class="hover-info">
+                            <p class="mb-0 small fw-bold text-white">{{Genre.name}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        {{else}}
+            <div class="col-12"><p class="text-secondary italic">No series in your watchlist.</p></div>
+        {{/if}}
+    </div>
+</div>
