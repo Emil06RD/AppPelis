@@ -17,15 +17,15 @@ exports.getSeries = async (req, res) => {
 
 exports.postSeries = async (req, res) => {
     try {
-        const { title, description } = req.body;
+        const { title } = req.body;
         
-        if (!title || !description) {
-            return res.status(400).json({ error: 'title and description are required' });
+        if (!title) {
+            return res.status(400).json({ error: 'title is required' });
         }
 
         const { data, error } = await supabase
             .from('Series')
-            .insert([{ title, description }])
+            .insert([{ title }])
             .select();
 
         if (error) throw error;

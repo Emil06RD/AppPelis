@@ -2,16 +2,32 @@ const supabase = require('../config/supabase');
 
 exports.getIndex = async (req, res) => {
     try {
-        const { data: allSeries, error } = await supabase
+        const { genre: genreId } = req.query;
+        
+        // Fetch all genres for the filter UI (matching GenreController logic)
+        const { data: genresData, error: gError } = await supabase
+            .from('Genres')
+            .select('*')
+            .order('name');
+            
+        if (gError) console.error('Home Page - Genre Fetch Error:', gError);
+        const genres = genresData || [];
+
+        // Fetch series, filtered by genre if needed
+        let query = supabase
             .from('Series')
             .select('*, Genres(*)');
+            
+        if (genreId) {
+            query = query.eq('GenreId', genreId);
+        }
         
-        if (error) throw error;
+        const { data: allSeries, error: sError } = await query;
+        if (sError) throw sError;
         
-        // Map to match Handlebars expectations (Genre.name instead of Genres.name if needed)
         const plainSeries = allSeries.map(s => ({
             ...s,
-            Genre: s.Genres // Handlebars expects Genre.name
+            Genre: s.Genres
         }));
         
         const watching = plainSeries.filter(s => s.status === 'Watching');
@@ -22,7 +38,9 @@ exports.getIndex = async (req, res) => {
             title: 'My Collection',
             watching,
             watched,
-            planToWatch
+            planToWatch,
+            genres,
+            currentGenreId: genreId ? parseInt(genreId) : null
         });
     } catch (error) {
         console.error('Error in getIndex:', error.message);
@@ -65,12 +83,11 @@ exports.getCreate = async (req, res) => {
 
 exports.postCreate = async (req, res) => {
     try {
-        const { title, description, posterUrl, status, GenreId } = req.body;
+        const { title, posterUrl, status, GenreId } = req.body;
         const { error } = await supabase
             .from('Series')
             .insert([{ 
                 title, 
-                description, 
                 posterUrl: posterUrl || undefined, 
                 status, 
                 GenreId: GenreId ? parseInt(GenreId) : null 
@@ -111,12 +128,11 @@ exports.getEdit = async (req, res) => {
 
 exports.postEdit = async (req, res) => {
     try {
-        const { title, description, posterUrl, status, GenreId } = req.body;
+        const { title, posterUrl, status, GenreId } = req.body;
         const { error } = await supabase
             .from('Series')
             .update({ 
                 title, 
-                description, 
                 posterUrl, 
                 status, 
                 GenreId: GenreId ? parseInt(GenreId) : null 

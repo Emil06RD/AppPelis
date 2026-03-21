@@ -34,11 +34,6 @@
                     <input type="url" class="form-control" id="posterUrl" name="posterUrl" value="{{series.posterUrl}}" placeholder="https://image-url.com">
                 </div>
 
-                <div class="mb-4">
-                    <label for="description">Description</label>
-                    <textarea class="form-control" id="description" name="description" rows="4" placeholder="Brief summary of the series">{{series.description}}</textarea>
-                </div>
-
                 <div class="d-flex gap-3">
                     <button type="submit" class="btn btn-primary flex-grow-1">{{#if isEdit}}Update{{else}}Save{{/if}} Series</button>
                     <a href="/management" class="btn btn-outline-secondary" style="border-radius: 12px; padding: 10px 25px;">Cancel</a>
