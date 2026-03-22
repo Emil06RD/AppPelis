@@ -10,6 +10,7 @@
                 <thead>
                     <tr>
                         <th class="ps-4 py-3">Title</th>
+                        <th class="py-3">Type</th>
                         <th class="py-3">Genre</th>
                         <th class="py-3">Status</th>
                         <th class="py-3 text-end pe-4">Actions</th>
@@ -23,6 +24,11 @@
                                 <img src="{{posterUrl}}" alt="" style="width: 40px; height: 60px; object-fit: cover; border-radius: 4px;">
                                 <span class="fw-bold">{{title}}</span>
                             </div>
+                        </td>
+                        <td>
+                            <span class="text-secondary small">
+                                {{type}}{{#if (eq type 'Serie')}}{{#if season}} (T{{season}}){{/if}}{{/if}}
+                            </span>
                         </td>
                         <td>{{Genre.name}}</td>
                         <td>

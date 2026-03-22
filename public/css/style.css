@@ -212,18 +212,24 @@ h2 {
     transform: translate(-50%, -105%) scale(1);
 }
 
-.hover-poster {
-    width: 100%;
-    height: 85%;
-    object-fit: cover;
-}
-
 .hover-info {
-    height: 15%;
+    height: 18%; /* Slightly increased height */
     background: var(--dark-accent);
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+.x-small {
+    font-size: 0.75rem;
+    line-height: 1;
+}
+
+.hover-poster {
+    width: 100%;
+    height: 82%; /* Adjusted to match increased info height */
+    object-fit: cover;
 }
 
 /* Genre Menu UI */

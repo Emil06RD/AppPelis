@@ -53,4 +53,13 @@ DROP TRIGGER IF EXISTS update_genres_updated_at ON "Genres";
 CREATE TRIGGER update_genres_updated_at BEFORE UPDATE ON "Genres" FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
 
 DROP TRIGGER IF EXISTS update_series_updated_at ON "Series";
-CREATE TRIGGER update_series_updated_at BEFORE UPDATE ON "Series" FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
+
+-- 7. Add type and season columns to the Series table
+DO $$ BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'media_type') THEN
+        CREATE TYPE media_type AS ENUM ('Serie', 'Pelicula');
+    END IF;
+END $$;
+
+ALTER TABLE "Series" ADD COLUMN IF NOT EXISTS "type" media_type NOT NULL DEFAULT 'Serie';
+ALTER TABLE "Series" ADD COLUMN IF NOT EXISTS "season" INTEGER;

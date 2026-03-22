@@ -8,6 +8,14 @@
 <!-- Genre Filter Section: Collapsible Menu -->
 <div class="row mb-5 fade-in">
     <div class="col-12 text-center">
+        <div class="mb-4">
+            <div class="d-inline-flex bg-white p-2 border border-2 border-dark rounded-pill gap-2 shadow-sm">
+                <a href="/{{#if currentGenreId}}?genre={{currentGenreId}}{{/if}}" class="btn btn-sm {{#unless currentType}}btn-primary{{else}}btn-outline-accent{{/unless}} rounded-pill px-4 border-0">Todos</a>
+                <a href="/?type=Serie{{#if currentGenreId}}&genre={{currentGenreId}}{{/if}}" class="btn btn-sm {{#if (eq currentType 'Serie')}}btn-primary{{else}}btn-outline-accent{{/if}} rounded-pill px-4 border-0">Series</a>
+                <a href="/?type=Pelicula{{#if currentGenreId}}&genre={{currentGenreId}}{{/if}}" class="btn btn-sm {{#if (eq currentType 'Pelicula')}}btn-primary{{else}}btn-outline-accent{{/if}} rounded-pill px-4 border-0">Películas</a>
+            </div>
+        </div>
+
         <button class="btn btn-genres-menu mb-4" type="button" data-bs-toggle="collapse" data-bs-target="#genreMenu" aria-expanded="false">
             <i class="fas fa-tags me-2"></i> EXPLORE GENRES ♥
         </button>
@@ -15,11 +23,11 @@
         <div class="collapse" id="genreMenu">
             <div class="genre-menu-card p-4">
                 <div class="d-flex flex-wrap justify-content-center gap-3">
-                    <a href="/" class="genre-pill {{#unless currentGenreId}}active{{/unless}}">
+                    <a href="/{{#if currentType}}?type={{currentType}}{{/if}}" class="genre-pill {{#unless currentGenreId}}active{{/unless}}">
                         <i class="fas fa-th-large me-1"></i> All
                     </a>
                     {{#each genres}}
-                    <a href="/?genre={{id}}" class="genre-pill {{#if (eq ../currentGenreId id)}}active{{/if}}">
+                    <a href="/?genre={{id}}{{#if ../currentType}}&type={{../currentType}}{{/if}}" class="genre-pill {{#if (eq ../currentGenreId id)}}active{{/if}}">
                         <i class="fas fa-film me-1"></i> {{name}}
                     </a>
                     {{/each}}
@@ -52,6 +60,11 @@
                         <img src="{{posterUrl}}" alt="{{title}}" class="hover-poster">
                         <div class="hover-info">
                             <p class="mb-0 small fw-bold text-white">{{Genre.name}}</p>
+                            {{#if (eq type 'Serie')}}
+                                <p class="mb-0 fw-bold x-small" style="color: var(--accent-color);">Season {{season}}</p>
+                            {{else}}
+                                <p class="mb-0 x-small text-white-50">Película</p>
+                            {{/if}}
                         </div>
                     </div>
                 </div>
@@ -76,6 +89,11 @@
                         <img src="{{posterUrl}}" alt="{{title}}" class="hover-poster">
                         <div class="hover-info">
                             <p class="mb-0 small fw-bold text-white">{{Genre.name}}</p>
+                            {{#if (eq type 'Serie')}}
+                                <p class="mb-0 fw-bold x-small" style="color: var(--accent-color);">Season {{season}}</p>
+                            {{else}}
+                                <p class="mb-0 x-small text-white-50">Película</p>
+                            {{/if}}
                         </div>
                     </div>
                 </div>
@@ -100,6 +118,11 @@
                         <img src="{{posterUrl}}" alt="{{title}}" class="hover-poster">
                         <div class="hover-info">
                             <p class="mb-0 small fw-bold text-white">{{Genre.name}}</p>
+                            {{#if (eq type 'Serie')}}
+                                <p class="mb-0 fw-bold x-small" style="color: var(--accent-color);">Season {{season}}</p>
+                            {{else}}
+                                <p class="mb-0 x-small text-white-50">Película</p>
+                            {{/if}}
                         </div>
                     </div>
                 </div>
