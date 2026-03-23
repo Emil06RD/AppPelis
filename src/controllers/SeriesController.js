@@ -88,7 +88,12 @@ exports.getCreate = async (req, res) => {
 
 exports.postCreate = async (req, res) => {
     try {
-        const { title, posterUrl, status, GenreId, type, season } = req.body;
+        const { title, posterUrl, status, GenreId, type, season, ratingEmil, ratingDeli } = req.body;
+        
+        const rEmil = parseFloat(ratingEmil) || 0;
+        const rDeli = parseFloat(ratingDeli) || 0;
+        const rAvg = (rEmil + rDeli) / 2;
+
         const { error } = await supabase
             .from('Series')
             .insert([{ 
@@ -97,7 +102,10 @@ exports.postCreate = async (req, res) => {
                 status, 
                 GenreId: GenreId ? parseInt(GenreId) : null,
                 type: type || 'Serie',
-                season: type === 'Serie' ? (season ? parseInt(season) : null) : null
+                season: type === 'Serie' ? (season ? parseInt(season) : null) : null,
+                ratingEmil: rEmil,
+                ratingDeli: rDeli,
+                ratingAverage: rAvg
             }]);
             
         if (error) throw error;
@@ -135,7 +143,12 @@ exports.getEdit = async (req, res) => {
 
 exports.postEdit = async (req, res) => {
     try {
-        const { title, posterUrl, status, GenreId, type, season } = req.body;
+        const { title, posterUrl, status, GenreId, type, season, ratingEmil, ratingDeli } = req.body;
+
+        const rEmil = parseFloat(ratingEmil) || 0;
+        const rDeli = parseFloat(ratingDeli) || 0;
+        const rAvg = (rEmil + rDeli) / 2;
+
         const { error } = await supabase
             .from('Series')
             .update({ 
@@ -144,7 +157,10 @@ exports.postEdit = async (req, res) => {
                 status, 
                 GenreId: GenreId ? parseInt(GenreId) : null,
                 type: type || 'Serie',
-                season: type === 'Serie' ? (season ? parseInt(season) : null) : null
+                season: type === 'Serie' ? (season ? parseInt(season) : null) : null,
+                ratingEmil: rEmil,
+                ratingDeli: rDeli,
+                ratingAverage: rAvg
             })
             .eq('id', req.params.id);
             

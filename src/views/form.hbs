@@ -58,6 +58,103 @@
                     }
                 </script>
 
+                <div id="ratingSection" style="{{#unless (eq series.status 'Watched')}}display: none;{{/unless}}">
+                    <div class="row mb-4">
+                        <div class="col-md-6 text-center">
+                            <label class="fw-bold mb-2">Emil's Rating</label>
+                            <div class="star-rating" id="stars-emil" data-target="ratingEmil">
+                                <div class="star-wrap"><i class="fas fa-star"></i><span class="half-zone left" data-value="0.5"></span><span class="half-zone right" data-value="1"></span></div>
+                                <div class="star-wrap"><i class="fas fa-star"></i><span class="half-zone left" data-value="1.5"></span><span class="half-zone right" data-value="2"></span></div>
+                                <div class="star-wrap"><i class="fas fa-star"></i><span class="half-zone left" data-value="2.5"></span><span class="half-zone right" data-value="3"></span></div>
+                                <div class="star-wrap"><i class="fas fa-star"></i><span class="half-zone left" data-value="3.5"></span><span class="half-zone right" data-value="4"></span></div>
+                                <div class="star-wrap"><i class="fas fa-star"></i><span class="half-zone left" data-value="4.5"></span><span class="half-zone right" data-value="5"></span></div>
+                            </div>
+                            <input type="hidden" id="ratingEmil" name="ratingEmil" value="{{series.ratingEmil}}">
+                            <span class="rating-value badge bg-dark text-warning" id="val-emil">{{#if series.ratingEmil}}{{series.ratingEmil}}{{else}}0.0{{/if}}</span>
+                        </div>
+                        <div class="col-md-6 text-center">
+                            <label class="fw-bold mb-2">Deli's Rating</label>
+                            <div class="star-rating" id="stars-deli" data-target="ratingDeli">
+                                <div class="star-wrap"><i class="fas fa-star"></i><span class="half-zone left" data-value="0.5"></span><span class="half-zone right" data-value="1"></span></div>
+                                <div class="star-wrap"><i class="fas fa-star"></i><span class="half-zone left" data-value="1.5"></span><span class="half-zone right" data-value="2"></span></div>
+                                <div class="star-wrap"><i class="fas fa-star"></i><span class="half-zone left" data-value="2.5"></span><span class="half-zone right" data-value="3"></span></div>
+                                <div class="star-wrap"><i class="fas fa-star"></i><span class="half-zone left" data-value="3.5"></span><span class="half-zone right" data-value="4"></span></div>
+                                <div class="star-wrap"><i class="fas fa-star"></i><span class="half-zone left" data-value="4.5"></span><span class="half-zone right" data-value="5"></span></div>
+                            </div>
+                            <input type="hidden" id="ratingDeli" name="ratingDeli" value="{{series.ratingDeli}}">
+                            <span class="rating-value badge bg-dark text-warning" id="val-deli">{{#if series.ratingDeli}}{{series.ratingDeli}}{{else}}0.0{{/if}}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    function updateStatusVisibility() {
+                        const status = document.getElementById('status').value;
+                        const ratingSection = document.getElementById('ratingSection');
+                        const rEmil = document.getElementById('ratingEmil');
+                        const rDeli = document.getElementById('ratingDeli');
+
+                        if (status === 'Watched') {
+                            ratingSection.style.display = 'block';
+                        } else {
+                            ratingSection.style.display = 'none';
+                            // Optional: Clear ratings if not watched
+                            // rEmil.value = 0;
+                            // rDeli.value = 0;
+                        }
+                    }
+
+                    // Handle status change
+                    document.getElementById('status').addEventListener('change', updateStatusVisibility);
+
+                    // Initialize star ratings
+                    document.querySelectorAll('.star-rating').forEach(container => {
+                        const wraps = container.querySelectorAll('.star-wrap');
+                        const zones = container.querySelectorAll('.half-zone');
+                        const targetId = container.getAttribute('data-target');
+                        const input = document.getElementById(targetId);
+                        const valDisplay = document.getElementById('val-' + targetId.replace('rating', '').toLowerCase());
+
+                        const updateUI = (val) => {
+                            val = parseFloat(val) || 0;
+                            wraps.forEach((wrap, i) => {
+                                const star = wrap.querySelector('i');
+                                const fullVal = i + 1;
+                                const halfVal = i + 0.5;
+                                if (val >= fullVal) {
+                                    star.className = 'fas fa-star selected';
+                                } else if (val >= halfVal) {
+                                    star.className = 'fas fa-star-half-alt selected';
+                                } else {
+                                    star.className = 'fas fa-star';
+                                }
+                            });
+                            valDisplay.textContent = val.toFixed(1);
+                        };
+
+                        // Initial state
+                        updateUI(input.value || 0);
+
+                        zones.forEach(zone => {
+                            zone.addEventListener('click', () => {
+                                const value = zone.getAttribute('data-value');
+                                input.value = value;
+                                updateUI(value);
+                            });
+
+                            zone.addEventListener('mouseenter', () => {
+                                updateUI(zone.getAttribute('data-value'));
+                                wraps.forEach(w => w.querySelector('i').classList.add('hovered'));
+                            });
+                        });
+
+                        container.addEventListener('mouseleave', () => {
+                            updateUI(input.value || 0);
+                            wraps.forEach(w => w.querySelector('i').classList.remove('hovered'));
+                        });
+                    });
+                </script>
+
                 <div class="mb-4">
                     <label for="posterUrl">Poster URL</label>
                     <input type="url" class="form-control" id="posterUrl" name="posterUrl" value="{{series.posterUrl}}" placeholder="https://image-url.com">

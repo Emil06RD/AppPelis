@@ -18,13 +18,14 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Handlebars
-app.engine('.hbs', engine({
+const hbs = engine({
     extname: '.hbs',
     defaultLayout: 'main',
     helpers: {
         eq: (a, b) => a === b
     }
-}));
+});
+app.engine('.hbs', hbs);
 app.set('view engine', '.hbs');
 app.set('views', path.join(__dirname, 'src/views'));
 

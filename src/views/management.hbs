@@ -13,6 +13,7 @@
                         <th class="py-3">Type</th>
                         <th class="py-3">Genre</th>
                         <th class="py-3">Status</th>
+                        <th class="py-3">Rating</th>
                         <th class="py-3 text-end pe-4">Actions</th>
                     </tr>
                 </thead>
@@ -35,6 +36,12 @@
                             <span class="badge {{#if (eq status 'Watching')}}bg-primary{{/if}} {{#if (eq status 'Watched')}}bg-success{{/if}} {{#if (eq status 'Plan to Watch')}}bg-secondary{{/if}}">
                                 {{status}}
                             </span>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center gap-1">
+                                <i class="fas fa-star text-warning small"></i>
+                                <span class="fw-bold">{{#if ratingAverage}}{{ratingAverage}}{{else}}0.0{{/if}}</span>
+                            </div>
                         </td>
                         <td class="text-end pe-4">
                             <div class="d-flex justify-content-end gap-2">

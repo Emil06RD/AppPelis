@@ -60,6 +60,15 @@
                         <img src="{{posterUrl}}" alt="{{title}}" class="hover-poster">
                         <div class="hover-info">
                             <p class="mb-0 small fw-bold text-white">{{Genre.name}}</p>
+                            <div class="d-flex align-items-center gap-2 mb-1">
+                                <div class="rating-badge-mini">
+                                    <i class="fas fa-star text-warning x-small"></i>
+                                    <span class="x-small fw-bold">{{#if ratingAverage}}{{ratingAverage}}{{else}}0.0{{/if}}</span>
+                                </div>
+                                <div class="x-small text-white-50">
+                                    E: {{#if ratingEmil}}{{ratingEmil}}{{else}}0{{/if}} | D: {{#if ratingDeli}}{{ratingDeli}}{{else}}0{{/if}}
+                                </div>
+                            </div>
                             {{#if (eq type 'Serie')}}
                                 <p class="mb-0 fw-bold x-small" style="color: var(--accent-color);">Season {{season}}</p>
                             {{else}}
@@ -89,6 +98,15 @@
                         <img src="{{posterUrl}}" alt="{{title}}" class="hover-poster">
                         <div class="hover-info">
                             <p class="mb-0 small fw-bold text-white">{{Genre.name}}</p>
+                            <div class="d-flex align-items-center gap-2 mb-1">
+                                <div class="rating-badge-mini">
+                                    <i class="fas fa-star text-warning x-small"></i>
+                                    <span class="x-small fw-bold">{{#if ratingAverage}}{{ratingAverage}}{{else}}0.0{{/if}}</span>
+                                </div>
+                                <div class="x-small text-white-50">
+                                    E: {{#if ratingEmil}}{{ratingEmil}}{{else}}0{{/if}} | D: {{#if ratingDeli}}{{ratingDeli}}{{else}}0{{/if}}
+                                </div>
+                            </div>
                             {{#if (eq type 'Serie')}}
                                 <p class="mb-0 fw-bold x-small" style="color: var(--accent-color);">Season {{season}}</p>
                             {{else}}
@@ -118,6 +136,15 @@
                         <img src="{{posterUrl}}" alt="{{title}}" class="hover-poster">
                         <div class="hover-info">
                             <p class="mb-0 small fw-bold text-white">{{Genre.name}}</p>
+                            <div class="d-flex align-items-center gap-2 mb-1">
+                                <div class="rating-badge-mini">
+                                    <i class="fas fa-star text-warning x-small"></i>
+                                    <span class="x-small fw-bold">{{#if ratingAverage}}{{ratingAverage}}{{else}}0.0{{/if}}</span>
+                                </div>
+                                <div class="x-small text-white-50">
+                                    E: {{#if ratingEmil}}{{ratingEmil}}{{else}}0{{/if}} | D: {{#if ratingDeli}}{{ratingDeli}}{{else}}0{{/if}}
+                                </div>
+                            </div>
                             {{#if (eq type 'Serie')}}
                                 <p class="mb-0 fw-bold x-small" style="color: var(--accent-color);">Season {{season}}</p>
                             {{else}}

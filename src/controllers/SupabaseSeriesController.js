@@ -17,15 +17,24 @@ exports.getSeries = async (req, res) => {
 
 exports.postSeries = async (req, res) => {
     try {
-        const { title } = req.body;
+        const { title, ratingEmil, ratingDeli } = req.body;
         
         if (!title) {
             return res.status(400).json({ error: 'title is required' });
         }
 
+        const rEmil = parseFloat(ratingEmil) || 0;
+        const rDeli = parseFloat(ratingDeli) || 0;
+        const rAvg = (rEmil + rDeli) / 2;
+
         const { data, error } = await supabase
             .from('Series')
-            .insert([{ title }])
+            .insert([{ 
+                title,
+                ratingEmil: rEmil,
+                ratingDeli: rDeli,
+                ratingAverage: rAvg
+            }])
             .select();
 
         if (error) throw error;

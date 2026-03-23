@@ -281,3 +281,62 @@ h2 {
     color: var(--accent-color);
     box-shadow: 4px 4px 0px var(--accent-color);
 }
+
+/* Rating Badge for Hover Info */
+.rating-badge-mini {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    padding: 2px 8px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Star Rating Selection UI */
+.star-rating {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    font-size: 2rem;
+    margin: 10px 0;
+}
+
+.star-wrap {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.star-wrap i {
+    color: #cbd5e0;
+    transition: color 0.15s ease, transform 0.1s ease;
+    pointer-events: none;
+}
+
+.star-wrap i.selected {
+    color: #f6c90e;
+}
+
+.star-wrap:hover i {
+    transform: scale(1.15);
+}
+
+.half-zone {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 50%;
+    cursor: pointer;
+}
+
+.half-zone.left  { left: 0; }
+.half-zone.right { right: 0; }
+
+.rating-value {
+    font-size: 1rem;
+    padding: 5px 15px;
+    border-radius: 20px;
+}
