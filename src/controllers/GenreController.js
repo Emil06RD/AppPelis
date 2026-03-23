@@ -26,7 +26,7 @@ exports.postCreate = async (req, res) => {
             .insert([{ name: req.body.name }]);
             
         if (error) throw error;
-        res.redirect('/genres');
+        res.redirect('/love-view/genres');
     } catch (error) {
         console.error('Error in GenreController.postCreate:', error.message);
         res.status(500).send('Error creating genre');
@@ -63,7 +63,7 @@ exports.postEdit = async (req, res) => {
             .eq('id', req.params.id);
             
         if (error) throw error;
-        res.redirect('/genres');
+        res.redirect('/love-view/genres');
     } catch (error) {
         console.error('Error in GenreController.postEdit:', error.message);
         res.status(500).send('Error updating genre');
@@ -78,7 +78,7 @@ exports.getDelete = async (req, res) => {
             .eq('id', req.params.id);
             
         if (error) throw error;
-        res.redirect('/genres');
+        res.redirect('/love-view/genres');
     } catch (error) {
         console.error('Error in GenreController.getDelete:', error.message);
         res.status(500).send('Error deleting genre');

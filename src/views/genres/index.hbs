@@ -1,7 +1,9 @@
 <div class="fade-in">
     <div class="d-flex justify-content-between align-items-center mb-5">
         <h1 class="fw-bold">♥ Manage Genres</h1>
-        <a href="/genres/create" class="btn btn-primary">+ Add New Genre</a>
+        {{#if canEdit}}
+        <a href="/love-view/genres/create" class="btn btn-primary">+ Add New Genre</a>
+        {{/if}}
     </div>
 
     <div class="glass-card p-0 overflow-hidden" style="max-width: 600px; margin: 0 auto;">
@@ -10,19 +12,23 @@
                 <thead>
                     <tr>
                         <th class="ps-4 py-3">Name</th>
+                        {{#if canEdit}}
                         <th class="py-3 text-end pe-4">Actions</th>
+                        {{/if}}
                     </tr>
                 </thead>
                 <tbody>
                     {{#each genres}}
                     <tr class="align-middle">
                         <td class="ps-4 fw-bold text-primary">{{name}}</td>
+                        {{#if @root.canEdit}}
                         <td class="text-end pe-4">
                             <div class="d-flex justify-content-end gap-2">
-                                <a href="/genres/edit/{{id}}" class="btn btn-outline-accent btn-sm">Edit</a>
-                                <a href="/genres/delete/{{id}}" class="btn btn-danger btn-sm" onclick="return confirm('Delete this genre?')">Delete</a>
+                                <a href="/love-view/genres/edit/{{id}}" class="btn btn-outline-accent btn-sm">Edit</a>
+                                <a href="/love-view/genres/delete/{{id}}" class="btn btn-danger btn-sm" onclick="return confirm('Delete this genre?')">Delete</a>
                             </div>
                         </td>
+                        {{/if}}
                     </tr>
                     {{/each}}
                     {{#unless genres.length}}

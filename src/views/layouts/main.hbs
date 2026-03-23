@@ -16,21 +16,109 @@
 </head>
 
 <body>
+    {{#unless isLogin}}
     <nav class="navbar navbar-expand-lg sticky-top">
         <div class="container">
-            <a class="navbar-brand" href="/">Love View</a>
+            {{#if isHub}}
+            <a class="navbar-brand" href="/">App Hub</a>
             <div class="navbar-nav ms-auto gap-3">
-                <a href="/" class="nav-link fw-semibold">Home</a>
-                <a href="/management" class="nav-link fw-semibold">Management</a>
-                <a href="/genres" class="nav-link fw-semibold">Genres</a>
-                <a href="/create" class="btn btn-primary btn-sm">+ Add New</a>
+                <span class="nav-link fw-semibold text-secondary">Logged in as: <strong>{{user.name}}</strong></span>
+                <a href="/logout" class="btn btn-outline-danger btn-sm">Logout</a>
             </div>
+            {{else}}
+            <a class="navbar-brand d-flex align-items-center gap-2" href="/" title="Back to Hub">
+                <i class="fas fa-th text-secondary fs-5" style="opacity: 0.5;"></i>
+                Love View
+            </a>
+            <div class="navbar-nav ms-auto gap-3 align-items-center">
+                <a href="/love-view" class="nav-link fw-semibold">Home</a>
+                <a href="/love-view/management" class="nav-link fw-semibold">Management</a>
+                <a href="/love-view/genres" class="nav-link fw-semibold">Genres</a>
+                {{#if canEdit}}
+                <a href="/love-view/create" class="btn btn-primary btn-sm">+ Add New</a>
+                {{/if}}
+                <div class="vr mx-2 my-auto" style="height: 24px;"></div>
+                <div class="dropdown">
+                    <a class="nav-link fw-semibold dropdown-toggle d-flex align-items-center gap-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user-circle fs-5"></i> <span>{{user.name}}</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2">
+                        <li><span class="dropdown-item-text text-secondary small">Role: {{user.role}}</span></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+            {{/if}}
         </div>
     </nav>
+    {{/unless}}
 
     <div class="container mt-5">
         {{{body}}}
     </div>
+
+    <!-- Floating Messages UI -->
+    {{#if user}}
+    {{#unless isLogin}}
+    <div id="floating-message-container" class="position-fixed bottom-0 start-0 w-100 text-center" style="z-index: 9999; opacity: 0; pointer-events: none; transition: opacity 0.8s ease-in-out;">
+        <div class="py-3 shadow-lg" style="background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(12px); border-top: 1px solid rgba(255, 105, 180, 0.3);">
+            <i class="fas fa-heart text-primary me-2 heartbeat-anim"></i> 
+            <span id="floating-message-text" class="fw-bold" style="color: var(--dark-accent); font-size: 1.1rem; word-break: break-word;"></span>
+            <i class="fas fa-heart text-primary ms-2 heartbeat-anim"></i>
+        </div>
+    </div>
+
+    <style>
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        .heartbeat-anim {
+            display: inline-block;
+            animation: heartbeat 1.5s infinite;
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Fetch our unread messages
+                const response = await fetch('/messages/api/mine');
+                if (!response.ok) return;
+                const messages = await response.json();
+                
+                if (messages && messages.length > 0) {
+                    const container = document.getElementById('floating-message-container');
+                    const textEl = document.getElementById('floating-message-text');
+                    
+                    const showMessage = () => {
+                        // Pick random message
+                        const randIdx = Math.floor(Math.random() * messages.length);
+                        textEl.textContent = messages[randIdx].content;
+                        
+                        container.style.opacity = '1';
+                        
+                        // Lasts for 5 seconds
+                        setTimeout(() => {
+                            container.style.opacity = '0';
+                            
+                            // Waits 20 seconds without message
+                            setTimeout(showMessage, 20000);
+                        }, 5000);
+                    };
+                    
+                    // Begin sequence 5 seconds after loading any page
+                    setTimeout(showMessage, 5000);
+                }
+            } catch (err) {
+                console.error('Error with floating messages:', err);
+            }
+        });
+    </script>
+    {{/unless}}
+    {{/if}}
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

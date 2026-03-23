@@ -140,7 +140,7 @@ exports.postCreate = async (req, res) => {
             }]);
             
         if (error) throw error;
-        res.redirect('/management');
+        res.redirect('/love-view/management');
     } catch (error) {
         console.error('Error in postCreate:', error.message);
         res.status(500).send('Error creating series');
@@ -205,7 +205,7 @@ exports.postEdit = async (req, res) => {
             .eq('id', req.params.id);
             
         if (error) throw error;
-        res.redirect('/management');
+        res.redirect('/love-view/management');
     } catch (error) {
         console.error('Error in postEdit:', error.message);
         res.status(500).send('Error updating series');
@@ -220,7 +220,7 @@ exports.getDelete = async (req, res) => {
             .eq('id', req.params.id);
             
         if (error) throw error;
-        res.redirect('/management');
+        res.redirect('/love-view/management');
     } catch (error) {
         console.error('Error in getDelete:', error.message);
         res.status(500).send('Error deleting series');

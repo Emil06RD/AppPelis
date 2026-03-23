@@ -3,7 +3,7 @@
         <div class="glass-card p-5">
             <h2 class="fw-bold mb-4">{{#if isEdit}}Edit Series{{else}}Add New Series{{/if}}</h2>
             
-            <form action="{{#if isEdit}}/edit/{{series.id}}{{else}}/create{{/if}}" method="POST">
+            <form action="{{#if isEdit}}/love-view/edit/{{series.id}}{{else}}/love-view/create{{/if}}" method="POST">
                 <div class="mb-4">
                     <label for="title">Series Title</label>
                     <input type="text" class="form-control" id="title" name="title" value="{{series.title}}" required placeholder="Enter series title">
@@ -192,7 +192,7 @@
 
                 <div class="d-flex gap-3">
                     <button type="submit" class="btn btn-primary flex-grow-1">{{#if isEdit}}Update{{else}}Save{{/if}} Series</button>
-                    <a href="/management" class="btn btn-outline-secondary" style="border-radius: 12px; padding: 10px 25px;">Cancel</a>
+                    <a href="/love-view/management" class="btn btn-outline-secondary" style="border-radius: 12px; padding: 10px 25px;">Cancel</a>
                 </div>
             </form>
         </div>

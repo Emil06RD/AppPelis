@@ -1,15 +1,17 @@
 <div class="fade-in">
     <div class="d-flex justify-content-between align-items-center mb-5">
         <h1 class="fw-bold">♥ Management <span class="text-secondary fs-4">(Control Panel)</span></h1>
-        <a href="/create" class="btn btn-primary">+ Add New Series</a>
+        {{#if canEdit}}
+        <a href="/love-view/create" class="btn btn-primary">+ Add New Series</a>
+        {{/if}}
     </div>
 
     <div class="mb-4 d-flex">
         <div class="d-inline-flex bg-white p-2 border border-2 border-dark rounded-pill gap-2 shadow-sm">
-            <a href="/management" class="btn btn-sm {{#unless currentStatus}}btn-primary{{else}}btn-outline-accent{{/unless}} rounded-pill px-4 border-0">Todos los Estados</a>
-            <a href="/management?status=Watching" class="btn btn-sm {{#if (eq currentStatus 'Watching')}}btn-primary{{else}}btn-outline-accent{{/if}} rounded-pill px-4 border-0">Viendo</a>
-            <a href="/management?status=Plan to Watch" class="btn btn-sm {{#if (eq currentStatus 'Plan to Watch')}}btn-primary{{else}}btn-outline-accent{{/if}} rounded-pill px-4 border-0">Por ver</a>
-            <a href="/management?status=Watched" class="btn btn-sm {{#if (eq currentStatus 'Watched')}}btn-primary{{else}}btn-outline-accent{{/if}} rounded-pill px-4 border-0">Vistas</a>
+            <a href="/love-view/management" class="btn btn-sm {{#unless currentStatus}}btn-primary{{else}}btn-outline-accent{{/unless}} rounded-pill px-4 border-0">Todos los Estados</a>
+            <a href="/love-view/management?status=Watching" class="btn btn-sm {{#if (eq currentStatus 'Watching')}}btn-primary{{else}}btn-outline-accent{{/if}} rounded-pill px-4 border-0">Viendo</a>
+            <a href="/love-view/management?status=Plan to Watch" class="btn btn-sm {{#if (eq currentStatus 'Plan to Watch')}}btn-primary{{else}}btn-outline-accent{{/if}} rounded-pill px-4 border-0">Por ver</a>
+            <a href="/love-view/management?status=Watched" class="btn btn-sm {{#if (eq currentStatus 'Watched')}}btn-primary{{else}}btn-outline-accent{{/if}} rounded-pill px-4 border-0">Vistas</a>
         </div>
     </div>
 
@@ -23,7 +25,9 @@
                         <th class="py-3">Genre</th>
                         <th class="py-3">Status</th>
                         <th class="py-3">Rating</th>
+                        {{#if canEdit}}
                         <th class="py-3 text-end pe-4">Actions</th>
+                        {{/if}}
                     </tr>
                 </thead>
                 <tbody>
@@ -59,12 +63,14 @@
                                 <span class="fw-bold">{{#if ratingAverage}}{{ratingAverage}}{{else}}0.0{{/if}}</span>
                             </div>
                         </td>
+                        {{#if @root.canEdit}}
                         <td class="text-end pe-4">
                             <div class="d-flex justify-content-end gap-2">
-                                <a href="/edit/{{id}}" class="btn btn-outline-accent btn-sm">Edit</a>
-                                <a href="/delete/{{id}}" class="btn btn-danger btn-sm" onclick="return confirm('Delete this series?')">Delete</a>
+                                <a href="/love-view/edit/{{id}}" class="btn btn-outline-accent btn-sm">Edit</a>
+                                <a href="/love-view/delete/{{id}}" class="btn btn-danger btn-sm" onclick="return confirm('Delete this series?')">Delete</a>
                             </div>
                         </td>
+                        {{/if}}
                     </tr>
                     {{/each}}
                     {{#unless series.length}}
