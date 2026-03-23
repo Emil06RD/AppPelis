@@ -9,10 +9,16 @@
 <div class="row mb-5 fade-in">
     <div class="col-12 text-center">
         <div class="mb-4">
-            <div class="d-inline-flex bg-white p-2 border border-2 border-dark rounded-pill gap-2 shadow-sm">
-                <a href="/{{#if currentGenreId}}?genre={{currentGenreId}}{{/if}}" class="btn btn-sm {{#unless currentType}}btn-primary{{else}}btn-outline-accent{{/unless}} rounded-pill px-4 border-0">Todos</a>
-                <a href="/?type=Serie{{#if currentGenreId}}&genre={{currentGenreId}}{{/if}}" class="btn btn-sm {{#if (eq currentType 'Serie')}}btn-primary{{else}}btn-outline-accent{{/if}} rounded-pill px-4 border-0">Series</a>
-                <a href="/?type=Pelicula{{#if currentGenreId}}&genre={{currentGenreId}}{{/if}}" class="btn btn-sm {{#if (eq currentType 'Pelicula')}}btn-primary{{else}}btn-outline-accent{{/if}} rounded-pill px-4 border-0">Películas</a>
+            <div class="d-inline-flex bg-white p-2 border border-2 border-dark rounded-pill gap-2 shadow-sm mb-2">
+                <a href="/?{{#if currentGenreId}}genre={{currentGenreId}}&{{/if}}{{#if currentStatus}}status={{currentStatus}}{{/if}}" class="btn btn-sm {{#unless currentType}}btn-primary{{else}}btn-outline-accent{{/unless}} rounded-pill px-4 border-0">Todos</a>
+                <a href="/?type=Serie{{#if currentGenreId}}&genre={{currentGenreId}}{{/if}}{{#if currentStatus}}&status={{currentStatus}}{{/if}}" class="btn btn-sm {{#if (eq currentType 'Serie')}}btn-primary{{else}}btn-outline-accent{{/if}} rounded-pill px-4 border-0">Series</a>
+                <a href="/?type=Pelicula{{#if currentGenreId}}&genre={{currentGenreId}}{{/if}}{{#if currentStatus}}&status={{currentStatus}}{{/if}}" class="btn btn-sm {{#if (eq currentType 'Pelicula')}}btn-primary{{else}}btn-outline-accent{{/if}} rounded-pill px-4 border-0">Películas</a>
+            </div>
+            <div class="d-inline-flex bg-white p-2 border border-2 border-dark rounded-pill gap-2 shadow-sm mb-2 ms-md-2">
+                <a href="/?{{#if currentGenreId}}genre={{currentGenreId}}&{{/if}}{{#if currentType}}type={{currentType}}{{/if}}" class="btn btn-sm {{#unless currentStatus}}btn-primary{{else}}btn-outline-accent{{/unless}} rounded-pill px-4 border-0">Todos los Estados</a>
+                <a href="/?status=Watching{{#if currentGenreId}}&genre={{currentGenreId}}{{/if}}{{#if currentType}}&type={{currentType}}{{/if}}" class="btn btn-sm {{#if (eq currentStatus 'Watching')}}btn-primary{{else}}btn-outline-accent{{/if}} rounded-pill px-4 border-0">Viendo</a>
+                <a href="/?status=Plan to Watch{{#if currentGenreId}}&genre={{currentGenreId}}{{/if}}{{#if currentType}}&type={{currentType}}{{/if}}" class="btn btn-sm {{#if (eq currentStatus 'Plan to Watch')}}btn-primary{{else}}btn-outline-accent{{/if}} rounded-pill px-4 border-0">Por ver</a>
+                <a href="/?status=Watched{{#if currentGenreId}}&genre={{currentGenreId}}{{/if}}{{#if currentType}}&type={{currentType}}{{/if}}" class="btn btn-sm {{#if (eq currentStatus 'Watched')}}btn-primary{{else}}btn-outline-accent{{/if}} rounded-pill px-4 border-0">Vistas</a>
             </div>
         </div>
 
@@ -23,11 +29,11 @@
         <div class="collapse" id="genreMenu">
             <div class="genre-menu-card p-4">
                 <div class="d-flex flex-wrap justify-content-center gap-3">
-                    <a href="/{{#if currentType}}?type={{currentType}}{{/if}}" class="genre-pill {{#unless currentGenreId}}active{{/unless}}">
+                    <a href="/?{{#if currentType}}type={{currentType}}&{{/if}}{{#if currentStatus}}status={{currentStatus}}{{/if}}" class="genre-pill {{#unless currentGenreId}}active{{/unless}}">
                         <i class="fas fa-th-large me-1"></i> All
                     </a>
                     {{#each genres}}
-                    <a href="/?genre={{id}}{{#if ../currentType}}&type={{../currentType}}{{/if}}" class="genre-pill {{#if (eq ../currentGenreId id)}}active{{/if}}">
+                    <a href="/?genre={{id}}{{#if ../currentType}}&type={{../currentType}}{{/if}}{{#if ../currentStatus}}&status={{../currentStatus}}{{/if}}" class="genre-pill {{#if (eq ../currentGenreId id)}}active{{/if}}">
                         <i class="fas fa-film me-1"></i> {{name}}
                     </a>
                     {{/each}}
@@ -39,7 +45,7 @@
             <div class="mt-2">
                 <span class="badge bg-primary px-3 py-2 rounded-pill">
                     Filtrando por: {{#each genres}}{{#if (eq ../currentGenreId id)}}{{name}}{{/if}}{{/each}}
-                    <a href="/" class="text-white ms-2 text-decoration-none"><i class="fas fa-times-circle"></i></a>
+                    <a href="/?{{#if currentType}}type={{currentType}}&{{/if}}{{#if currentStatus}}status={{currentStatus}}{{/if}}" class="text-white ms-2 text-decoration-none"><i class="fas fa-times-circle"></i></a>
                 </span>
             </div>
         {{/if}}
@@ -48,6 +54,7 @@
 
 
 <!-- Section: Watching -->
+{{#if showWatching}}
 <div class="mb-5 fade-in">
     <h2 class="fw-bold mb-4">♥ Watching (Viendo)</h2>
     <div class="row g-4">
@@ -59,7 +66,7 @@
                     <div class="hover-poster-container">
                         <img src="{{posterUrl}}" alt="{{title}}" class="hover-poster">
                         <div class="hover-info">
-                            <p class="mb-0 small fw-bold text-white">{{Genre.name}}</p>
+                            <p class="mb-0 small fw-bold text-white">{{Genre.name}}{{#if Genre2.name}} · {{Genre2.name}}{{/if}}{{#if Genre3.name}} · {{Genre3.name}}{{/if}}{{#if Genre4.name}} · {{Genre4.name}}{{/if}}</p>
                             <div class="d-flex align-items-center gap-2 mb-1">
                                 <div class="rating-badge-mini">
                                     <i class="fas fa-star text-warning x-small"></i>
@@ -84,8 +91,10 @@
         {{/if}}
     </div>
 </div>
+{{/if}}
 
 <!-- Section: Watched -->
+{{#if showWatched}}
 <div class="mb-5 fade-in">
     <h2 class="fw-bold mb-4">♥ Watched (Vistas)</h2>
     <div class="row g-4">
@@ -97,7 +106,7 @@
                     <div class="hover-poster-container">
                         <img src="{{posterUrl}}" alt="{{title}}" class="hover-poster">
                         <div class="hover-info">
-                            <p class="mb-0 small fw-bold text-white">{{Genre.name}}</p>
+                            <p class="mb-0 small fw-bold text-white">{{Genre.name}}{{#if Genre2.name}} · {{Genre2.name}}{{/if}}{{#if Genre3.name}} · {{Genre3.name}}{{/if}}{{#if Genre4.name}} · {{Genre4.name}}{{/if}}</p>
                             <div class="d-flex align-items-center gap-2 mb-1">
                                 <div class="rating-badge-mini">
                                     <i class="fas fa-star text-warning x-small"></i>
@@ -122,8 +131,10 @@
         {{/if}}
     </div>
 </div>
+{{/if}}
 
 <!-- Section: Plan to Watch -->
+{{#if showPlanToWatch}}
 <div class="mb-5 fade-in">
     <h2 class="fw-bold mb-4">♥ Plan to Watch (Por ver)</h2>
     <div class="row g-4">
@@ -135,7 +146,7 @@
                     <div class="hover-poster-container">
                         <img src="{{posterUrl}}" alt="{{title}}" class="hover-poster">
                         <div class="hover-info">
-                            <p class="mb-0 small fw-bold text-white">{{Genre.name}}</p>
+                            <p class="mb-0 small fw-bold text-white">{{Genre.name}}{{#if Genre2.name}} · {{Genre2.name}}{{/if}}{{#if Genre3.name}} · {{Genre3.name}}{{/if}}{{#if Genre4.name}} · {{Genre4.name}}{{/if}}</p>
                             <div class="d-flex align-items-center gap-2 mb-1">
                                 <div class="rating-badge-mini">
                                     <i class="fas fa-star text-warning x-small"></i>
@@ -160,3 +171,4 @@
         {{/if}}
     </div>
 </div>
+{{/if}}

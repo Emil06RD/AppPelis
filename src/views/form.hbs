@@ -9,9 +9,9 @@
                     <input type="text" class="form-control" id="title" name="title" value="{{series.title}}" required placeholder="Enter series title">
                 </div>
 
-                <div class="row mb-4">
+                <div class="row mb-3">
                     <div class="col-md-6">
-                        <label for="GenreId">Genre</label>
+                        <label for="GenreId">Género Principal <span class="text-danger">*</span></label>
                         <select class="form-control" id="GenreId" name="GenreId" required>
                             <option value="">Select Genre...</option>
                             {{#each genres}}
@@ -26,6 +26,36 @@
                             <option value="Watched" {{#if (eq series.status 'Watched')}}selected{{/if}}>Watched (Vistas)</option>
                             <option value="Plan to Watch" {{#if (eq series.status 'Plan to Watch')}}selected{{/if}}>Plan to Watch (Por ver)</option>
                         </select>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="text-secondary small fw-bold">Géneros Secundarios <span class="text-muted">(máx. 3)</span></label>
+                    <div class="row g-2">
+                        <div class="col-md-4">
+                            <select class="form-control form-control-sm" name="Genre2Id">
+                                <option value="">— Género 2 —</option>
+                                {{#each genres}}
+                                <option value="{{id}}" {{#if (eq ../series.Genre2Id id)}}selected{{/if}}>{{name}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-control form-control-sm" name="Genre3Id">
+                                <option value="">— Género 3 —</option>
+                                {{#each genres}}
+                                <option value="{{id}}" {{#if (eq ../series.Genre3Id id)}}selected{{/if}}>{{name}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-control form-control-sm" name="Genre4Id">
+                                <option value="">— Género 4 —</option>
+                                {{#each genres}}
+                                <option value="{{id}}" {{#if (eq ../series.Genre4Id id)}}selected{{/if}}>{{name}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
                     </div>
                 </div>
 

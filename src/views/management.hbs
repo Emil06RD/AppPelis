@@ -4,6 +4,15 @@
         <a href="/create" class="btn btn-primary">+ Add New Series</a>
     </div>
 
+    <div class="mb-4 d-flex">
+        <div class="d-inline-flex bg-white p-2 border border-2 border-dark rounded-pill gap-2 shadow-sm">
+            <a href="/management" class="btn btn-sm {{#unless currentStatus}}btn-primary{{else}}btn-outline-accent{{/unless}} rounded-pill px-4 border-0">Todos los Estados</a>
+            <a href="/management?status=Watching" class="btn btn-sm {{#if (eq currentStatus 'Watching')}}btn-primary{{else}}btn-outline-accent{{/if}} rounded-pill px-4 border-0">Viendo</a>
+            <a href="/management?status=Plan to Watch" class="btn btn-sm {{#if (eq currentStatus 'Plan to Watch')}}btn-primary{{else}}btn-outline-accent{{/if}} rounded-pill px-4 border-0">Por ver</a>
+            <a href="/management?status=Watched" class="btn btn-sm {{#if (eq currentStatus 'Watched')}}btn-primary{{else}}btn-outline-accent{{/if}} rounded-pill px-4 border-0">Vistas</a>
+        </div>
+    </div>
+
     <div class="glass-card p-0 overflow-hidden">
         <div class="table-responsive">
             <table class="table table-hover mb-0">
@@ -31,7 +40,14 @@
                                 {{type}}{{#if (eq type 'Serie')}}{{#if season}} (T{{season}}){{/if}}{{/if}}
                             </span>
                         </td>
-                        <td>{{Genre.name}}</td>
+                        <td>
+                            <div class="d-flex flex-wrap align-items-center gap-1">
+                                <span class="badge" style="background: var(--accent-color); color: var(--dark-accent);">{{Genre.name}}</span>
+                                {{#if Genre2.name}}<span class="badge small" style="background: var(--accent-color); color: var(--dark-accent);">{{Genre2.name}}</span>{{/if}}
+                                {{#if Genre3.name}}<span class="badge small" style="background: var(--accent-color); color: var(--dark-accent);">{{Genre3.name}}</span>{{/if}}
+                                {{#if Genre4.name}}<span class="badge small" style="background: var(--accent-color); color: var(--dark-accent);">{{Genre4.name}}</span>{{/if}}
+                            </div>
+                        </td>
                         <td>
                             <span class="badge {{#if (eq status 'Watching')}}bg-primary{{/if}} {{#if (eq status 'Watched')}}bg-success{{/if}} {{#if (eq status 'Plan to Watch')}}bg-secondary{{/if}}">
                                 {{status}}
