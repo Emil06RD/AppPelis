@@ -1,0 +1,134 @@
+<div class="row justify-content-center fade-in">
+    <div class="col-md-8 col-lg-6">
+        <div class="glass-card p-5">
+            <div class="d-flex align-items-center mb-4">
+                <a href="/dates" class="btn btn-outline-secondary btn-sm me-3 transition-all">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <h3 class="fw-bold mb-0 text-dark">{{title}}</h3>
+            </div>
+
+            <form action="{{#if editMode}}/dates/edit/{{date.id}}{{else}}/dates/create{{/if}}" method="POST" enctype="multipart/form-data">
+                
+                <!-- Nombre de la Cita (Nuevo Campo) -->
+                <div class="mb-4">
+                    <label for="title" class="form-label fw-semibold">Nombre de este Recuerdo <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-end-0"><i class="fas fa-heading text-secondary"></i></span>
+                        <input type="text" class="form-control border-start-0" id="title" name="title" value="{{date.title}}" required placeholder="Ejem: Nuestra primera salida, Aniversario..."
+                            style="background-color: rgba(255,255,255,0.5);">
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="place_id" class="form-label fw-semibold">Lugar de la Cita <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-end-0"><i class="fas fa-map-marker-alt text-primary"></i></span>
+                        <select class="form-select border-start-0" id="place_id" name="place_id" required style="background-color: rgba(255,255,255,0.5);">
+                            <option value="">Selecciona un lugar...</option>
+                            {{#each places}}
+                            <option value="{{this.id}}" {{#if (eq this.id ../date.place_id)}}selected{{/if}}>{{this.name}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="date_time" class="form-label fw-semibold">¿Cuándo fue? <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-end-0"><i class="fas fa-clock text-info"></i></span>
+                        <input type="datetime-local" class="form-control border-start-0" id="date_time" name="date_time" 
+                            value="{{date.date_time_formatted}}" required
+                            style="background-color: rgba(255,255,255,0.5);">
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="description" class="form-label fw-semibold">Nuestra Experiencia / Recuerdos</label>
+                    <textarea class="form-control" id="description" name="description" rows="4" 
+                        placeholder="Escribe aquí los mejores momentos de esa cita, anécdotas, etc."
+                        style="background-color: rgba(255,255,255,0.5);">{{date.description}}</textarea>
+                </div>
+
+                <div class="mb-4">
+                    <label for="photos" class="form-label fw-semibold">Fotos de la Cita</label>
+                    <div class="input-group mb-1">
+                        <span class="input-group-text bg-transparent border-end-0"><i class="fas fa-images text-secondary"></i></span>
+                        <input type="file" class="form-control border-start-0" id="photos" name="photos" accept="image/*" multiple
+                            style="background-color: rgba(255,255,255,0.5);">
+                    </div>
+                    <small class="text-muted fst-italic"><i class="fas fa-info-circle me-1"></i>Para elegir varias fotos, mantén presionada la tecla <b>Ctrl</b> (o márcalas todas en tu celular). Máximo 5.</small>
+                    
+                    <!-- Previsualización de fotos nuevas -->
+                    <div id="photo-preview-container" class="d-flex flex-wrap gap-2 mt-3 p-2 bg-light rounded" style="display: none !important;"></div>
+                </div>
+
+                {{#if date.DatePhotos}}
+                {{#if date.DatePhotos.length}}
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Galería de la Cita</label>
+                    <div class="d-flex flex-wrap gap-2">
+                        {{#each date.DatePhotos}}
+                        <div class="position-relative">
+                            <img src="{{this.photo_url}}" class="rounded shadow-sm" style="width: 80px; height: 80px; object-fit: cover;">
+                        </div>
+                        {{/each}}
+                    </div>
+                </div>
+                {{/if}}
+                {{/if}}
+
+                <div class="d-grid mt-5">
+                    <button type="submit" class="btn btn-primary btn-lg transition-all shadow-sm">
+                        <i class="fas {{#if editMode}}fa-save{{else}}fa-heart{{/if}} me-2"></i>{{#if editMode}}Guardar Cambios{{else}}Guardar Recuerdo{{/if}}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+/* Funcionalidad para previsualizar las fotos seleccionadas y guiar al usuario */
+document.getElementById('photos').addEventListener('change', function(e) {
+    const container = document.getElementById('photo-preview-container');
+    container.innerHTML = ''; // Limpiar anteriores
+    
+    if (this.files.length === 0) {
+        container.style.setProperty('display', 'none', 'important');
+        return;
+    }
+    
+    container.style.setProperty('display', 'flex', 'important');
+    
+    if (this.files.length > 5) {
+        alert('Recordatorio: Solo se guardarán las primeras 5 fotos seleccionadas.');
+    }
+    
+    const maxFiles = Math.min(this.files.length, 5);
+    
+    // Titulillo
+    const p = document.createElement('div');
+    p.className = 'w-100 mb-1 small text-primary fw-bold';
+    p.textContent = `${maxFiles} foto(s) seleccionadas para subir ahora:`;
+    container.appendChild(p);
+
+    // Leer y mostrar cada imagen en pequeño
+    for (let i = 0; i < maxFiles; i++) {
+        const file = this.files[i];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.className = 'rounded shadow-sm border border-2 border-white';
+                img.style.width = '65px';
+                img.style.height = '65px';
+                img.style.objectFit = 'cover';
+                container.appendChild(img);
+            }
+            reader.readAsDataURL(file);
+        }
+    }
+});
+</script>

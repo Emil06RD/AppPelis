@@ -1,0 +1,73 @@
+<div class="row mb-4 align-items-center fade-in">
+    <div class="col">
+        <h2 class="fw-bold mb-0" style="color: var(--dark-accent);">
+            <i class="fas fa-map-marked-alt text-primary me-2"></i>Lugares por Visitar
+        </h2>
+    </div>
+    <div class="col-auto d-flex gap-2">
+        <a href="/dates" class="btn btn-outline-primary transition-all">
+            <i class="fas fa-calendar-alt me-2"></i>Ver Citas
+        </a>
+        <a href="/places/create" class="btn btn-primary transition-all shadow-sm">
+            <i class="fas fa-plus me-2"></i>Nuevo Lugar
+        </a>
+    </div>
+</div>
+
+<div class="row g-4 fade-in" style="animation-delay: 0.1s;">
+    {{#if places.length}}
+    {{#each places}}
+    <div class="col-md-6 col-lg-4">
+        <div class="glass-card p-4 transition-all h-100 position-relative app-card d-flex flex-column">
+            
+            {{#if this.photo_url}}
+            <div class="mb-3 overflow-hidden rounded shadow-sm" style="height: 160px;">
+                <img src="{{this.photo_url}}" alt="{{this.name}}" class="w-100 h-100" style="object-fit: cover; transition: transform 0.3s ease-in-out;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            </div>
+            {{/if}}
+
+            <h5 class="fw-bold mb-2">{{this.name}}</h5>
+            
+            {{#if this.description}}
+            <p class="text-secondary small mb-3">{{this.description}}</p>
+            {{else}}
+            <p class="text-secondary small mb-3 fst-italic">Sin descripción</p>
+            {{/if}}
+
+            <div class="d-flex flex-wrap gap-2 mt-auto pt-3 border-top" style="border-color: rgba(255,105,180,0.1) !important;">
+                {{#if this.location_url}}
+                <a href="{{this.location_url}}" target="_blank" class="btn btn-sm btn-outline-info">
+                    <i class="fas fa-map-marker-alt"></i> Mapa
+                </a>
+                {{/if}}
+                <div class="ms-auto d-flex gap-2">
+                    <a href="/places/edit/{{this.id}}" class="btn btn-sm btn-outline-primary" title="Editar">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <form action="/places/delete/{{this.id}}" method="GET" class="d-inline" onsubmit="return confirm('¿Eliminar este lugar?');">
+                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{/each}}
+    {{else}}
+    <div class="col-12 text-center py-5">
+        <div class="glass-card p-5">
+            <i class="fas fa-map-signs text-muted fs-1 mb-3"></i>
+            <h4 class="text-secondary">Aún no hay lugares registrados</h4>
+            <p class="text-muted mb-4">Empieza agregando lugares que quieran visitar juntos.</p>
+            <a href="/places/create" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>Agregar Primer Lugar
+            </a>
+        </div>
+    </div>
+    {{/if}}
+</div>
+
+<style>
+    .app-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(255,105,180,0.15) !important; }
+</style>

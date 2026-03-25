@@ -1,8 +1,8 @@
 <div class="row min-vh-100 align-items-center justify-content-center fade-in">
     <div class="col-md-6 col-lg-5 text-center">
-        
+
         <div class="mb-4">
-            <h1 class="display-5 fw-bold mb-3"><span class="text-primary">Love View</span> Access</h1>
+            <h1 class="display-5 fw-bold mb-3"><span class="text-primary">Love App</span> Access</h1>
             <p class="text-secondary">Please identify yourself to continue.</p>
         </div>
 
@@ -25,21 +25,25 @@
 
                 <div class="mb-5">
                     <label for="password" class="form-label fw-bold small text-secondary">PASSWORD</label>
-                    <input type="password" class="form-control form-control-lg" id="password" name="password" placeholder="••••••••" required>
+                    <input type="password" class="form-control form-control-lg" id="password" name="password"
+                        placeholder="••••••••" required>
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100 py-3 mb-4 fw-bold shadow-sm" style="border-radius: 15px;">Login securely <i class="fas fa-lock ms-2"></i></button>
+                <button type="submit" class="btn btn-primary w-100 py-3 mb-4 fw-bold shadow-sm"
+                    style="border-radius: 15px;">Login securely <i class="fas fa-lock ms-2"></i></button>
             </form>
 
             <div class="position-relative text-center my-4">
                 <hr class="text-secondary" style="opacity: 0.3;">
-                <span class="position-absolute top-50 start-50 translate-middle px-3 text-secondary small fw-bold" style="background: rgba(255,255,255,0.9);">OR</span>
+                <span class="position-absolute top-50 start-50 translate-middle px-3 text-secondary small fw-bold"
+                    style="background: rgba(255,255,255,0.9);">OR</span>
             </div>
 
             <!-- Guest Login Shortcut -->
             <form action="/login" method="POST">
                 <input type="hidden" name="guestLogin" value="true">
-                <button type="submit" class="btn w-100 py-3 fw-bold" style="border: 2px solid var(--primary-color); color: var(--primary-color); border-radius: 15px; background: transparent;">
+                <button type="submit" class="btn w-100 py-3 fw-bold"
+                    style="border: 2px solid var(--primary-color); color: var(--primary-color); border-radius: 15px; background: transparent;">
                     Enter as Guest (Invitado) <i class="fas fa-user-circle ms-2"></i>
                 </button>
             </form>

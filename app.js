@@ -9,6 +9,8 @@ const authRoutes = require('./src/routes/authRoutes');
 const seriesRoutes = require('./src/routes/seriesRoutes');
 const genreRoutes = require('./src/routes/genreRoutes');
 const messageRoutes = require('./src/routes/messageRoutes');
+const placeRoutes = require('./src/routes/placeRoutes');
+const dateRoutes = require('./src/routes/dateRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -58,6 +60,8 @@ app.get('/', requireAuth, (req, res) => {
 app.use('/love-view', requireAuth, seriesRoutes);
 app.use('/love-view/genres', requireAuth, genreRoutes);
 app.use('/messages', requireAuth, messageRoutes);
+app.use('/places', requireAuth, placeRoutes);
+app.use('/dates', requireAuth, dateRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
