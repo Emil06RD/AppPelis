@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
-const { engine } = require('express-handlebars');
+const { engine, ExpressHandlebars } = require('express-handlebars');
+const Handlebars = require('handlebars');
 const path = require('path');
 const methodOverride = require('method-override');
 const session = require('express-session');
@@ -39,7 +40,13 @@ const hbs = engine({
     extname: '.hbs',
     defaultLayout: 'main',
     helpers: {
-        eq: (a, b) => a === b
+        eq: (a, b) => a === b,
+        gt: (a, b) => a > b,
+        json: (context) => {
+            // Serialize to JSON and escape double quotes so it's safe inside a data-attribute
+            const str = JSON.stringify(context).replace(/"/g, '&quot;');
+            return new Handlebars.SafeString(str);
+        }
     }
 });
 app.engine('.hbs', hbs);

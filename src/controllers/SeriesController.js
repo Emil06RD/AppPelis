@@ -42,10 +42,41 @@ exports.getIndex = async (req, res) => {
             Genre3: s.Genre3 || null,
             Genre4: s.Genre4 || null,
         }));
+
+        // Group series by title + status so multiple seasons/entries share one card
+        const groupSeries = (list) => {
+            const map = new Map();
+            for (const s of list) {
+                const key = `${s.title}|||${s.status}`;
+                if (!map.has(key)) {
+                    map.set(key, { ...s, items: [s], count: 1 });
+                } else {
+                    const group = map.get(key);
+                    group.items.push(s);
+                    group.count++;
+                }
+            }
+            
+            // Calculate averages for the main group card
+            const result = Array.from(map.values());
+            result.forEach(group => {
+                if (group.count > 1) {
+                    const sumAvg = group.items.reduce((acc, curr) => acc + (parseFloat(curr.ratingAverage) || 0), 0);
+                    const sumEmil = group.items.reduce((acc, curr) => acc + (parseFloat(curr.ratingEmil) || 0), 0);
+                    const sumDeli = group.items.reduce((acc, curr) => acc + (parseFloat(curr.ratingDeli) || 0), 0);
+                    
+                    group.ratingAverage = (sumAvg / group.count).toFixed(1);
+                    group.ratingEmil = (sumEmil / group.count).toFixed(1);
+                    group.ratingDeli = (sumDeli / group.count).toFixed(1);
+                }
+            });
+            
+            return result;
+        };
         
-        const watching = plainSeries.filter(s => s.status === 'Watching');
-        const watched = plainSeries.filter(s => s.status === 'Watched');
-        const planToWatch = plainSeries.filter(s => s.status === 'Plan to Watch');
+        const watching = groupSeries(plainSeries.filter(s => s.status === 'Watching'));
+        const watched = groupSeries(plainSeries.filter(s => s.status === 'Watched'));
+        const planToWatch = groupSeries(plainSeries.filter(s => s.status === 'Plan to Watch'));
 
         res.render('index', { 
             title: 'My Collection',

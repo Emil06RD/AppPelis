@@ -8,9 +8,11 @@
         <a href="/dates" class="btn btn-outline-primary transition-all">
             <i class="fas fa-calendar-alt me-2"></i>Ver Citas
         </a>
+        {{#if canEdit}}
         <a href="/places/create" class="btn btn-primary transition-all shadow-sm">
             <i class="fas fa-plus me-2"></i>Nuevo Lugar
         </a>
+        {{/if}}
     </div>
 </div>
 
@@ -41,6 +43,7 @@
                 </a>
                 {{/if}}
                 <div class="ms-auto d-flex gap-2">
+                    {{#if ../canEdit}}
                     <a href="/places/edit/{{this.id}}" class="btn btn-sm btn-outline-primary" title="Editar">
                         <i class="fas fa-edit"></i>
                     </a>
@@ -49,6 +52,7 @@
                             <i class="fas fa-trash"></i>
                         </button>
                     </form>
+                    {{/if}}
                 </div>
             </div>
         </div>
@@ -60,9 +64,11 @@
             <i class="fas fa-map-signs text-muted fs-1 mb-3"></i>
             <h4 class="text-secondary">Aún no hay lugares registrados</h4>
             <p class="text-muted mb-4">Empieza agregando lugares que quieran visitar juntos.</p>
+            {{#if canEdit}}
             <a href="/places/create" class="btn btn-primary">
                 <i class="fas fa-plus me-2"></i>Agregar Primer Lugar
             </a>
+            {{/if}}
         </div>
     </div>
     {{/if}}

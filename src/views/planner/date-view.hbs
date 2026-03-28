@@ -22,12 +22,14 @@
         <h5 class="text-light mb-0 fw-light"><i class="fas fa-calendar-alt text-info me-3"></i>{{date.formattedDateTime}}</h5>
         <div class="mt-4" style="pointer-events: auto;">
             <a href="/dates" class="btn btn-outline-light rounded-pill px-4 py-2 me-2 mb-2 transition-all"><i class="fas fa-arrow-left me-2"></i>Muro</a>
+            {{#if canEdit}}
             <a href="/dates/edit/{{date.id}}" class="btn btn-primary rounded-pill px-4 py-2 me-2 mb-2 transition-all"><i class="fas fa-edit me-2"></i>Editar / Fotos</a>
             <form action="/dates/delete/{{date.id}}" method="GET" class="d-inline" onsubmit="return confirm('¿Seguro de que quieres eliminar este hermoso recuerdo para siempre?');">
                 <button type="submit" class="btn btn-outline-danger rounded-pill px-4 py-2 mb-2 transition-all">
                     <i class="fas fa-trash-alt me-2"></i>Eliminar
                 </button>
             </form>
+            {{/if}}
         </div>
     </div>
 </div>

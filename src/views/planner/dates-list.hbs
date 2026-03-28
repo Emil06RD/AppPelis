@@ -8,9 +8,11 @@
         <a href="/places" class="btn btn-outline-secondary transition-all">
             <i class="fas fa-map-marked-alt me-2"></i>Lugares Recomendados
         </a>
+        {{#if canEdit}}
         <a href="/dates/create" class="btn btn-primary transition-all shadow-sm">
             <i class="fas fa-plus me-2"></i>Registrar Cita
         </a>
+        {{/if}}
     </div>
 </div>
 
@@ -51,9 +53,11 @@
             <i class="fas fa-camera-retro text-muted fs-1 mb-3"></i>
             <h4 class="text-secondary">Aún no hay citas registradas</h4>
             <p class="text-muted mb-4">¡Guarda el recuerdo de su primera salida juntos!</p>
+            {{#if canEdit}}
             <a href="/dates/create" class="btn btn-primary">
                 <i class="fas fa-plus me-2"></i>Registrar Cita
             </a>
+            {{/if}}
         </div>
     </div>
     {{/unless}}
