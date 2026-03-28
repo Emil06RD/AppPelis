@@ -46,6 +46,7 @@
         </div>
 
         <!-- Small Messages Widget -->
+        {{#if canEdit}}
         <div class="row justify-content-center mt-4 fade-in" style="animation-delay: 0.2s;">
             <div class="col-auto">
                 <a href="/messages" class="text-decoration-none">
@@ -54,8 +55,10 @@
                         <i class="fas fa-comment-dots text-info fs-2 mb-2"></i>
                         <span class="fw-bold small text-secondary" style="font-size: 0.8rem;">Messages</span>
                     </div>
+                </a>
             </div>
         </div>
+        {{/if}}
     </div>
 </div>
 </div>
