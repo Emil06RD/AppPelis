@@ -1,13 +1,20 @@
-<!-- Hero Section with Album Cover/Collage -->
+<!-- Hero Section with Photo Collage (max 5 "is_collage" photos) -->
 <div class="container-fluid p-0 mb-5 position-relative fade-in shadow" style="height: 60vh; min-height: 400px; background-color: #111;">
-    {{#if date.DatePhotos.length}}
-    <!-- CSS Grid Collage Area -->
-    <div class="photo-collage photo-count-{{date.DatePhotos.length}} w-100 h-100">
-        {{#each date.DatePhotos}}
+    {{#if collagePhotos.length}}
+    <!-- CSS Grid Collage Area — shows only selected collage photos -->
+    <div class="photo-collage photo-count-{{collagePhotos.length}} w-100 h-100">
+        {{#each collagePhotos}}
         <div class="collage-item collage-item-{{@index}} h-100 w-100 position-relative">
-            <img src="{{this.photo_url}}" class="w-100 h-100" style="object-fit: cover; opacity: 0.9;" alt="Recuerdo">
+            <img src="{{this.photo_url}}" class="w-100 h-100" style="object-fit: cover; opacity: 0.9;" alt="Recuerdo {{@index}}">
         </div>
         {{/each}}
+    </div>
+    {{else if galleryPhotos.length}}
+    <!-- Fallback: if no collage selection, show first photo full width -->
+    <div class="photo-collage photo-count-1 w-100 h-100">
+        <div class="collage-item collage-item-0 h-100 w-100">
+            <img src="{{galleryPhotos.[0].photo_url}}" class="w-100 h-100" style="object-fit: cover; opacity: 0.9;" alt="Recuerdo">
+        </div>
     </div>
     {{else}}
     <div class="h-100 w-100 d-flex align-items-center justify-content-center bg-dark" style="opacity: 0.3;">
@@ -51,16 +58,69 @@
             </div>
         </div>
     </div>
+
+    <!-- ======== GALERÍA DESLIZABLE — todas las fotos ======== -->
+    {{#if galleryPhotos.length}}
+    <div class="row justify-content-center mb-5 fade-in" style="animation-delay: 0.35s;">
+        <div class="col-lg-10">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <h5 class="fw-bold mb-0 text-dark">
+                    <i class="fas fa-images text-primary me-2"></i>Galería de Fotos
+                    <span class="badge bg-primary ms-2">{{galleryPhotos.length}}</span>
+                </h5>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-outline-secondary btn-sm rounded-circle gallery-prev-btn" title="Anterior">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm rounded-circle gallery-next-btn" title="Siguiente">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Slider wrapper -->
+            <div class="gallery-slider-wrapper">
+                <div class="gallery-slider" id="gallerySlider">
+                    {{#each galleryPhotos}}
+                    <div class="gallery-slide {{#if this.is_collage}}gallery-slide--collage{{/if}}"
+                         data-index="{{@index}}">
+                        <img src="{{this.photo_url}}"
+                             alt="Foto {{@index}}"
+                             class="gallery-slide-img"
+                             onclick="openLightbox(this.src)">
+                        {{#if this.is_collage}}
+                        <span class="collage-badge" title="En el collage">
+                            <i class="fas fa-star"></i>
+                        </span>
+                        {{/if}}
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+
+            <!-- Dots indicator -->
+            <div class="gallery-dots mt-3 text-center" id="galleryDots"></div>
+        </div>
+    </div>
+    {{/if}}
+</div>
+
+<!-- ======== LIGHTBOX ======== -->
+<div id="lightbox" class="lightbox-overlay" onclick="closeLightbox()">
+    <button class="lightbox-close-btn" onclick="closeLightbox()">
+        <i class="fas fa-times"></i>
+    </button>
+    <img id="lightbox-img" src="" alt="Foto ampliada" onclick="event.stopPropagation()">
 </div>
 
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+
     .title-overlay-gradient {
         background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.7) 40%, rgba(0, 0, 0, 0) 100%);
     }
-    
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
 
-    /* Estilos del Collage de Fotos */
+    /* ---- Collage Grid ---- */
     .photo-collage {
         display: grid;
         gap: 4px;
@@ -68,7 +128,6 @@
     }
     .collage-item { overflow: hidden; }
 
-    /* Lógica del Grid según cantidad de fotos */
     .photo-count-1 { grid-template-columns: 1fr; }
     .photo-count-2 { grid-template-columns: 1fr 1fr; }
     
@@ -91,4 +150,261 @@
     .photo-count-5 .collage-item-2 { grid-column: 3 / 4; grid-row: 1 / 2; }
     .photo-count-5 .collage-item-3 { grid-column: 2 / 3; grid-row: 2 / 3; }
     .photo-count-5 .collage-item-4 { grid-column: 3 / 4; grid-row: 2 / 3; }
+
+    /* ---- Gallery Slider ---- */
+    .gallery-slider-wrapper {
+        overflow: hidden;
+        border-radius: 16px;
+        position: relative;
+        cursor: grab;
+        user-select: none;
+    }
+    .gallery-slider-wrapper:active { cursor: grabbing; }
+
+    .gallery-slider {
+        display: flex;
+        gap: 12px;
+        transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        will-change: transform;
+    }
+
+    .gallery-slide {
+        flex: 0 0 calc(33.333% - 8px);
+        min-width: 0;
+        border-radius: 12px;
+        overflow: hidden;
+        position: relative;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.13);
+        aspect-ratio: 4/3;
+        transition: transform 0.2s;
+    }
+    @media (max-width: 768px) {
+        .gallery-slide {
+            flex: 0 0 calc(80% - 6px);
+        }
+    }
+    @media (min-width: 769px) and (max-width: 1024px) {
+        .gallery-slide {
+            flex: 0 0 calc(50% - 6px);
+        }
+    }
+
+    .gallery-slide:hover {
+        transform: scale(1.02);
+    }
+    .gallery-slide-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        cursor: zoom-in;
+        transition: transform 0.4s;
+    }
+    .gallery-slide:hover .gallery-slide-img {
+        transform: scale(1.04);
+    }
+
+    /* Star badge for collage photos */
+    .gallery-slide--collage {
+        border: 2.5px solid #f6c90e;
+    }
+    .collage-badge {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        background: rgba(246, 201, 14, 0.92);
+        color: #333;
+        border-radius: 50%;
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    }
+
+    /* Dots */
+    .gallery-dots {
+        display: flex;
+        justify-content: center;
+        gap: 6px;
+        flex-wrap: wrap;
+    }
+    .gallery-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #ccc;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.2s;
+    }
+    .gallery-dot.active {
+        background: var(--bs-primary, #0d6efd);
+        transform: scale(1.3);
+    }
+
+    /* ---- Lightbox ---- */
+    .lightbox-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.92);
+        z-index: 9999;
+        align-items: center;
+        justify-content: center;
+        animation: fadeInLightbox 0.2s ease;
+    }
+    .lightbox-overlay.open {
+        display: flex;
+    }
+    @keyframes fadeInLightbox {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    #lightbox-img {
+        max-width: 90vw;
+        max-height: 88vh;
+        border-radius: 12px;
+        box-shadow: 0 8px 48px rgba(0,0,0,0.6);
+        object-fit: contain;
+    }
+    .lightbox-close-btn {
+        position: absolute;
+        top: 18px;
+        right: 22px;
+        background: rgba(255,255,255,0.15);
+        border: none;
+        color: #fff;
+        font-size: 22px;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s;
+        z-index: 10000;
+    }
+    .lightbox-close-btn:hover { background: rgba(255,255,255,0.3); }
 </style>
+
+<script>
+/* ============================================================
+   GALLERY SLIDER
+   ============================================================ */
+(function() {
+    const slider = document.getElementById('gallerySlider');
+    if (!slider) return;
+
+    const slides = slider.querySelectorAll('.gallery-slide');
+    const dotsContainer = document.getElementById('galleryDots');
+    const prevBtn = document.querySelector('.gallery-prev-btn');
+    const nextBtn = document.querySelector('.gallery-next-btn');
+
+    if (slides.length === 0) return;
+
+    let currentIndex = 0;
+
+    // Responsive: how many slides visible at once?
+    function visibleCount() {
+        const w = window.innerWidth;
+        if (w <= 768) return 1;
+        if (w <= 1024) return 2;
+        return 3;
+    }
+
+    // Slide width including gap
+    function slideWidth() {
+        return slides[0].offsetWidth + 12; // 12px gap
+    }
+
+    function maxIndex() {
+        return Math.max(0, slides.length - visibleCount());
+    }
+
+    function goTo(idx) {
+        currentIndex = Math.max(0, Math.min(idx, maxIndex()));
+        slider.style.transform = `translateX(-${currentIndex * slideWidth()}px)`;
+        updateDots();
+    }
+
+    // Build dots
+    function buildDots() {
+        dotsContainer.innerHTML = '';
+        const total = slides.length;
+        for (let i = 0; i < total; i++) {
+            const dot = document.createElement('span');
+            dot.className = 'gallery-dot' + (i === currentIndex ? ' active' : '');
+            dot.addEventListener('click', () => goTo(i));
+            dotsContainer.appendChild(dot);
+        }
+    }
+
+    function updateDots() {
+        dotsContainer.querySelectorAll('.gallery-dot').forEach((dot, i) => {
+            dot.classList.toggle('active', i === currentIndex);
+        });
+    }
+
+    buildDots();
+
+    prevBtn && prevBtn.addEventListener('click', () => goTo(currentIndex - 1));
+    nextBtn && nextBtn.addEventListener('click', () => goTo(currentIndex + 1));
+
+    // Touch/drag support
+    let startX = 0, isDragging = false;
+    slider.addEventListener('mousedown', e => { isDragging = true; startX = e.clientX; slider.style.transition = 'none'; });
+    slider.addEventListener('touchstart', e => { isDragging = true; startX = e.touches[0].clientX; slider.style.transition = 'none'; }, { passive: true });
+
+    slider.addEventListener('mousemove', e => {
+        if (!isDragging) return;
+        slider.style.transform = `translateX(-${currentIndex * slideWidth() - (e.clientX - startX)}px)`;
+    });
+    slider.addEventListener('touchmove', e => {
+        if (!isDragging) return;
+        slider.style.transform = `translateX(-${currentIndex * slideWidth() - (e.touches[0].clientX - startX)}px)`;
+    }, { passive: true });
+
+    function endDrag(endX) {
+        if (!isDragging) return;
+        isDragging = false;
+        slider.style.transition = '';
+        const diff = endX - startX;
+        if (diff < -60) goTo(currentIndex + 1);
+        else if (diff > 60) goTo(currentIndex - 1);
+        else goTo(currentIndex);
+    }
+    slider.addEventListener('mouseup', e => endDrag(e.clientX));
+    slider.addEventListener('mouseleave', e => { if (isDragging) endDrag(e.clientX); });
+    slider.addEventListener('touchend', e => endDrag(e.changedTouches[0].clientX));
+
+    // Re-calc on resize
+    window.addEventListener('resize', () => { buildDots(); goTo(Math.min(currentIndex, maxIndex())); });
+
+    // Keyboard nav
+    document.addEventListener('keydown', e => {
+        if (e.key === 'ArrowLeft') goTo(currentIndex - 1);
+        if (e.key === 'ArrowRight') goTo(currentIndex + 1);
+        if (e.key === 'Escape') closeLightbox();
+    });
+})();
+
+/* ============================================================
+   LIGHTBOX
+   ============================================================ */
+function openLightbox(src) {
+    const lb = document.getElementById('lightbox');
+    const img = document.getElementById('lightbox-img');
+    img.src = src;
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+    const lb = document.getElementById('lightbox');
+    lb.classList.remove('open');
+    document.body.style.overflow = '';
+}
+</script>

@@ -10,7 +10,7 @@
     <div class="col-12 text-center">
         <div class="mb-4">
             <div class="d-inline-flex bg-white p-2 border border-2 border-dark rounded-pill gap-2 shadow-sm mb-2">
-                <a href="/love-view/?{{#if currentGenreId}}genre={{currentGenreId}}&{{/if}}{{#if currentStatus}}status={{currentStatus}}{{/if}}"
+                <a href="/love-view/?{{#if currentGenreId}}genre={{currentGenreId}}{{/if}}{{#if currentStatus}}{{#if currentGenreId}}&{{/if}}status={{currentStatus}}{{/if}}"
                     class="btn btn-sm {{#unless currentType}}btn-primary{{else}}btn-outline-accent{{/unless}} rounded-pill px-4 border-0">Todos</a>
                 <a href="/love-view/?type=Serie{{#if currentGenreId}}&genre={{currentGenreId}}{{/if}}{{#if currentStatus}}&status={{currentStatus}}{{/if}}"
                     class="btn btn-sm {{#if (eq currentType 'Serie')}}btn-primary{{else}}btn-outline-accent{{/if}} rounded-pill px-4 border-0">Series</a>
@@ -18,13 +18,13 @@
                     class="btn btn-sm {{#if (eq currentType 'Pelicula')}}btn-primary{{else}}btn-outline-accent{{/if}} rounded-pill px-4 border-0">Películas</a>
             </div>
             <div class="d-inline-flex bg-white p-2 border border-2 border-dark rounded-pill gap-2 shadow-sm mb-2 ms-md-2">
-                <a href="/love-view/?{{#if currentGenreId}}genre={{currentGenreId}}&{{/if}}{{#if currentType}}type={{currentType}}{{/if}}"
+                <a href="/love-view/?{{#if currentGenreId}}genre={{currentGenreId}}{{/if}}{{#if currentType}}{{#if currentGenreId}}&{{/if}}type={{currentType}}{{/if}}"
                     class="btn btn-sm {{#unless currentStatus}}btn-primary{{else}}btn-outline-accent{{/unless}} rounded-pill px-4 border-0">Todos los Estados</a>
-                <a href="/love-view/?status=Watching{{#if currentGenreId}}&genre={{currentGenreId}}{{/if}}{{#if currentType}}type={{currentType}}{{/if}}"
+                <a href="/love-view/?status=Watching{{#if currentGenreId}}&genre={{currentGenreId}}{{/if}}{{#if currentType}}&type={{currentType}}{{/if}}"
                     class="btn btn-sm {{#if (eq currentStatus 'Watching')}}btn-primary{{else}}btn-outline-accent{{/if}} rounded-pill px-4 border-0">Viendo</a>
-                <a href="/love-view/?status=Plan to Watch{{#if currentGenreId}}&genre={{currentGenreId}}{{/if}}{{#if currentType}}type={{currentType}}{{/if}}"
+                <a href="/love-view/?status=Plan to Watch{{#if currentGenreId}}&genre={{currentGenreId}}{{/if}}{{#if currentType}}&type={{currentType}}{{/if}}"
                     class="btn btn-sm {{#if (eq currentStatus 'Plan to Watch')}}btn-primary{{else}}btn-outline-accent{{/if}} rounded-pill px-4 border-0">Por ver</a>
-                <a href="/love-view/?status=Watched{{#if currentGenreId}}&genre={{currentGenreId}}{{/if}}{{#if currentType}}type={{currentType}}{{/if}}"
+                <a href="/love-view/?status=Watched{{#if currentGenreId}}&genre={{currentGenreId}}{{/if}}{{#if currentType}}&type={{currentType}}{{/if}}"
                     class="btn btn-sm {{#if (eq currentStatus 'Watched')}}btn-primary{{else}}btn-outline-accent{{/if}} rounded-pill px-4 border-0">Vistas</a>
             </div>
         </div>
@@ -35,7 +35,7 @@
         <div class="collapse" id="genreMenu">
             <div class="genre-menu-card p-4">
                 <div class="d-flex flex-wrap justify-content-center gap-3">
-                    <a href="/love-view/?{{#if currentType}}type={{currentType}}&{{/if}}{{#if currentStatus}}status={{currentStatus}}{{/if}}"
+                    <a href="/love-view/?{{#if currentType}}type={{currentType}}{{/if}}{{#if currentStatus}}{{#if currentType}}&{{/if}}status={{currentStatus}}{{/if}}"
                         class="genre-pill {{#unless currentGenreId}}active{{/unless}}">
                         <i class="fas fa-th-large me-1"></i> All
                     </a>
@@ -52,7 +52,7 @@
         <div class="mt-2">
             <span class="badge bg-primary px-3 py-2 rounded-pill">
                 Filtrando por: {{#each genres}}{{#if (eq ../currentGenreId id)}}{{name}}{{/if}}{{/each}}
-                <a href="/love-view/?{{#if currentType}}type={{currentType}}&{{/if}}{{#if currentStatus}}status={{currentStatus}}{{/if}}"
+                <a href="/love-view/?{{#if currentType}}type={{currentType}}{{/if}}{{#if currentStatus}}{{#if currentType}}&{{/if}}status={{currentStatus}}{{/if}}"
                     class="text-white ms-2 text-decoration-none"><i class="fas fa-times-circle"></i></a>
             </span>
         </div>

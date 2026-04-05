@@ -69,3 +69,6 @@ ALTER TABLE "Series" ADD COLUMN IF NOT EXISTS "ratingAverage" DECIMAL(3,2) DEFAU
 ALTER TABLE "Series" ADD COLUMN IF NOT EXISTS "Genre2Id" BIGINT REFERENCES "Genres"("id") ON DELETE SET NULL;
 ALTER TABLE "Series" ADD COLUMN IF NOT EXISTS "Genre3Id" BIGINT REFERENCES "Genres"("id") ON DELETE SET NULL;
 ALTER TABLE "Series" ADD COLUMN IF NOT EXISTS "Genre4Id" BIGINT REFERENCES "Genres"("id") ON DELETE SET NULL;
+
+-- 8. Add collage_photo_ids to Dates (JSON array of photo IDs shown in the collage, max 5)
+ALTER TABLE "Dates" ADD COLUMN IF NOT EXISTS "collage_photo_ids" TEXT NOT NULL DEFAULT '[]';

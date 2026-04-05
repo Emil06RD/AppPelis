@@ -1,5 +1,5 @@
 <div class="row justify-content-center fade-in">
-    <div class="col-md-8 col-lg-6">
+    <div class="col-md-9 col-lg-7">
         <div class="glass-card p-5">
             <div class="d-flex align-items-center mb-4">
                 <a href="/dates" class="btn btn-outline-secondary btn-sm me-3 transition-all">
@@ -10,7 +10,7 @@
 
             <form action="{{#if editMode}}/dates/edit/{{date.id}}{{else}}/dates/create{{/if}}" method="POST" enctype="multipart/form-data">
                 
-                <!-- Nombre de la Cita (Nuevo Campo) -->
+                <!-- Nombre de la Cita -->
                 <div class="mb-4">
                     <label for="title" class="form-label fw-semibold">Nombre de este Recuerdo <span class="text-danger">*</span></label>
                     <div class="input-group">
@@ -50,33 +50,74 @@
                         style="background-color: rgba(255,255,255,0.5);">{{date.description}}</textarea>
                 </div>
 
+                <!-- ========= GALERÍA EXISTENTE (solo en edición) ========= -->
+                {{#if editMode}}
+                {{#if date.DatePhotos.length}}
                 <div class="mb-4">
-                    <label for="photos" class="form-label fw-semibold">Fotos de la Cita</label>
+                    <label class="form-label fw-semibold">
+                        <i class="fas fa-images me-2 text-primary"></i>Fotos actuales
+                        <span class="badge bg-primary ms-2">{{date.DatePhotos.length}}</span>
+                    </label>
+                    <p class="text-muted small mb-3">
+                        <i class="fas fa-star text-warning me-1"></i>
+                        Marca hasta <strong>5 fotos</strong> con la estrella ★ para que aparezcan en el <strong>collage principal</strong>. Las demás se verán en la galería deslizable.
+                    </p>
+                    <div class="existing-photos-grid">
+                        {{#each date.DatePhotos}}
+                        <div class="existing-photo-card {{#if this.is_collage}}is-collage-selected{{/if}}"
+                             data-photo-id="{{this.id}}"
+                             data-is-collage="{{#if this.is_collage}}true{{else}}false{{/if}}">
+                            <img src="{{this.photo_url}}" alt="Foto {{@index}}">
+                            <!-- Collage toggle button -->
+                            <button type="button"
+                                class="collage-toggle-btn {{#if this.is_collage}}active{{/if}}"
+                                title="{{#if this.is_collage}}Quitar del collage{{else}}Añadir al collage{{/if}}"
+                                data-photo-id="{{this.id}}">
+                                <i class="fas fa-star"></i>
+                            </button>
+                            <!-- Delete photo -->
+                            <a href="/dates/photo/delete/{{this.id}}/date/{{../date.id}}"
+                               class="delete-photo-btn"
+                               onclick="return confirm('¿Eliminar esta foto?')"
+                               title="Eliminar foto">
+                                <i class="fas fa-times"></i>
+                            </a>
+                            <!-- No hidden checkbox needed; JS manages selection via data attributes -->
+                        </div>
+                        {{/each}}
+                    </div>
+                    <p id="collage-count-msg" class="small mt-2 fw-semibold"></p>
+                    <!-- Single hidden input that carries all selected IDs as JSON -->
+                    <input type="hidden" name="existing_collage_json" id="existing_collage_json" value="[]">
+                </div>
+                {{/if}}
+                {{/if}}
+
+                <!-- ========= SUBIR NUEVAS FOTOS ========= -->
+                <div class="mb-4">
+                    <label for="photos" class="form-label fw-semibold">
+                        <i class="fas fa-upload me-2 text-secondary"></i>
+                        {{#if editMode}}Agregar más fotos{{else}}Fotos de la Cita{{/if}}
+                    </label>
                     <div class="input-group mb-1">
                         <span class="input-group-text bg-transparent border-end-0"><i class="fas fa-images text-secondary"></i></span>
                         <input type="file" class="form-control border-start-0" id="photos" name="photos" accept="image/*" multiple
                             style="background-color: rgba(255,255,255,0.5);">
                     </div>
-                    <small class="text-muted fst-italic"><i class="fas fa-info-circle me-1"></i>Para elegir varias fotos, mantén presionada la tecla <b>Ctrl</b> (o márcalas todas en tu celular). Máximo 5.</small>
+                    <small class="text-muted fst-italic">
+                        <i class="fas fa-info-circle me-1"></i>Puedes subir hasta <b>20 fotos</b> en total. Selecciona varias con <b>Ctrl</b> o en tu celular.
+                    </small>
                     
-                    <!-- Previsualización de fotos nuevas -->
-                    <div id="photo-preview-container" class="d-flex flex-wrap gap-2 mt-3 p-2 bg-light rounded" style="display: none !important;"></div>
-                </div>
-
-                {{#if date.DatePhotos}}
-                {{#if date.DatePhotos.length}}
-                <div class="mb-4">
-                    <label class="form-label fw-semibold">Galería de la Cita</label>
-                    <div class="d-flex flex-wrap gap-2">
-                        {{#each date.DatePhotos}}
-                        <div class="position-relative">
-                            <img src="{{this.photo_url}}" class="rounded shadow-sm" style="width: 80px; height: 80px; object-fit: cover;">
-                        </div>
-                        {{/each}}
+                    <!-- Previsualización + selección collage de fotos nuevas -->
+                    <div id="new-photo-preview-area" class="mt-3" style="display:none;">
+                        <p class="small fw-semibold text-primary mb-2">
+                            <i class="fas fa-star text-warning me-1"></i>
+                            Toca la estrella ★ para elegir hasta <strong>5 fotos nuevas</strong> para el collage:
+                        </p>
+                        <div id="photo-preview-container" class="existing-photos-grid"></div>
+                        <p id="new-collage-count-msg" class="small mt-2 fw-semibold"></p>
                     </div>
                 </div>
-                {{/if}}
-                {{/if}}
 
                 <div class="d-grid mt-5">
                     <button type="submit" class="btn btn-primary btn-lg transition-all shadow-sm">
@@ -88,47 +129,273 @@
     </div>
 </div>
 
+<style>
+/* ---- Grid de fotos existentes ---- */
+.existing-photos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+}
+.existing-photo-card {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: border-color 0.2s, transform 0.2s;
+    aspect-ratio: 1;
+}
+.existing-photo-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.existing-photo-card.is-collage-selected {
+    border-color: #f6c90e;
+    box-shadow: 0 0 12px rgba(246,201,14,0.6);
+}
+.collage-toggle-btn {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(0,0,0,0.55);
+    color: rgba(255,255,255,0.7);
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, color 0.2s;
+    z-index: 5;
+}
+.collage-toggle-btn.active {
+    background: #f6c90e;
+    color: #333;
+}
+.collage-toggle-btn:hover {
+    background: #f6c90e;
+    color: #333;
+}
+.delete-photo-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: rgba(220, 53, 69, 0.85);
+    color: #fff;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: background 0.2s;
+    z-index: 5;
+}
+.delete-photo-btn:hover {
+    background: #dc3545;
+    color: #fff;
+}
+/* Collage count msg colors */
+#collage-count-msg.ok, #new-collage-count-msg.ok { color: #198754; }
+#collage-count-msg.warn, #new-collage-count-msg.warn { color: #e67e22; }
+#collage-count-msg.error, #new-collage-count-msg.error { color: #dc3545; }
+</style>
+
 <script>
-/* Funcionalidad para previsualizar las fotos seleccionadas y guiar al usuario */
-document.getElementById('photos').addEventListener('change', function(e) {
-    const container = document.getElementById('photo-preview-container');
-    container.innerHTML = ''; // Limpiar anteriores
-    
+/* ============================================================
+   EXISTING PHOTOS — Collage toggle logic
+   ============================================================ */
+const MAX_COLLAGE = 5;
+
+function updateCollageCountMsg(msgEl, count) {
+    if (!msgEl) return;
+    if (count === 0) {
+        msgEl.textContent = '';
+        msgEl.className = 'small mt-2 fw-semibold';
+    } else if (count < MAX_COLLAGE) {
+        msgEl.textContent = `★ ${count} de ${MAX_COLLAGE} fotos para el collage seleccionadas.`;
+        msgEl.className = 'small mt-2 fw-semibold ok';
+    } else if (count === MAX_COLLAGE) {
+        msgEl.textContent = `✔ ${count} de ${MAX_COLLAGE} fotos para el collage seleccionadas (máximo alcanzado).`;
+        msgEl.className = 'small mt-2 fw-semibold warn';
+    }
+}
+
+// Existing photos toggle
+(function initExistingPhotos() {
+    const cards = document.querySelectorAll('.existing-photo-card');
+    const countMsg = document.getElementById('collage-count-msg');
+    const jsonInput = document.getElementById('existing_collage_json');
+
+    // Build initial selected set from data-is-collage attribute
+    const selected = new Set();
+    cards.forEach(card => {
+        if (card.dataset.isCollage === 'true') {
+            selected.add(card.dataset.photoId);
+        }
+    });
+
+    function syncJsonInput() {
+        if (jsonInput) jsonInput.value = JSON.stringify([...selected]);
+    }
+    syncJsonInput();
+    updateCollageCountMsg(countMsg, selected.size);
+
+    cards.forEach(card => {
+        const btn = card.querySelector('.collage-toggle-btn');
+        if (!btn) return;
+        const photoId = card.dataset.photoId;
+
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const isSelected = selected.has(photoId);
+
+            if (!isSelected && selected.size >= MAX_COLLAGE) {
+                card.style.animation = 'none';
+                card.offsetHeight;
+                card.style.animation = 'shake 0.3s';
+                updateCollageCountMsg(countMsg, selected.size);
+                return;
+            }
+
+            if (isSelected) {
+                selected.delete(photoId);
+                btn.classList.remove('active');
+                card.classList.remove('is-collage-selected');
+                btn.title = 'Añadir al collage';
+            } else {
+                selected.add(photoId);
+                btn.classList.add('active');
+                card.classList.add('is-collage-selected');
+                btn.title = 'Quitar del collage';
+            }
+            syncJsonInput();
+            updateCollageCountMsg(countMsg, selected.size);
+        });
+
+        card.addEventListener('click', function(e) {
+            if (e.target.closest('.collage-toggle-btn') || e.target.closest('.delete-photo-btn')) return;
+            btn.click();
+        });
+    });
+})();
+
+/* ============================================================
+   NEW PHOTOS — Preview + collage selection
+   ============================================================ */
+const photosInput = document.getElementById('photos');
+const previewContainer = document.getElementById('photo-preview-container');
+const previewArea = document.getElementById('new-photo-preview-area');
+const newCountMsg = document.getElementById('new-collage-count-msg');
+
+// Hidden container to hold selected collage indices for new uploads
+let selectedNewIndices = new Set();
+
+photosInput.addEventListener('change', function() {
+    previewContainer.innerHTML = '';
+    selectedNewIndices.clear();
+    // Remove previous hidden inputs for new collage
+    document.querySelectorAll('input[name="collage_new_indices"]').forEach(el => el.remove());
+    document.querySelectorAll('input[name="collage_indices"]').forEach(el => el.remove());
+
     if (this.files.length === 0) {
-        container.style.setProperty('display', 'none', 'important');
+        previewArea.style.display = 'none';
+        updateCollageCountMsg(newCountMsg, 0);
         return;
     }
-    
-    container.style.setProperty('display', 'flex', 'important');
-    
-    if (this.files.length > 5) {
-        alert('Recordatorio: Solo se guardarán las primeras 5 fotos seleccionadas.');
-    }
-    
-    const maxFiles = Math.min(this.files.length, 5);
-    
-    // Titulillo
-    const p = document.createElement('div');
-    p.className = 'w-100 mb-1 small text-primary fw-bold';
-    p.textContent = `${maxFiles} foto(s) seleccionadas para subir ahora:`;
-    container.appendChild(p);
 
-    // Leer y mostrar cada imagen en pequeño
+    const maxFiles = Math.min(this.files.length, 20);
+
+    if (this.files.length > 20) {
+        alert('Solo se subirán las primeras 20 fotos seleccionadas.');
+    }
+
+    previewArea.style.display = 'block';
+    updateCollageCountMsg(newCountMsg, 0);
+
     for (let i = 0; i < maxFiles; i++) {
         const file = this.files[i];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = document.createElement('img');
-                img.src = e.target.result;
-                img.className = 'rounded shadow-sm border border-2 border-white';
-                img.style.width = '65px';
-                img.style.height = '65px';
-                img.style.objectFit = 'cover';
-                container.appendChild(img);
-            }
-            reader.readAsDataURL(file);
-        }
+        const index = i;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const card = document.createElement('div');
+            card.className = 'existing-photo-card';
+            card.dataset.index = index;
+
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.alt = `Foto ${index + 1}`;
+
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'collage-toggle-btn';
+            btn.title = 'Añadir al collage';
+            btn.innerHTML = '<i class="fas fa-star"></i>';
+
+            btn.addEventListener('click', function(ev) {
+                ev.stopPropagation();
+                const count = selectedNewIndices.size;
+                if (!selectedNewIndices.has(index) && count >= MAX_COLLAGE) {
+                    card.style.animation = 'none';
+                    card.offsetHeight;
+                    card.style.animation = 'shake 0.3s';
+                    updateCollageCountMsg(newCountMsg, count);
+                    return;
+                }
+                if (selectedNewIndices.has(index)) {
+                    selectedNewIndices.delete(index);
+                    btn.classList.remove('active');
+                    card.classList.remove('is-collage-selected');
+                    btn.title = 'Añadir al collage';
+                } else {
+                    selectedNewIndices.add(index);
+                    btn.classList.add('active');
+                    card.classList.add('is-collage-selected');
+                    btn.title = 'Quitar del collage';
+                }
+                updateCollageCountMsg(newCountMsg, selectedNewIndices.size);
+            });
+
+            card.addEventListener('click', function(ev) {
+                if (ev.target.closest('.collage-toggle-btn')) return;
+                btn.click();
+            });
+
+            card.appendChild(img);
+            card.appendChild(btn);
+            previewContainer.appendChild(card);
+        };
+        reader.readAsDataURL(file);
     }
 });
+
+// Before form submit, inject hidden inputs for new collage indices
+document.querySelector('form').addEventListener('submit', function() {
+    // Remove old ones
+    document.querySelectorAll('input[name="collage_new_indices"], input[name="collage_indices"]').forEach(el => el.remove());
+    selectedNewIndices.forEach(idx => {
+        const inp = document.createElement('input');
+        // Use 'collage_indices' for create mode, 'collage_new_indices' for edit mode
+        const fieldName = document.querySelector('form').action.includes('/edit/') ? 'collage_new_indices' : 'collage_indices';
+        inp.type = 'hidden';
+        inp.name = fieldName;
+        inp.value = idx;
+        this.appendChild(inp);
+    });
+});
 </script>
+
+<style>
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+</style>
