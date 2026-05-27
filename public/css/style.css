@@ -48,6 +48,43 @@ body {
     color: var(--accent-color);
 }
 
+.navbar-toggler {
+    border: 3px solid var(--dark-accent) !important;
+    background-color: white !important;
+    border-radius: 10px !important;
+    padding: 0.5rem 0.75rem !important;
+    box-shadow: 4px 4px 0px var(--accent-color);
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.navbar-toggler:hover, .navbar-toggler:focus {
+    outline: none !important;
+    box-shadow: 2px 2px 0px var(--dark-accent);
+    transform: translate(2px, 2px);
+}
+
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        background: #ffffff;
+        border: 3px solid var(--dark-accent);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-top: 1rem;
+        box-shadow: 6px 6px 0px var(--accent-color);
+    }
+    
+    .navbar-nav {
+        align-items: flex-start !important;
+    }
+    
+    .navbar-nav .dropdown-menu {
+        border: 2px solid var(--dark-accent) !important;
+        box-shadow: 4px 4px 0px var(--secondary-accent) !important;
+        margin-top: 0.5rem;
+        background-color: #fff5f7 !important;
+    }
+}
+
 .nav-link {
     color: var(--dark-accent) !important;
     font-weight: 600;
@@ -189,6 +226,7 @@ h2 {
     transform: translate(-2px, -2px);
     box-shadow: 8px 8px 0px var(--dark-accent);
     border-color: var(--dark-accent);
+    z-index: 99999 !important;
 }
 
 .series-title-hover {
@@ -201,12 +239,9 @@ h2 {
     color: var(--dark-accent);
 }
 
-/* Hidden Poster Container */
+/* Hidden Poster Container — positioned via JS based on scroll/viewport */
 .hover-poster-container {
-    position: absolute;
-    bottom: 110%; /* Show above the card */
-    left: 50%;
-    transform: translateX(-50%) translateY(10px);
+    position: fixed;
     width: 220px;
     background: var(--dark-accent);
     border: 3px solid var(--accent-color);
@@ -214,17 +249,31 @@ h2 {
     padding: 0;
     opacity: 0;
     visibility: hidden;
-    transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    z-index: 1000;
+    transition: opacity 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 999999 !important;
     box-shadow: 5px 5px 0px var(--accent-color);
     pointer-events: none;
     overflow: hidden;
+    /* default: appears above — JS overrides top/left */
+    transform: translateY(-8px) scale(0.97);
 }
 
-.series-name-card:hover .hover-poster-container {
+.hover-poster-container.poster-visible {
     opacity: 1;
     visibility: visible;
-    transform: translateX(-50%) translateY(0) scale(1.02);
+    transform: translateY(0) scale(1.02);
+}
+
+/* When poster should appear BELOW the card */
+.hover-poster-container.poster-below {
+    transform: translateY(8px) scale(0.97);
+}
+
+.hover-poster-container.poster-below.poster-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1.02);
 }
 
 .hover-poster {

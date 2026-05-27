@@ -17,19 +17,23 @@
                 <a href="/love-view/?type=Pelicula{{#if currentGenreId}}&genre={{currentGenreId}}{{/if}}{{#if currentStatus}}&status={{currentStatus}}{{/if}}"
                     class="btn btn-sm {{#if (eq currentType 'Pelicula')}}btn-primary{{else}}btn-outline-accent{{/if}} rounded-pill px-4 border-0">Películas</a>
             </div>
-            <div class="d-inline-flex bg-white p-2 border border-2 border-dark rounded-pill gap-2 shadow-sm mb-2 ms-md-2">
+            <div
+                class="d-inline-flex bg-white p-2 border border-2 border-dark rounded-pill gap-2 shadow-sm mb-2 ms-md-2">
                 <a href="/love-view/?{{#if currentGenreId}}genre={{currentGenreId}}{{/if}}{{#if currentType}}{{#if currentGenreId}}&{{/if}}type={{currentType}}{{/if}}"
-                    class="btn btn-sm {{#unless currentStatus}}btn-primary{{else}}btn-outline-accent{{/unless}} rounded-pill px-4 border-0">Todos los Estados</a>
+                    class="btn btn-sm {{#unless currentStatus}}btn-primary{{else}}btn-outline-accent{{/unless}} rounded-pill px-4 border-0">Todos
+                    los Estados</a>
                 <a href="/love-view/?status=Watching{{#if currentGenreId}}&genre={{currentGenreId}}{{/if}}{{#if currentType}}&type={{currentType}}{{/if}}"
                     class="btn btn-sm {{#if (eq currentStatus 'Watching')}}btn-primary{{else}}btn-outline-accent{{/if}} rounded-pill px-4 border-0">Viendo</a>
                 <a href="/love-view/?status=Plan to Watch{{#if currentGenreId}}&genre={{currentGenreId}}{{/if}}{{#if currentType}}&type={{currentType}}{{/if}}"
-                    class="btn btn-sm {{#if (eq currentStatus 'Plan to Watch')}}btn-primary{{else}}btn-outline-accent{{/if}} rounded-pill px-4 border-0">Por ver</a>
+                    class="btn btn-sm {{#if (eq currentStatus 'Plan to Watch')}}btn-primary{{else}}btn-outline-accent{{/if}} rounded-pill px-4 border-0">Por
+                    ver</a>
                 <a href="/love-view/?status=Watched{{#if currentGenreId}}&genre={{currentGenreId}}{{/if}}{{#if currentType}}&type={{currentType}}{{/if}}"
                     class="btn btn-sm {{#if (eq currentStatus 'Watched')}}btn-primary{{else}}btn-outline-accent{{/if}} rounded-pill px-4 border-0">Vistas</a>
             </div>
         </div>
 
-        <button class="btn btn-genres-menu mb-4" type="button" data-bs-toggle="collapse" data-bs-target="#genreMenu" aria-expanded="false">
+        <button class="btn btn-genres-menu mb-4" type="button" data-bs-toggle="collapse" data-bs-target="#genreMenu"
+            aria-expanded="false">
             <i class="fas fa-tags me-2"></i> EXPLORE GENRES ♥
         </button>
         <div class="collapse" id="genreMenu">
@@ -70,8 +74,8 @@
         {{#each watching}}
 
         <div class="col-md-6 col-lg-4">
-            <div class="series-name-card position-relative fade-in {{#if (gt count 1)}}grouped-card{{/if}}"
-                 {{#if (gt count 1)}}data-cascade="cascade-w-{{@index}}"{{/if}}>
+            <div class="series-name-card position-relative fade-in {{#if (gt count 1)}}grouped-card{{/if}}" {{#if (gt
+                count 1)}}data-cascade="cascade-w-{{@index}}" {{/if}}>
                 {{#if (gt count 1)}}<span class="group-count-badge">{{count}} entradas</span>{{/if}}
                 <h5 class="fw-bold mb-0 series-title-hover">
                     {{title}}
@@ -80,13 +84,16 @@
                 <div class="hover-poster-container">
                     <img src="{{posterUrl}}" alt="{{title}}" class="hover-poster">
                     <div class="hover-info text-start">
-                        <p class="mb-0 small fw-bold text-white">{{Genre.name}}{{#if Genre2.name}} · {{Genre2.name}}{{/if}}</p>
+                        <p class="mb-0 small fw-bold text-white">{{Genre.name}}{{#if Genre2.name}} ·
+                            {{Genre2.name}}{{/if}}</p>
                         <div class="d-flex align-items-center gap-2 mb-1">
                             <div class="rating-badge-mini">
                                 <i class="fas fa-star text-warning x-small"></i>
-                                <span class="x-small fw-bold">{{#if ratingAverage}}{{ratingAverage}}{{else}}0.0{{/if}}</span>
+                                <span class="x-small fw-bold">{{#if
+                                    ratingAverage}}{{ratingAverage}}{{else}}0.0{{/if}}</span>
                             </div>
-                            <div class="x-small text-white-50">E: {{#if ratingEmil}}{{ratingEmil}}{{else}}0{{/if}} | D: {{#if ratingDeli}}{{ratingDeli}}{{else}}0{{/if}}</div>
+                            <div class="x-small text-white-50">E: {{#if ratingEmil}}{{ratingEmil}}{{else}}0{{/if}} | D:
+                                {{#if ratingDeli}}{{ratingDeli}}{{else}}0{{/if}}</div>
                         </div>
                         {{!-- Season/Movie label removed from main card --}}
                     </div>
@@ -106,18 +113,23 @@
                     <div class="hover-poster-container">
                         <img src="{{posterUrl}}" alt="{{../title}}" class="hover-poster">
                         <div class="hover-info text-start">
-                            <p class="mb-0 small fw-bold text-white">{{Genre.name}}{{#if Genre2.name}} · {{Genre2.name}}{{/if}}</p>
+                            <p class="mb-0 small fw-bold text-white">{{Genre.name}}{{#if Genre2.name}} ·
+                                {{Genre2.name}}{{/if}}</p>
                             <div class="d-flex align-items-center gap-2 mb-1">
                                 <div class="rating-badge-mini">
                                     <i class="fas fa-star text-warning x-small"></i>
-                                    <span class="x-small fw-bold">{{#if ratingAverage}}{{ratingAverage}}{{else}}0.0{{/if}}</span>
+                                    <span class="x-small fw-bold">{{#if
+                                        ratingAverage}}{{ratingAverage}}{{else}}0.0{{/if}}</span>
                                 </div>
-                                <div class="x-small text-white-50">E: {{#if ratingEmil}}{{ratingEmil}}{{else}}0{{/if}} D: {{#if ratingDeli}}{{ratingDeli}}{{else}}0{{/if}}</div>
+                                <div class="x-small text-white-50">E: {{#if ratingEmil}}{{ratingEmil}}{{else}}0{{/if}}
+                                    D: {{#if ratingDeli}}{{ratingDeli}}{{else}}0{{/if}}</div>
                             </div>
-                            <p class="mb-0 x-small text-white-50">{{#if (eq type 'Serie')}}Season {{season}}{{else}}Movie{{/if}}</p>
+                            <p class="mb-0 x-small text-white-50">{{#if (eq type 'Serie')}}Season
+                                {{season}}{{else}}Movie{{/if}}</p>
                             <div class="d-flex align-items-center justify-content-between mt-1">
                                 <span class="badge bg-dark-accent x-small">{{status}}</span>
-                                <a href="/love-view/edit/{{id}}" class="btn btn-sm btn-outline-light cascade-edit-btn" style="font-size: 0.6rem;">Editar</a>
+                                <a href="/love-view/edit/{{id}}" class="btn btn-sm btn-outline-light cascade-edit-btn"
+                                    style="font-size: 0.6rem;">Editar</a>
                             </div>
                         </div>
                     </div>
@@ -129,7 +141,9 @@
 
         {{/each}}
         {{else}}
-        <div class="col-12"><p class="text-secondary italic">No series currently being watched.</p></div>
+        <div class="col-12">
+            <p class="text-secondary italic">No series currently being watched.</p>
+        </div>
         {{/if}}
     </div>
 </div>
@@ -144,8 +158,8 @@
         {{#each watched}}
 
         <div class="col-md-6 col-lg-4">
-            <div class="series-name-card position-relative fade-in {{#if (gt count 1)}}grouped-card{{/if}}"
-                 {{#if (gt count 1)}}data-cascade="cascade-wd-{{@index}}"{{/if}}>
+            <div class="series-name-card position-relative fade-in {{#if (gt count 1)}}grouped-card{{/if}}" {{#if (gt
+                count 1)}}data-cascade="cascade-wd-{{@index}}" {{/if}}>
                 {{#if (gt count 1)}}<span class="group-count-badge">{{count}} entradas</span>{{/if}}
                 <h5 class="fw-bold mb-0 series-title-hover">
                     {{title}}
@@ -154,13 +168,16 @@
                 <div class="hover-poster-container">
                     <img src="{{posterUrl}}" alt="{{title}}" class="hover-poster">
                     <div class="hover-info text-start">
-                        <p class="mb-0 small fw-bold text-white">{{Genre.name}}{{#if Genre2.name}} · {{Genre2.name}}{{/if}}</p>
+                        <p class="mb-0 small fw-bold text-white">{{Genre.name}}{{#if Genre2.name}} ·
+                            {{Genre2.name}}{{/if}}</p>
                         <div class="d-flex align-items-center gap-2 mb-1">
                             <div class="rating-badge-mini">
                                 <i class="fas fa-star text-warning x-small"></i>
-                                <span class="x-small fw-bold">{{#if ratingAverage}}{{ratingAverage}}{{else}}0.0{{/if}}</span>
+                                <span class="x-small fw-bold">{{#if
+                                    ratingAverage}}{{ratingAverage}}{{else}}0.0{{/if}}</span>
                             </div>
-                            <div class="x-small text-white-50">E: {{#if ratingEmil}}{{ratingEmil}}{{else}}0{{/if}} | D: {{#if ratingDeli}}{{ratingDeli}}{{else}}0{{/if}}</div>
+                            <div class="x-small text-white-50">E: {{#if ratingEmil}}{{ratingEmil}}{{else}}0{{/if}} | D:
+                                {{#if ratingDeli}}{{ratingDeli}}{{else}}0{{/if}}</div>
                         </div>
                         {{!-- Season/Movie label removed from main card --}}
                     </div>
@@ -179,17 +196,22 @@
                     <div class="hover-poster-container">
                         <img src="{{posterUrl}}" alt="{{../title}}" class="hover-poster">
                         <div class="hover-info text-start">
-                            <p class="mb-0 small fw-bold text-white">{{Genre.name}}{{#if Genre2.name}} · {{Genre2.name}}{{/if}}</p>
+                            <p class="mb-0 small fw-bold text-white">{{Genre.name}}{{#if Genre2.name}} ·
+                                {{Genre2.name}}{{/if}}</p>
                             <div class="d-flex align-items-center gap-2 mb-1">
                                 <div class="rating-badge-mini">
                                     <i class="fas fa-star text-warning x-small"></i>
-                                    <span class="x-small fw-bold">{{#if ratingAverage}}{{ratingAverage}}{{else}}0.0{{/if}}</span>
+                                    <span class="x-small fw-bold">{{#if
+                                        ratingAverage}}{{ratingAverage}}{{else}}0.0{{/if}}</span>
                                 </div>
-                                <div class="x-small text-white-50">E: {{#if ratingEmil}}{{ratingEmil}}{{else}}0{{/if}} D: {{#if ratingDeli}}{{ratingDeli}}{{else}}0{{/if}}</div>
+                                <div class="x-small text-white-50">E: {{#if ratingEmil}}{{ratingEmil}}{{else}}0{{/if}}
+                                    D: {{#if ratingDeli}}{{ratingDeli}}{{else}}0{{/if}}</div>
                             </div>
-                            <p class="mb-0 x-small text-white-50">{{#if (eq type 'Serie')}}Season {{season}}{{else}}Movie{{/if}}</p>
+                            <p class="mb-0 x-small text-white-50">{{#if (eq type 'Serie')}}Season
+                                {{season}}{{else}}Movie{{/if}}</p>
                             <div class="d-flex align-items-center justify-content-end mt-1">
-                                <a href="/love-view/edit/{{id}}" class="btn btn-sm btn-outline-light cascade-edit-btn" style="font-size: 0.6rem;">Editar</a>
+                                <a href="/love-view/edit/{{id}}" class="btn btn-sm btn-outline-light cascade-edit-btn"
+                                    style="font-size: 0.6rem;">Editar</a>
                             </div>
                         </div>
                     </div>
@@ -201,7 +223,9 @@
 
         {{/each}}
         {{else}}
-        <div class="col-12"><p class="text-secondary italic">No series watched yet.</p></div>
+        <div class="col-12">
+            <p class="text-secondary italic">No series watched yet.</p>
+        </div>
         {{/if}}
     </div>
 </div>
@@ -216,8 +240,8 @@
         {{#each planToWatch}}
 
         <div class="col-md-6 col-lg-4">
-            <div class="series-name-card position-relative fade-in {{#if (gt count 1)}}grouped-card{{/if}}"
-                 {{#if (gt count 1)}}data-cascade="cascade-p-{{@index}}"{{/if}}>
+            <div class="series-name-card position-relative fade-in {{#if (gt count 1)}}grouped-card{{/if}}" {{#if (gt
+                count 1)}}data-cascade="cascade-p-{{@index}}" {{/if}}>
                 {{#if (gt count 1)}}<span class="group-count-badge">{{count}} entradas</span>{{/if}}
                 <h5 class="fw-bold mb-0 series-title-hover">
                     {{title}}
@@ -226,11 +250,13 @@
                 <div class="hover-poster-container">
                     <img src="{{posterUrl}}" alt="{{title}}" class="hover-poster">
                     <div class="hover-info text-start">
-                        <p class="mb-0 small fw-bold text-white">{{Genre.name}}{{#if Genre2.name}} · {{Genre2.name}}{{/if}}</p>
+                        <p class="mb-0 small fw-bold text-white">{{Genre.name}}{{#if Genre2.name}} ·
+                            {{Genre2.name}}{{/if}}</p>
                         <div class="d-flex align-items-center gap-2 mb-1">
                             <div class="rating-badge-mini">
                                 <i class="fas fa-star text-warning x-small"></i>
-                                <span class="x-small fw-bold">{{#if ratingAverage}}{{ratingAverage}}{{else}}0.0{{/if}}</span>
+                                <span class="x-small fw-bold">{{#if
+                                    ratingAverage}}{{ratingAverage}}{{else}}0.0{{/if}}</span>
                             </div>
                         </div>
                         {{!-- Season/Movie label removed from main group card --}}
@@ -250,12 +276,15 @@
                     <div class="hover-poster-container">
                         <img src="{{posterUrl}}" alt="{{../title}}" class="hover-poster">
                         <div class="hover-info text-start">
-                            <p class="mb-0 small fw-bold text-white">{{Genre.name}}{{#if Genre2.name}} · {{Genre2.name}}{{/if}}</p>
+                            <p class="mb-0 small fw-bold text-white">{{Genre.name}}{{#if Genre2.name}} ·
+                                {{Genre2.name}}{{/if}}</p>
                             <div class="d-flex align-items-center justify-content-between mt-1">
                                 <span class="badge bg-dark-accent x-small">PTW</span>
-                                <a href="/love-view/edit/{{id}}" class="btn btn-sm btn-outline-light cascade-edit-btn" style="font-size: 0.6rem;">Editar</a>
+                                <a href="/love-view/edit/{{id}}" class="btn btn-sm btn-outline-light cascade-edit-btn"
+                                    style="font-size: 0.6rem;">Editar</a>
                             </div>
-                            <p class="mb-0 x-small text-white-50 mt-1">{{#if (eq type 'Serie')}}Season {{season}}{{else}}Movie{{/if}}</p>
+                            <p class="mb-0 x-small text-white-50 mt-1">{{#if (eq type 'Serie')}}Season
+                                {{season}}{{else}}Movie{{/if}}</p>
                         </div>
                     </div>
                 </div>
@@ -266,59 +295,104 @@
 
         {{/each}}
         {{else}}
-        <div class="col-12"><p class="text-secondary italic">No series in your watchlist.</p></div>
+        <div class="col-12">
+            <p class="text-secondary italic">No series in your watchlist.</p>
+        </div>
         {{/if}}
     </div>
 </div>
 {{/if}}
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    // Elevate column z-index on hover so poster popup floats above siblings
-    document.querySelectorAll('.series-name-card').forEach(function (card) {
-        const col = card.closest('[class*="col"]');
-        if (!col) return;
-        
-        col.style.position = 'relative';
+    document.addEventListener('DOMContentLoaded', function () {
+        const POSTER_WIDTH = 220;
+        const POSTER_HEIGHT = 380; // approx height of poster + info panel
+        const MARGIN = 12;         // gap between card and poster
 
-        card.addEventListener('mouseenter', function () {
-            col.style.zIndex = '200';
-        });
-        card.addEventListener('mouseleave', function () {
-            col.style.zIndex = '';
-        });
-    });
 
-    document.querySelectorAll('[data-cascade]').forEach(function (card) {
-        card.addEventListener('click', function () {
-            const targetId = card.getAttribute('data-cascade');
-            const wrapper = document.getElementById(targetId);
-            if (!wrapper) return;
-
-            const isOpen = wrapper.classList.contains('cascade-open');
-            const chevron = card.querySelector('.cascade-chevron');
-
-            if (isOpen) {
-                wrapper.classList.remove('cascade-open');
-                card.classList.remove('cascade-active');
-                if (chevron) chevron.style.transform = 'rotate(0deg)';
-            } else {
-                wrapper.classList.add('cascade-open');
-                card.classList.add('cascade-active');
-                if (chevron) chevron.style.transform = 'rotate(180deg)';
-
-                // Animate entry for children
-                wrapper.querySelectorAll('.cascade-item').forEach(function (item, i) {
-                    item.style.opacity = '0';
-                    item.style.transform = 'translateY(-10px) scale(0.95)';
-                    setTimeout(function () {
-                        item.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
-                        item.style.opacity = '1';
-                        item.style.transform = 'translateY(0) scale(1)';
-                    }, i * 60);
-                });
+        document.querySelectorAll('.series-name-card').forEach(function (card) {
+            const col = card.closest('[class*="col"]');
+            if (col) {
+                col.style.position = 'relative';
             }
+
+            // Grab poster BEFORE moving it — querySelector won't find it after reparenting
+            const poster = card.querySelector('.hover-poster-container');
+            if (!poster) return;
+
+            // Move to <body> so it escapes any stacking context from Bootstrap grid
+            document.body.appendChild(poster);
+
+            card.addEventListener('mouseenter', function () {
+                if (col) col.style.zIndex = '999999';
+
+                const rect = card.getBoundingClientRect();
+                const viewportH = window.innerHeight;
+
+                // Space available above and below the card in the viewport
+                const spaceAbove = rect.top;
+
+                let topPx;
+                if (spaceAbove >= POSTER_HEIGHT + MARGIN) {
+                    // Enough room above — show poster above the card
+                    poster.classList.remove('poster-below');
+                    topPx = rect.top - POSTER_HEIGHT - MARGIN;
+                } else {
+                    // Not enough room above — show poster below the card
+                    poster.classList.add('poster-below');
+                    topPx = rect.bottom + MARGIN;
+                }
+
+                // Horizontal: anchor to right edge of card, clamped to viewport edges
+                let leftPx = rect.right - 230; // start near right edge of card (slight overlap)
+                leftPx = Math.max(MARGIN, Math.min(leftPx, window.innerWidth - POSTER_WIDTH - MARGIN));
+
+                poster.style.top = topPx + 'px';
+                poster.style.left = leftPx + 'px';
+
+                // Trigger show on next frame so CSS transition fires
+                requestAnimationFrame(function () {
+                    poster.classList.add('poster-visible');
+                });
+            });
+
+            card.addEventListener('mouseleave', function () {
+                if (col) col.style.zIndex = '';
+                poster.classList.remove('poster-visible');
+            });
+        });
+
+        // ─── Cascade expand/collapse ───────────────────────────────────────────
+        document.querySelectorAll('[data-cascade]').forEach(function (card) {
+            card.addEventListener('click', function () {
+                const targetId = card.getAttribute('data-cascade');
+                const wrapper = document.getElementById(targetId);
+                if (!wrapper) return;
+
+                const isOpen = wrapper.classList.contains('cascade-open');
+                const chevron = card.querySelector('.cascade-chevron');
+
+                if (isOpen) {
+                    wrapper.classList.remove('cascade-open');
+                    card.classList.remove('cascade-active');
+                    if (chevron) chevron.style.transform = 'rotate(0deg)';
+                } else {
+                    wrapper.classList.add('cascade-open');
+                    card.classList.add('cascade-active');
+                    if (chevron) chevron.style.transform = 'rotate(180deg)';
+
+                    // Animate entry for children
+                    wrapper.querySelectorAll('.cascade-item').forEach(function (item, i) {
+                        item.style.opacity = '0';
+                        item.style.transform = 'translateY(-10px) scale(0.95)';
+                        setTimeout(function () {
+                            item.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+                            item.style.opacity = '1';
+                            item.style.transform = 'translateY(0) scale(1)';
+                        }, i * 60);
+                    });
+                }
+            });
         });
     });
-});
 </script>

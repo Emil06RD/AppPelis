@@ -21,32 +21,44 @@
         <div class="container">
             {{#if isHub}}
             <a class="navbar-brand" href="/">App Hub</a>
-            <div class="navbar-nav ms-auto gap-3">
-                <span class="nav-link fw-semibold text-secondary">Logged in as: <strong>{{user.name}}</strong></span>
-                <a href="/logout" class="btn btn-outline-danger btn-sm">Logout</a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHub"
+                aria-controls="navbarHub" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarHub">
+                <div class="navbar-nav ms-auto gap-3 mt-3 mt-lg-0 align-items-center">
+                    <span class="nav-link fw-semibold text-secondary">Logged in as: <strong>{{user.name}}</strong></span>
+                    <a href="/logout" class="btn btn-outline-danger btn-sm">Logout</a>
+                </div>
             </div>
             {{else if isPlanner}}
             <a class="navbar-brand d-flex align-items-center gap-2" href="/" title="Back to Hub">
                 <i class="fas fa-th text-secondary fs-5" style="opacity: 0.5;"></i>
                 Planes y Citas
             </a>
-            <div class="navbar-nav ms-auto gap-3 align-items-center">
-                <a href="/dates" class="nav-link fw-semibold">Citas</a>
-                <a href="/places" class="nav-link fw-semibold">Lugares</a>
-                <div class="vr mx-2 my-auto" style="height: 24px;"></div>
-                <div class="dropdown">
-                    <a class="nav-link fw-semibold dropdown-toggle d-flex align-items-center gap-2" href="#"
-                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-user-circle fs-5"></i> <span>{{user.name}}</span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2">
-                        <li><span class="dropdown-item-text text-secondary small">Role: {{user.role}}</span></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item text-danger" href="/logout"><i
-                                    class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
-                    </ul>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarPlanner"
+                aria-controls="navbarPlanner" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarPlanner">
+                <div class="navbar-nav ms-auto gap-3 align-items-center mt-3 mt-lg-0">
+                    <a href="/dates" class="nav-link fw-semibold">Citas</a>
+                    <a href="/places" class="nav-link fw-semibold">Lugares</a>
+                    <div class="d-none d-lg-block vr mx-2 my-auto" style="height: 24px;"></div>
+                    <div class="dropdown">
+                        <a class="nav-link fw-semibold dropdown-toggle d-flex align-items-center gap-2" href="#"
+                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user-circle fs-5"></i> <span>{{user.name}}</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2">
+                            <li><span class="dropdown-item-text text-secondary small">Role: {{user.role}}</span></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item text-danger" href="/logout"><i
+                                        class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             {{else}}
@@ -54,27 +66,33 @@
                 <i class="fas fa-th text-secondary fs-5" style="opacity: 0.5;"></i>
                 Love View
             </a>
-            <div class="navbar-nav ms-auto gap-3 align-items-center">
-                <a href="/love-view" class="nav-link fw-semibold">Home</a>
-                <a href="/love-view/management" class="nav-link fw-semibold">Management</a>
-                <a href="/love-view/genres" class="nav-link fw-semibold">Genres</a>
-                {{#if canEdit}}
-                <a href="/love-view/create" class="btn btn-primary btn-sm">+ Add New</a>
-                {{/if}}
-                <div class="vr mx-2 my-auto" style="height: 24px;"></div>
-                <div class="dropdown">
-                    <a class="nav-link fw-semibold dropdown-toggle d-flex align-items-center gap-2" href="#"
-                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-user-circle fs-5"></i> <span>{{user.name}}</span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2">
-                        <li><span class="dropdown-item-text text-secondary small">Role: {{user.role}}</span></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item text-danger" href="/logout"><i
-                                    class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
-                    </ul>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarLove"
+                aria-controls="navbarLove" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarLove">
+                <div class="navbar-nav ms-auto gap-3 align-items-center mt-3 mt-lg-0">
+                    <a href="/love-view" class="nav-link fw-semibold">Home</a>
+                    <a href="/love-view/management" class="nav-link fw-semibold">Management</a>
+                    <a href="/love-view/genres" class="nav-link fw-semibold">Genres</a>
+                    {{#if canEdit}}
+                    <a href="/love-view/create" class="btn btn-primary btn-sm">+ Add New</a>
+                    {{/if}}
+                    <div class="d-none d-lg-block vr mx-2 my-auto" style="height: 24px;"></div>
+                    <div class="dropdown">
+                        <a class="nav-link fw-semibold dropdown-toggle d-flex align-items-center gap-2" href="#"
+                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user-circle fs-5"></i> <span>{{user.name}}</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2">
+                            <li><span class="dropdown-item-text text-secondary small">Role: {{user.role}}</span></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item text-danger" href="/logout"><i
+                                        class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             {{/if}}
