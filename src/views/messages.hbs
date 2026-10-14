@@ -21,9 +21,9 @@
 
                 <div class="messages-container d-flex flex-column gap-3 pe-2" style="max-height: 500px; overflow-y: auto;">
                     {{#each messagesEmi}}
-                    <div class="p-3 rounded shadow-sm bg-white position-relative transition-all" style="border-left: 4px solid var(--accent-color);">
-                        <p class="mb-1" style="font-size: 1.05rem; word-break: break-word;">{{content}}</p>
-                        <small class="text-secondary" style="font-size: 0.75rem;">{{formattedDate}}</small>
+                    <div class="p-3 rounded position-relative transition-all" style="background: rgba(255,255,255,0.05); border-left: 4px solid var(--accent-color); border: 1px solid rgba(255,255,255,0.1);">
+                        <p class="mb-1 text-light" style="font-size: 1.05rem; word-break: break-word;">{{content}}</p>
+                        <small style="font-size: 0.75rem; color: rgba(255,255,255,0.4);">{{formattedDate}}</small>
                         {{#if @root.canEdit}}
                         <a href="/messages/delete/emi/{{id}}" class="text-danger position-absolute top-0 end-0 p-2 opacity-50 hover-opacity-100" onclick="return confirm('¿Seguro de borrar este mensaje?')">
                             <i class="fas fa-trash-alt"></i>
@@ -32,8 +32,8 @@
                     </div>
                     {{else}}
                     <div class="text-center py-5">
-                        <i class="fas fa-envelope-open-text text-secondary opacity-25" style="font-size: 3rem;"></i>
-                        <p class="text-secondary italic mt-3">No hay mensajes para Emi todavía.</p>
+                        <i class="fas fa-envelope-open-text opacity-25" style="color: rgba(255,255,255,0.2); font-size: 3rem;"></i>
+                        <p class="italic mt-3" style="color: rgba(255,255,255,0.4);">No hay mensajes para Emi todavía.</p>
                     </div>
                     {{/each}}
                 </div>
@@ -44,23 +44,23 @@
         <!-- Deli's Column -->
         {{#unless (eq user.username 'deli')}}
         <div class="col-md-10 col-lg-6">
-            <div class="glass-card p-4 h-100" style="border-top: 5px solid #9c27b0;">
-                <h3 class="fw-bold text-center mb-4" style="color: #9c27b0;">Mensajes para Deli</h3>
+            <div class="glass-card p-4 h-100" style="border-top: 5px solid #a78bfa;">
+                <h3 class="fw-bold text-center mb-4" style="color: #a78bfa;">Mensajes para Deli</h3>
                 
                 {{#if canEdit}}
                 <form action="/messages/create/deli" method="POST" class="mb-4">
                     <div class="input-group drop-shadow-sm">
-                        <input type="text" name="content" class="form-control" placeholder="Escribe algo bonito..." required style="border: none;">
-                        <button class="btn btn-primary px-4" type="submit" style="background-color: #9c27b0; border-color: #9c27b0;"><i class="fas fa-paper-plane"></i></button>
+                        <input type="text" name="content" class="form-control" placeholder="Escribe algo bonito..." required style="border: none; background: rgba(255,255,255,0.08); color: white;">
+                        <button class="btn btn-primary px-4" type="submit" style="background-color: #a78bfa; border-color: #a78bfa;"><i class="fas fa-paper-plane"></i></button>
                     </div>
                 </form>
                 {{/if}}
 
                 <div class="messages-container d-flex flex-column gap-3 pe-2" style="max-height: 500px; overflow-y: auto;">
                     {{#each messagesDeli}}
-                    <div class="p-3 rounded shadow-sm bg-white position-relative transition-all" style="border-left: 4px solid #9c27b0;">
-                        <p class="mb-1" style="font-size: 1.05rem; word-break: break-word;">{{content}}</p>
-                        <small class="text-secondary" style="font-size: 0.75rem;">{{formattedDate}}</small>
+                    <div class="p-3 rounded position-relative transition-all" style="background: rgba(255,255,255,0.05); border-left: 4px solid #a78bfa; border: 1px solid rgba(255,255,255,0.1);">
+                        <p class="mb-1 text-light" style="font-size: 1.05rem; word-break: break-word;">{{content}}</p>
+                        <small style="font-size: 0.75rem; color: rgba(255,255,255,0.4);">{{formattedDate}}</small>
                         {{#if @root.canEdit}}
                         <a href="/messages/delete/deli/{{id}}" class="text-danger position-absolute top-0 end-0 p-2 opacity-50 hover-opacity-100" onclick="return confirm('¿Seguro de borrar este mensaje?')">
                             <i class="fas fa-trash-alt"></i>
@@ -69,8 +69,8 @@
                     </div>
                     {{else}}
                     <div class="text-center py-5">
-                        <i class="fas fa-envelope-open-text text-secondary opacity-25" style="font-size: 3rem;"></i>
-                        <p class="text-secondary italic mt-3">No hay mensajes para Deli todavía.</p>
+                        <i class="fas fa-envelope-open-text opacity-25" style="color: rgba(255,255,255,0.2); font-size: 3rem;"></i>
+                        <p class="italic mt-3" style="color: rgba(255,255,255,0.4);">No hay mensajes para Deli todavía.</p>
                     </div>
                     {{/each}}
                 </div>

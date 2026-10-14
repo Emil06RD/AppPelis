@@ -1,73 +1,102 @@
-<div class="fade-in">
-    <div class="d-flex justify-content-between align-items-center mb-5">
-        <h1 class="fw-bold">♥ Management <span class="text-secondary fs-4">(Control Panel)</span></h1>
+<div class="lv-mgmt fade-in">
+
+    {{!-- Header --}}
+    <div class="lv-mgmt-header">
+        <div>
+            <h1 class="lv-h1">Gestión <span>de Contenido</span></h1>
+            <p class="lv-h1-sub">Administrá tu biblioteca completa</p>
+        </div>
         {{#if canEdit}}
-        <a href="/love-view/create" class="btn btn-primary">+ Add New Series</a>
+        <a href="/love-view/create" class="lv-cta-btn">
+            <i class="fas fa-plus"></i> Agregar
+        </a>
         {{/if}}
     </div>
 
-    <div class="mb-4 d-flex">
-        <div class="d-inline-flex bg-white p-2 border border-2 border-dark rounded-pill gap-2 shadow-sm">
-            <a href="/love-view/management" class="btn btn-sm {{#unless currentStatus}}btn-primary{{else}}btn-outline-accent{{/unless}} rounded-pill px-4 border-0">Todos los Estados</a>
-            <a href="/love-view/management?status=Watching" class="btn btn-sm {{#if (eq currentStatus 'Watching')}}btn-primary{{else}}btn-outline-accent{{/if}} rounded-pill px-4 border-0">Viendo</a>
-            <a href="/love-view/management?status=Plan to Watch" class="btn btn-sm {{#if (eq currentStatus 'Plan to Watch')}}btn-primary{{else}}btn-outline-accent{{/if}} rounded-pill px-4 border-0">Por ver</a>
-            <a href="/love-view/management?status=Watched" class="btn btn-sm {{#if (eq currentStatus 'Watched')}}btn-primary{{else}}btn-outline-accent{{/if}} rounded-pill px-4 border-0">Vistas</a>
-        </div>
+    {{!-- Status filter --}}
+    <div class="lv-filter-row mb-4">
+        <a href="/love-view/management" class="lv-pill {{#unless currentStatus}}lv-pill-active{{/unless}}">Todos</a>
+        <a href="/love-view/management?status=Watching" class="lv-pill lv-pill-watching {{#if (eq currentStatus 'Watching')}}lv-pill-active{{/if}}">
+            <i class="fas fa-play-circle"></i> Viendo
+        </a>
+        <a href="/love-view/management?status=Plan to Watch" class="lv-pill lv-pill-ptw {{#if (eq currentStatus 'Plan to Watch')}}lv-pill-active{{/if}}">
+            <i class="fas fa-bookmark"></i> Por ver
+        </a>
+        <a href="/love-view/management?status=Watched" class="lv-pill lv-pill-watched {{#if (eq currentStatus 'Watched')}}lv-pill-active{{/if}}">
+            <i class="fas fa-check-circle"></i> Vistas
+        </a>
     </div>
 
-    <div class="glass-card p-0 overflow-hidden">
+    {{!-- Table card --}}
+    <div class="lv-glass-card lv-table-card">
         <div class="table-responsive">
-            <table class="table table-hover mb-0">
+            <table class="table lv-table mb-0">
+                <caption class="visually-hidden">Series y películas de nuestra biblioteca</caption>
                 <thead>
                     <tr>
-                        <th class="ps-4 py-3">Title</th>
-                        <th class="py-3">Type</th>
-                        <th class="py-3">Genre</th>
-                        <th class="py-3">Status</th>
-                        <th class="py-3">Rating</th>
-                        {{#if canEdit}}
-                        <th class="py-3 text-end pe-4">Actions</th>
-                        {{/if}}
+                        <th class="lv-th" style="width:44px;"></th>
+                        <th class="lv-th">Título</th>
+                        <th class="lv-th">Tipo</th>
+                        <th class="lv-th">Géneros</th>
+                        <th class="lv-th">Estado</th>
+                        <th class="lv-th">Puntuación</th>
+                        {{#if canEdit}}<th class="lv-th text-end">Acciones</th>{{/if}}
                     </tr>
                 </thead>
                 <tbody>
                     {{#each series}}
-                    <tr class="align-middle">
-                        <td class="ps-4">
-                            <div class="d-flex align-items-center gap-3">
-                                <img src="{{posterUrl}}" alt="" style="width: 40px; height: 60px; object-fit: cover; border-radius: 4px;">
-                                <span class="fw-bold">{{title}}</span>
-                            </div>
+                    <tr class="lv-tr">
+                        <td class="lv-td lv-td-poster">
+                            <img src="{{posterUrl}}" alt=""
+                                onerror="this.onerror=null;this.src='/img/poster-fallback.svg'"
+                                class="lv-mgmt-thumb">
                         </td>
-                        <td>
-                            <span class="text-secondary small">
-                                {{type}}{{#if (eq type 'Serie')}}{{#if season}} (T{{season}}){{/if}}{{/if}}
+                        <td class="lv-td">
+                            <span class="lv-mgmt-title">{{title}}</span>
+                        </td>
+                        <td class="lv-td">
+                            <span class="lv-mgmt-sub">
+                                {{#if (eq type 'Pelicula')}}<i class="fas fa-film me-1" style="color:#ff85a1;"></i>Película
+                                {{else}}<i class="fas fa-tv me-1" style="color:#a78bfa;"></i>Serie{{#if season}} T{{season}}{{/if}}{{/if}}
                             </span>
                         </td>
-                        <td>
-                            <div class="d-flex flex-wrap align-items-center gap-1">
-                                <span class="badge" style="background: var(--accent-color); color: var(--dark-accent);">{{Genre.name}}</span>
-                                {{#if Genre2.name}}<span class="badge small" style="background: var(--accent-color); color: var(--dark-accent);">{{Genre2.name}}</span>{{/if}}
-                                {{#if Genre3.name}}<span class="badge small" style="background: var(--accent-color); color: var(--dark-accent);">{{Genre3.name}}</span>{{/if}}
-                                {{#if Genre4.name}}<span class="badge small" style="background: var(--accent-color); color: var(--dark-accent);">{{Genre4.name}}</span>{{/if}}
+                        <td class="lv-td">
+                            <div class="lv-mgmt-genres">
+                                {{#if Genre.name}}<span class="lv-gtag">{{Genre.name}}</span>{{/if}}
+                                {{#if Genre2.name}}<span class="lv-gtag">{{Genre2.name}}</span>{{/if}}
+                                {{#if Genre3.name}}<span class="lv-gtag">{{Genre3.name}}</span>{{/if}}
+                                {{#if Genre4.name}}<span class="lv-gtag">{{Genre4.name}}</span>{{/if}}
                             </div>
                         </td>
-                        <td>
-                            <span class="badge {{#if (eq status 'Watching')}}bg-primary{{/if}} {{#if (eq status 'Watched')}}bg-success{{/if}} {{#if (eq status 'Plan to Watch')}}bg-secondary{{/if}}">
-                                {{status}}
+                        <td class="lv-td">
+                            <span class="lv-status-badge
+                                {{#if (eq status 'Watching')}}lv-sb-watching{{/if}}
+                                {{#if (eq status 'Watched')}}lv-sb-watched{{/if}}
+                                {{#if (eq status 'Plan to Watch')}}lv-sb-ptw{{/if}}">
+                                {{#if (eq status 'Watching')}}Viendo
+                                {{else if (eq status 'Watched')}}Vista
+                                {{else}}Por ver{{/if}}
                             </span>
                         </td>
-                        <td>
-                            <div class="d-flex align-items-center gap-1">
-                                <i class="fas fa-star text-warning small"></i>
-                                <span class="fw-bold">{{#if ratingAverage}}{{ratingAverage}}{{else}}0.0{{/if}}</span>
+                        <td class="lv-td">
+                            {{#if ratingAverage}}
+                            <div class="lv-pcard-rating" style="gap:4px;">
+                                <i class="fas fa-star lv-star"></i>
+                                <span class="lv-rval">{{ratingAverage}}</span>
+                                <span class="lv-rsub">E:{{ratingEmil}}·D:{{ratingDeli}}</span>
                             </div>
+                            {{else}}<span class="lv-mgmt-sub">—</span>{{/if}}
                         </td>
                         {{#if @root.canEdit}}
-                        <td class="text-end pe-4">
+                        <td class="lv-td text-end">
                             <div class="d-flex justify-content-end gap-2">
-                                <a href="/love-view/edit/{{id}}" class="btn btn-outline-accent btn-sm">Edit</a>
-                                <a href="/love-view/delete/{{id}}" class="btn btn-danger btn-sm" onclick="return confirm('Delete this series?')">Delete</a>
+                                <a href="/love-view/edit/{{id}}" class="lv-mgmt-edit-btn" aria-label="Editar {{title}}" title="Editar {{title}}">
+                                    <i class="fas fa-pen"></i>
+                                </a>
+                                <a href="/love-view/delete/{{id}}" class="lv-mgmt-del-btn"
+                                    aria-label="Eliminar {{title}}" title="Eliminar {{title}}" data-confirm="¿Eliminar «{{title}}»?">
+                                    <i class="fas fa-trash"></i>
+                                </a>
                             </div>
                         </td>
                         {{/if}}
@@ -75,11 +104,14 @@
                     {{/each}}
                     {{#unless series.length}}
                     <tr>
-                        <td colspan="4" class="text-center py-5 text-secondary italic">No series found. Click "+ Add New" to start.</td>
+                        <td colspan="{{#if canEdit}}7{{else}}6{{/if}}" class="lv-empty-td">
+                            <i class="fas fa-film me-2"></i>No hay contenido. Hacé clic en «Agregar» para empezar.
+                        </td>
                     </tr>
                     {{/unless}}
                 </tbody>
             </table>
         </div>
     </div>
+    <p class="lv-table-hint"><i class="fas fa-arrows-alt-h" aria-hidden="true"></i> Deslizá la tabla para ver todos los datos.</p>
 </div>

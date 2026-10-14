@@ -1,31 +1,41 @@
-<div class="fade-in">
-    <div class="d-flex justify-content-between align-items-center mb-5">
-        <h1 class="fw-bold">♥ Manage Genres</h1>
+<div class="lv-mgmt fade-in">
+    <div class="lv-mgmt-header">
+        <div>
+            <h1 class="lv-h1">Gestión <span>de Géneros</span> <i class="fas fa-tags" style="color:#ff85a1; font-size:1.2rem; margin-left:8px;"></i></h1>
+            <p class="lv-h1-sub">Administrá las categorías de tu colección</p>
+        </div>
         {{#if canEdit}}
-        <a href="/love-view/genres/create" class="btn btn-primary">+ Add New Genre</a>
+        <a href="/love-view/genres/create" class="lv-cta-btn">
+            <i class="fas fa-plus"></i> Agregar Género
+        </a>
         {{/if}}
     </div>
 
-    <div class="glass-card p-0 overflow-hidden" style="max-width: 600px; margin: 0 auto;">
+    <div class="lv-glass-card lv-table-card" style="max-width: 600px; margin: 0 auto;">
         <div class="table-responsive">
-            <table class="table table-hover mb-0">
+            <table class="table lv-table mb-0">
                 <thead>
                     <tr>
-                        <th class="ps-4 py-3">Name</th>
-                        {{#if canEdit}}
-                        <th class="py-3 text-end pe-4">Actions</th>
-                        {{/if}}
+                        <th class="lv-th ps-4">Nombre del Género</th>
+                        {{#if canEdit}}<th class="lv-th text-end pe-4">Acciones</th>{{/if}}
                     </tr>
                 </thead>
                 <tbody>
                     {{#each genres}}
-                    <tr class="align-middle">
-                        <td class="ps-4 fw-bold text-primary">{{name}}</td>
+                    <tr class="lv-tr">
+                        <td class="lv-td ps-4">
+                            <span class="lv-gtag" style="font-size:0.8rem; padding:4px 12px;">{{name}}</span>
+                        </td>
                         {{#if @root.canEdit}}
-                        <td class="text-end pe-4">
+                        <td class="lv-td text-end pe-4">
                             <div class="d-flex justify-content-end gap-2">
-                                <a href="/love-view/genres/edit/{{id}}" class="btn btn-outline-accent btn-sm">Edit</a>
-                                <a href="/love-view/genres/delete/{{id}}" class="btn btn-danger btn-sm" onclick="return confirm('Delete this genre?')">Delete</a>
+                                <a href="/love-view/genres/edit/{{id}}" class="lv-mgmt-edit-btn" aria-label="Editar el género {{name}}" title="Editar {{name}}">
+                                    <i class="fas fa-pen"></i>
+                                </a>
+                                <a href="/love-view/genres/delete/{{id}}" class="lv-mgmt-del-btn"
+                                    aria-label="Eliminar el género {{name}}" title="Eliminar {{name}}" data-confirm="¿Eliminar el género «{{name}}»?">
+                                    <i class="fas fa-trash"></i>
+                                </a>
                             </div>
                         </td>
                         {{/if}}
@@ -33,7 +43,9 @@
                     {{/each}}
                     {{#unless genres.length}}
                     <tr>
-                        <td colspan="2" class="text-center py-5 text-secondary italic">No genres found.</td>
+                        <td colspan="{{#if canEdit}}2{{else}}1{{/if}}" class="lv-empty-td">
+                            <i class="fas fa-tags me-2"></i>No hay géneros creados aún.
+                        </td>
                     </tr>
                     {{/unless}}
                 </tbody>

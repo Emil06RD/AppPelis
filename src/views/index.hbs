@@ -1,398 +1,318 @@
-<div class="row mb-5 fade-in">
-    <div class="col-12 text-center">
-        <h1 class="display-4 fw-bold mb-3">My <span class="text-primary">Collection</span></h1>
-        <p class="text-secondary lead">Manage and track your watching progress.</p>
+{{!-- ═══ LOVE VIEW — COLLECTION ═══ --}}
+
+{{!-- ── Header ── --}}
+<div class="lv-header fade-in">
+    <div class="lv-header-inner">
+        <div>
+            <span class="lv-header-kicker">NUESTRA BIBLIOTECA, DE A DOS</span>
+            <h1 class="lv-h1">Nuestra <span>colección</span></h1>
+            <p class="lv-h1-sub">Todo lo que vimos y lo que queda por ver juntos</p>
+        </div>
+        {{#if canEdit}}
+        <a href="/love-view/create" class="lv-cta-btn">
+            <i class="fas fa-plus"></i> Agregar
+        </a>
+        {{/if}}
     </div>
 </div>
 
-<!-- Filters -->
-<div class="row mb-5 fade-in">
-    <div class="col-12 text-center">
-        <div class="mb-4">
-            <div class="d-inline-flex bg-white p-2 border border-2 border-dark rounded-pill gap-2 shadow-sm mb-2">
-                <a href="/love-view/?{{#if currentGenreId}}genre={{currentGenreId}}{{/if}}{{#if currentStatus}}{{#if currentGenreId}}&{{/if}}status={{currentStatus}}{{/if}}"
-                    class="btn btn-sm {{#unless currentType}}btn-primary{{else}}btn-outline-accent{{/unless}} rounded-pill px-4 border-0">Todos</a>
-                <a href="/love-view/?type=Serie{{#if currentGenreId}}&genre={{currentGenreId}}{{/if}}{{#if currentStatus}}&status={{currentStatus}}{{/if}}"
-                    class="btn btn-sm {{#if (eq currentType 'Serie')}}btn-primary{{else}}btn-outline-accent{{/if}} rounded-pill px-4 border-0">Series</a>
-                <a href="/love-view/?type=Pelicula{{#if currentGenreId}}&genre={{currentGenreId}}{{/if}}{{#if currentStatus}}&status={{currentStatus}}{{/if}}"
-                    class="btn btn-sm {{#if (eq currentType 'Pelicula')}}btn-primary{{else}}btn-outline-accent{{/if}} rounded-pill px-4 border-0">Películas</a>
-            </div>
-            <div
-                class="d-inline-flex bg-white p-2 border border-2 border-dark rounded-pill gap-2 shadow-sm mb-2 ms-md-2">
-                <a href="/love-view/?{{#if currentGenreId}}genre={{currentGenreId}}{{/if}}{{#if currentType}}{{#if currentGenreId}}&{{/if}}type={{currentType}}{{/if}}"
-                    class="btn btn-sm {{#unless currentStatus}}btn-primary{{else}}btn-outline-accent{{/unless}} rounded-pill px-4 border-0">Todos
-                    los Estados</a>
-                <a href="/love-view/?status=Watching{{#if currentGenreId}}&genre={{currentGenreId}}{{/if}}{{#if currentType}}&type={{currentType}}{{/if}}"
-                    class="btn btn-sm {{#if (eq currentStatus 'Watching')}}btn-primary{{else}}btn-outline-accent{{/if}} rounded-pill px-4 border-0">Viendo</a>
-                <a href="/love-view/?status=Plan to Watch{{#if currentGenreId}}&genre={{currentGenreId}}{{/if}}{{#if currentType}}&type={{currentType}}{{/if}}"
-                    class="btn btn-sm {{#if (eq currentStatus 'Plan to Watch')}}btn-primary{{else}}btn-outline-accent{{/if}} rounded-pill px-4 border-0">Por
-                    ver</a>
-                <a href="/love-view/?status=Watched{{#if currentGenreId}}&genre={{currentGenreId}}{{/if}}{{#if currentType}}&type={{currentType}}{{/if}}"
-                    class="btn btn-sm {{#if (eq currentStatus 'Watched')}}btn-primary{{else}}btn-outline-accent{{/if}} rounded-pill px-4 border-0">Vistas</a>
-            </div>
-        </div>
+<div class="lv-search-toolbar">
+    <form class="lv-search-box" role="search" id="lvSearchForm">
+        <label for="lvSearch" class="visually-hidden">Buscar en la colección</label>
+        <i class="fas fa-search" aria-hidden="true"></i>
+        <input type="search" id="lvSearch" placeholder="Buscar una serie o película…" autocomplete="off">
+        <button type="button" data-clear-search aria-label="Limpiar búsqueda" hidden><i class="fas fa-times" aria-hidden="true"></i></button>
+    </form>
+    <span id="lvResultCount" class="lv-result-count" role="status" aria-live="polite"></span>
+</div>
 
-        <button class="btn btn-genres-menu mb-4" type="button" data-bs-toggle="collapse" data-bs-target="#genreMenu"
-            aria-expanded="false">
-            <i class="fas fa-tags me-2"></i> EXPLORE GENRES ♥
+{{!-- ── Filters ── --}}
+<div class="lv-filter-bar fade-in">
+
+    {{!-- Type --}}
+    <div class="lv-filter-row">
+        <span class="lv-filter-label">Tipo</span>
+        <div class="lv-filter-options" role="group" aria-label="Filtrar por tipo">
+        <a href="/love-view/?{{#if currentGenreId}}genre={{currentGenreId}}{{/if}}{{#if currentStatus}}{{#if currentGenreId}}&{{/if}}status={{currentStatus}}{{/if}}"
+            class="lv-pill {{#unless currentType}}lv-pill-active{{/unless}}">
+            <i class="fas fa-th-large"></i> Todos
+        </a>
+        <a href="/love-view/?type=Serie{{#if currentGenreId}}&genre={{currentGenreId}}{{/if}}{{#if currentStatus}}&status={{currentStatus}}{{/if}}"
+            class="lv-pill {{#if (eq currentType 'Serie')}}lv-pill-active{{/if}}">
+            <i class="fas fa-tv"></i> Series
+        </a>
+        <a href="/love-view/?type=Pelicula{{#if currentGenreId}}&genre={{currentGenreId}}{{/if}}{{#if currentStatus}}&status={{currentStatus}}{{/if}}"
+            class="lv-pill {{#if (eq currentType 'Pelicula')}}lv-pill-active{{/if}}">
+            <i class="fas fa-film"></i> Películas
+        </a>
+        </div>
+    </div>
+    <div class="lv-filter-row">
+        <span class="lv-filter-label">Estado</span>
+        <div class="lv-filter-options" role="group" aria-label="Filtrar por estado">
+        <a href="/love-view/?{{#if currentGenreId}}genre={{currentGenreId}}{{/if}}{{#if currentType}}{{#if currentGenreId}}&{{/if}}type={{currentType}}{{/if}}"
+            class="lv-pill {{#unless currentStatus}}lv-pill-active{{/unless}}">
+            Todo
+        </a>
+        <a href="/love-view/?status=Watching{{#if currentGenreId}}&genre={{currentGenreId}}{{/if}}{{#if currentType}}&type={{currentType}}{{/if}}"
+            class="lv-pill lv-pill-watching {{#if (eq currentStatus 'Watching')}}lv-pill-active{{/if}}">
+            <i class="fas fa-play-circle"></i> Viendo
+        </a>
+        <a href="/love-view/?status=Plan to Watch{{#if currentGenreId}}&genre={{currentGenreId}}{{/if}}{{#if currentType}}&type={{currentType}}{{/if}}"
+            class="lv-pill lv-pill-ptw {{#if (eq currentStatus 'Plan to Watch')}}lv-pill-active{{/if}}">
+            <i class="fas fa-bookmark"></i> Por ver
+        </a>
+        <a href="/love-view/?status=Watched{{#if currentGenreId}}&genre={{currentGenreId}}{{/if}}{{#if currentType}}&type={{currentType}}{{/if}}"
+            class="lv-pill lv-pill-watched {{#if (eq currentStatus 'Watched')}}lv-pill-active{{/if}}">
+            <i class="fas fa-check-circle"></i> Vistas
+        </a>
+        </div>
+    </div>
+
+    {{!-- Genre toggle --}}
+    <div class="lv-genre-row">
+        <button class="lv-genre-toggle-btn" type="button" data-bs-toggle="collapse" data-bs-target="#genreMenu" aria-expanded="false">
+            <i class="fas fa-tags"></i>
+            Elegir género
+            {{#if currentGenreId}}<span class="lv-genre-dot"></span>{{/if}}
+            <i class="fas fa-chevron-down lv-chevron"></i>
         </button>
-        <div class="collapse" id="genreMenu">
-            <div class="genre-menu-card p-4">
-                <div class="d-flex flex-wrap justify-content-center gap-3">
-                    <a href="/love-view/?{{#if currentType}}type={{currentType}}{{/if}}{{#if currentStatus}}{{#if currentType}}&{{/if}}status={{currentStatus}}{{/if}}"
-                        class="genre-pill {{#unless currentGenreId}}active{{/unless}}">
-                        <i class="fas fa-th-large me-1"></i> All
-                    </a>
-                    {{#each genres}}
-                    <a href="/love-view/?genre={{id}}{{#if ../currentType}}&type={{../currentType}}{{/if}}{{#if ../currentStatus}}&status={{../currentStatus}}{{/if}}"
-                        class="genre-pill {{#if (eq ../currentGenreId id)}}active{{/if}}">
-                        <i class="fas fa-film me-1"></i> {{name}}
-                    </a>
-                    {{/each}}
-                </div>
-            </div>
-        </div>
         {{#if currentGenreId}}
-        <div class="mt-2">
-            <span class="badge bg-primary px-3 py-2 rounded-pill">
-                Filtrando por: {{#each genres}}{{#if (eq ../currentGenreId id)}}{{name}}{{/if}}{{/each}}
+        <span class="lv-active-genre-tag">
+            <i class="fas fa-tag"></i>
+            {{#each genres}}{{#if (eq ../currentGenreId id)}}{{name}}{{/if}}{{/each}}
+            <a href="/love-view/?{{#if currentType}}type={{currentType}}{{/if}}{{#if currentStatus}}{{#if currentType}}&{{/if}}status={{currentStatus}}{{/if}}" class="lv-clear-genre" aria-label="Quitar el filtro de género"><i class="fas fa-times" aria-hidden="true"></i></a>
+        </span>
+        {{/if}}
+        <a href="/love-view" id="lvResetFilters" data-clear-filters class="lv-reset-filters" hidden><i class="fas fa-undo" aria-hidden="true"></i> Restablecer</a>
+        <div class="collapse" id="genreMenu">
+            <div class="lv-genre-panel">
                 <a href="/love-view/?{{#if currentType}}type={{currentType}}{{/if}}{{#if currentStatus}}{{#if currentType}}&{{/if}}status={{currentStatus}}{{/if}}"
-                    class="text-white ms-2 text-decoration-none"><i class="fas fa-times-circle"></i></a>
-            </span>
+                    class="lv-gpill {{#unless currentGenreId}}active{{/unless}}">Todos</a>
+                {{#each genres}}
+                <a href="/love-view/?genre={{id}}{{#if ../currentType}}&type={{../currentType}}{{/if}}{{#if ../currentStatus}}&status={{../currentStatus}}{{/if}}"
+                    class="lv-gpill {{#if (eq ../currentGenreId id)}}active{{/if}}">{{name}}</a>
+                {{/each}}
+            </div>
         </div>
-        {{/if}}
     </div>
 </div>
 
+<div id="lvSearchEmpty" class="lv-search-empty" hidden>
+    <i class="fas fa-search" aria-hidden="true"></i>
+    <h2>No encontramos ese título</h2>
+    <p>Probá con otro nombre o cambiá los filtros.</p>
+    <button type="button" data-clear-search>Limpiar búsqueda</button>
+</div>
 
-<!-- ===== Section: Watching ===== -->
+{{!-- ═══ SECTION: WATCHING ═══ --}}
 {{#if showWatching}}
-<div class="mb-5 fade-in">
-    <h2 class="fw-bold mb-4">♥ Watching</h2>
-    <div class="row g-4" id="grid-watching">
+<section class="lv-section fade-in">
+    <div class="lv-section-head">
+        <span class="lv-sdot" style="background:#4ade80;box-shadow:0 0 8px #4ade80;"></span>
+        <h2 class="lv-section-title">Viendo</h2>
+        <span class="lv-scount">{{watching.length}}</span>
+    </div>
+    <div class="lv-grid" id="grid-watching">
         {{#if watching.length}}
-        {{#each watching}}
-
-        <div class="col-md-6 col-lg-4">
-            <div class="series-name-card position-relative fade-in {{#if (gt count 1)}}grouped-card{{/if}}" {{#if (gt
-                count 1)}}data-cascade="cascade-w-{{@index}}" {{/if}}>
-                {{#if (gt count 1)}}<span class="group-count-badge">{{count}} entradas</span>{{/if}}
-                <h5 class="fw-bold mb-0 series-title-hover">
-                    {{title}}
-                    {{#if (gt count 1)}}<i class="fas fa-chevron-down ms-2 cascade-chevron x-small"></i>{{/if}}
-                </h5>
-                <div class="hover-poster-container">
-                    <img src="{{posterUrl}}" alt="{{title}}" class="hover-poster">
-                    <div class="hover-info text-start">
-                        <p class="mb-0 small fw-bold text-white">{{Genre.name}}{{#if Genre2.name}} ·
-                            {{Genre2.name}}{{/if}}</p>
-                        <div class="d-flex align-items-center gap-2 mb-1">
-                            <div class="rating-badge-mini">
-                                <i class="fas fa-star text-warning x-small"></i>
-                                <span class="x-small fw-bold">{{#if
-                                    ratingAverage}}{{ratingAverage}}{{else}}0.0{{/if}}</span>
-                            </div>
-                            <div class="x-small text-white-50">E: {{#if ratingEmil}}{{ratingEmil}}{{else}}0{{/if}} | D:
-                                {{#if ratingDeli}}{{ratingDeli}}{{else}}0{{/if}}</div>
+            {{#each watching}}
+            <div class="lv-col">
+                <div class="lv-pcard {{#if (gt count 1)}}lv-pcard-grouped{{/if}}" {{#if (gt count 1)}}data-cascade="cascade-w-{{@index}}"{{/if}}>
+                    {{#if (gt count 1)}}<div class="lv-stack-effect"></div>{{/if}}
+                    {{#if (gt count 1)}}<span class="lv-multi-badge">{{count}} <i class="fas fa-layer-group"></i></span>{{/if}}
+                    <div class="lv-pcard-img-wrap">
+                        <img src="{{posterUrl}}" alt="{{title}}" class="lv-pcard-img" loading="lazy"
+                            onerror="this.onerror=null;this.src='/img/poster-fallback.svg'">
+                    </div>
+                    <div class="lv-pcard-overlay">
+                        <div class="lv-pcard-chips">
+                            <span class="lv-type-chip">{{#if (eq type 'Pelicula')}}<i class="fas fa-film"></i>{{else}}<i class="fas fa-tv"></i>{{/if}}</span>
+                            {{#if (eq type 'Serie')}}{{#if season}}<span class="lv-season-chip">T{{season}}</span>{{/if}}{{/if}}
+                            {{#if (gt count 1)}}<button type="button" class="lv-expand-chip lv-card-toggle" aria-controls="cascade-w-{{@index}}" aria-expanded="false" aria-label="Ver las {{count}} entradas de {{title}}"><i class="fas fa-chevron-down lv-cascade-chev" aria-hidden="true"></i> Ver {{count}}</button>{{/if}}
                         </div>
-                        {{!-- Season/Movie label removed from main card --}}
+                        <h6 class="lv-pcard-title">{{title}}</h6>
+                        <div class="lv-pcard-genres">
+                            {{#if Genre.name}}<span class="lv-gtag">{{Genre.name}}</span>{{/if}}
+                            {{#if Genre2.name}}<span class="lv-gtag">{{Genre2.name}}</span>{{/if}}
+                        </div>
+                        {{#if ratingAverage}}
+                        <div class="lv-pcard-rating">
+                            <i class="fas fa-star lv-star"></i>
+                            <span class="lv-rval">{{ratingAverage}}</span>
+                            <span class="lv-rsub">E:{{ratingEmil}} · D:{{ratingDeli}}</span>
+                        </div>
+                        {{/if}}
+                        {{#if @root.canEdit}}
+                        <a href="/love-view/edit/{{#if (gt count 1)}}{{items.[0].id}}{{else}}{{id}}{{/if}}" class="lv-edit-overlay-btn" aria-label="Editar {{title}}" title="Editar {{title}}"><i class="fas fa-pen"></i></a>
+                        {{/if}}
                     </div>
                 </div>
             </div>
-        </div>
-
-        {{!-- Expansion Wrapper (Sibling in grid) --}}
-        {{#if (gt count 1)}}
-        <div class="cascade-wrapper" id="cascade-w-{{@index}}">
-            {{#each items}}
-            <div class="col-md-6 col-lg-4 cascade-item">
-                <div class="series-name-card position-relative fade-in">
-                    <h5 class="fw-bold mb-0 series-title-hover">
-                        {{#if (eq type 'Serie')}}Season {{season}}{{else}}Movie{{/if}}
-                    </h5>
-                    <div class="hover-poster-container">
-                        <img src="{{posterUrl}}" alt="{{../title}}" class="hover-poster">
-                        <div class="hover-info text-start">
-                            <p class="mb-0 small fw-bold text-white">{{Genre.name}}{{#if Genre2.name}} ·
-                                {{Genre2.name}}{{/if}}</p>
-                            <div class="d-flex align-items-center gap-2 mb-1">
-                                <div class="rating-badge-mini">
-                                    <i class="fas fa-star text-warning x-small"></i>
-                                    <span class="x-small fw-bold">{{#if
-                                        ratingAverage}}{{ratingAverage}}{{else}}0.0{{/if}}</span>
-                                </div>
-                                <div class="x-small text-white-50">E: {{#if ratingEmil}}{{ratingEmil}}{{else}}0{{/if}}
-                                    D: {{#if ratingDeli}}{{ratingDeli}}{{else}}0{{/if}}</div>
+            {{#if (gt count 1)}}
+            <div class="lv-cascade-tray" id="cascade-w-{{@index}}">
+                <div class="lv-cascade-heading"><span>Entradas de {{title}}</span><button type="button" data-close-cascade><i class="fas fa-times" aria-hidden="true"></i> Cerrar</button></div>
+                {{#each items}}
+                <div class="lv-col lv-cascade-item">
+                    <div class="lv-pcard lv-pcard-sub">
+                        <div class="lv-pcard-img-wrap">
+                            <img src="{{posterUrl}}" alt="{{../title}}" class="lv-pcard-img" loading="lazy"
+                                onerror="this.onerror=null;this.src='/img/poster-fallback.svg'">
+                        </div>
+                        <div class="lv-pcard-overlay">
+                            <div class="lv-pcard-chips">
+                                <span class="lv-season-chip">{{#if (eq type 'Serie')}}T{{season}}{{else}}Film{{/if}}</span>
                             </div>
-                            <p class="mb-0 x-small text-white-50">{{#if (eq type 'Serie')}}Season
-                                {{season}}{{else}}Movie{{/if}}</p>
-                            <div class="d-flex align-items-center justify-content-between mt-1">
-                                <span class="badge bg-dark-accent x-small">{{status}}</span>
-                                <a href="/love-view/edit/{{id}}" class="btn btn-sm btn-outline-light cascade-edit-btn"
-                                    style="font-size: 0.6rem;">Editar</a>
-                            </div>
+                            <h6 class="lv-pcard-title" style="font-size:0.78rem;">{{../title}}</h6>
+                            {{#if ratingAverage}}<div class="lv-pcard-rating"><i class="fas fa-star lv-star"></i><span class="lv-rval">{{ratingAverage}}</span></div>{{/if}}
+                            {{#if @root.canEdit}}<a href="/love-view/edit/{{id}}" class="lv-edit-overlay-btn" aria-label="Editar {{title}}" title="Editar {{title}}"><i class="fas fa-pen"></i></a>{{/if}}
                         </div>
                     </div>
                 </div>
+                {{/each}}
             </div>
+            {{/if}}
             {{/each}}
-        </div>
-        {{/if}}
-
-        {{/each}}
         {{else}}
-        <div class="col-12">
-            <p class="text-secondary italic">No series currently being watched.</p>
-        </div>
+        <div class="lv-empty"><i class="fas fa-play-circle"></i> Nada en reproducción.</div>
         {{/if}}
     </div>
-</div>
+</section>
 {{/if}}
 
-<!-- ===== Section: Watched ===== -->
+{{!-- ═══ SECTION: WATCHED ═══ --}}
 {{#if showWatched}}
-<div class="mb-5 fade-in">
-    <h2 class="fw-bold mb-4">♥ Watched</h2>
-    <div class="row g-4" id="grid-watched">
+<section class="lv-section fade-in">
+    <div class="lv-section-head">
+        <span class="lv-sdot" style="background:#ff85a1;box-shadow:0 0 8px #ff85a1;"></span>
+        <h2 class="lv-section-title">Vistas</h2>
+        <span class="lv-scount">{{watched.length}}</span>
+    </div>
+    <div class="lv-grid" id="grid-watched">
         {{#if watched.length}}
-        {{#each watched}}
-
-        <div class="col-md-6 col-lg-4">
-            <div class="series-name-card position-relative fade-in {{#if (gt count 1)}}grouped-card{{/if}}" {{#if (gt
-                count 1)}}data-cascade="cascade-wd-{{@index}}" {{/if}}>
-                {{#if (gt count 1)}}<span class="group-count-badge">{{count}} entradas</span>{{/if}}
-                <h5 class="fw-bold mb-0 series-title-hover">
-                    {{title}}
-                    {{#if (gt count 1)}}<i class="fas fa-chevron-down ms-2 cascade-chevron x-small"></i>{{/if}}
-                </h5>
-                <div class="hover-poster-container">
-                    <img src="{{posterUrl}}" alt="{{title}}" class="hover-poster">
-                    <div class="hover-info text-start">
-                        <p class="mb-0 small fw-bold text-white">{{Genre.name}}{{#if Genre2.name}} ·
-                            {{Genre2.name}}{{/if}}</p>
-                        <div class="d-flex align-items-center gap-2 mb-1">
-                            <div class="rating-badge-mini">
-                                <i class="fas fa-star text-warning x-small"></i>
-                                <span class="x-small fw-bold">{{#if
-                                    ratingAverage}}{{ratingAverage}}{{else}}0.0{{/if}}</span>
-                            </div>
-                            <div class="x-small text-white-50">E: {{#if ratingEmil}}{{ratingEmil}}{{else}}0{{/if}} | D:
-                                {{#if ratingDeli}}{{ratingDeli}}{{else}}0{{/if}}</div>
+            {{#each watched}}
+            <div class="lv-col">
+                <div class="lv-pcard {{#if (gt count 1)}}lv-pcard-grouped{{/if}}" {{#if (gt count 1)}}data-cascade="cascade-wd-{{@index}}"{{/if}}>
+                    {{#if (gt count 1)}}<div class="lv-stack-effect"></div>{{/if}}
+                    {{#if (gt count 1)}}<span class="lv-multi-badge">{{count}} <i class="fas fa-layer-group"></i></span>{{/if}}
+                    <div class="lv-pcard-img-wrap">
+                        <img src="{{posterUrl}}" alt="{{title}}" class="lv-pcard-img" loading="lazy"
+                            onerror="this.onerror=null;this.src='/img/poster-fallback.svg'">
+                    </div>
+                    <div class="lv-pcard-overlay">
+                        <div class="lv-pcard-chips">
+                            <span class="lv-type-chip">{{#if (eq type 'Pelicula')}}<i class="fas fa-film"></i>{{else}}<i class="fas fa-tv"></i>{{/if}}</span>
+                            {{#if (gt count 1)}}<button type="button" class="lv-expand-chip lv-card-toggle" aria-controls="cascade-wd-{{@index}}" aria-expanded="false" aria-label="Ver las {{count}} entradas de {{title}}"><i class="fas fa-chevron-down lv-cascade-chev" aria-hidden="true"></i> Ver {{count}}</button>{{/if}}
                         </div>
-                        {{!-- Season/Movie label removed from main card --}}
+                        <h6 class="lv-pcard-title">{{title}}</h6>
+                        <div class="lv-pcard-genres">
+                            {{#if Genre.name}}<span class="lv-gtag">{{Genre.name}}</span>{{/if}}
+                            {{#if Genre2.name}}<span class="lv-gtag">{{Genre2.name}}</span>{{/if}}
+                        </div>
+                        <span class="lv-unrated-badge" {{#if (gt ratingEmil 0)}}{{#if (gt ratingDeli 0)}}hidden{{/if}}{{/if}}
+                            title="{{#unless (gt ratingEmil 0)}}{{#unless (gt ratingDeli 0)}}Faltan las valoraciones de Emi y Deli{{else}}Falta la valoración de Emi{{/unless}}{{else}}Falta la valoración de Deli{{/unless}}">
+                            <i class="far fa-star" aria-hidden="true"></i> Sin calificar
+                        </span>
+                        {{#if ratingAverage}}
+                        <div class="lv-pcard-rating">
+                            <i class="fas fa-star lv-star"></i>
+                            <span class="lv-rval">{{ratingAverage}}</span>
+                            <span class="lv-rsub">E:{{ratingEmil}} · D:{{ratingDeli}}</span>
+                        </div>
+                        {{/if}}
+                        {{#if @root.canEdit}}<a href="/love-view/edit/{{#if (gt count 1)}}{{items.[0].id}}{{else}}{{id}}{{/if}}" class="lv-edit-overlay-btn" aria-label="Editar {{title}}" title="Editar {{title}}"><i class="fas fa-pen"></i></a>{{/if}}
                     </div>
                 </div>
             </div>
-        </div>
-
-        {{#if (gt count 1)}}
-        <div class="cascade-wrapper" id="cascade-wd-{{@index}}">
-            {{#each items}}
-            <div class="col-md-6 col-lg-4 cascade-item">
-                <div class="series-name-card position-relative fade-in">
-                    <h5 class="fw-bold mb-0 series-title-hover">
-                        {{#if (eq type 'Serie')}}Season {{season}}{{else}}Movie{{/if}}
-                    </h5>
-                    <div class="hover-poster-container">
-                        <img src="{{posterUrl}}" alt="{{../title}}" class="hover-poster">
-                        <div class="hover-info text-start">
-                            <p class="mb-0 small fw-bold text-white">{{Genre.name}}{{#if Genre2.name}} ·
-                                {{Genre2.name}}{{/if}}</p>
-                            <div class="d-flex align-items-center gap-2 mb-1">
-                                <div class="rating-badge-mini">
-                                    <i class="fas fa-star text-warning x-small"></i>
-                                    <span class="x-small fw-bold">{{#if
-                                        ratingAverage}}{{ratingAverage}}{{else}}0.0{{/if}}</span>
-                                </div>
-                                <div class="x-small text-white-50">E: {{#if ratingEmil}}{{ratingEmil}}{{else}}0{{/if}}
-                                    D: {{#if ratingDeli}}{{ratingDeli}}{{else}}0{{/if}}</div>
-                            </div>
-                            <p class="mb-0 x-small text-white-50">{{#if (eq type 'Serie')}}Season
-                                {{season}}{{else}}Movie{{/if}}</p>
-                            <div class="d-flex align-items-center justify-content-end mt-1">
-                                <a href="/love-view/edit/{{id}}" class="btn btn-sm btn-outline-light cascade-edit-btn"
-                                    style="font-size: 0.6rem;">Editar</a>
-                            </div>
+            {{#if (gt count 1)}}
+            <div class="lv-cascade-tray" id="cascade-wd-{{@index}}">
+                <div class="lv-cascade-heading"><span>Entradas de {{title}}</span><button type="button" data-close-cascade><i class="fas fa-times" aria-hidden="true"></i> Cerrar</button></div>
+                {{#each items}}
+                <div class="lv-col lv-cascade-item">
+                    <div class="lv-pcard lv-pcard-sub">
+                        <div class="lv-pcard-img-wrap">
+                            <img src="{{posterUrl}}" alt="{{../title}}" class="lv-pcard-img" loading="lazy"
+                                onerror="this.onerror=null;this.src='/img/poster-fallback.svg'">
+                        </div>
+                        <div class="lv-pcard-overlay">
+                            <div class="lv-pcard-chips"><span class="lv-season-chip">{{#if (eq type 'Serie')}}T{{season}}{{else}}Film{{/if}}</span></div>
+                            <h6 class="lv-pcard-title" style="font-size:0.78rem;">{{../title}}</h6>
+                            <span class="lv-unrated-badge" {{#if (gt ratingEmil 0)}}{{#if (gt ratingDeli 0)}}hidden{{/if}}{{/if}}
+                                title="{{#unless (gt ratingEmil 0)}}{{#unless (gt ratingDeli 0)}}Faltan las valoraciones de Emi y Deli{{else}}Falta la valoración de Emi{{/unless}}{{else}}Falta la valoración de Deli{{/unless}}">
+                                <i class="far fa-star" aria-hidden="true"></i> Sin calificar
+                            </span>
+                            {{#if ratingAverage}}<div class="lv-pcard-rating"><i class="fas fa-star lv-star"></i><span class="lv-rval">{{ratingAverage}}</span></div>{{/if}}
+                            {{#if @root.canEdit}}<a href="/love-view/edit/{{id}}" class="lv-edit-overlay-btn" aria-label="Editar {{title}}" title="Editar {{title}}"><i class="fas fa-pen"></i></a>{{/if}}
                         </div>
                     </div>
                 </div>
+                {{/each}}
             </div>
+            {{/if}}
             {{/each}}
-        </div>
-        {{/if}}
-
-        {{/each}}
         {{else}}
-        <div class="col-12">
-            <p class="text-secondary italic">No series watched yet.</p>
-        </div>
+        <div class="lv-empty"><i class="fas fa-check-circle"></i> Nada marcado como visto aún.</div>
         {{/if}}
     </div>
-</div>
+</section>
 {{/if}}
 
-<!-- ===== Section: Plan to Watch ===== -->
+{{!-- ═══ SECTION: PLAN TO WATCH ═══ --}}
 {{#if showPlanToWatch}}
-<div class="mb-5 fade-in">
-    <h2 class="fw-bold mb-4">♥ Plan to Watch</h2>
-    <div class="row g-4" id="grid-plan">
+<section class="lv-section fade-in">
+    <div class="lv-section-head">
+        <span class="lv-sdot" style="background:#facc15;box-shadow:0 0 8px #facc15;"></span>
+        <h2 class="lv-section-title">Por Ver</h2>
+        <span class="lv-scount">{{planToWatch.length}}</span>
+    </div>
+    <div class="lv-grid" id="grid-plan">
         {{#if planToWatch.length}}
-        {{#each planToWatch}}
-
-        <div class="col-md-6 col-lg-4">
-            <div class="series-name-card position-relative fade-in {{#if (gt count 1)}}grouped-card{{/if}}" {{#if (gt
-                count 1)}}data-cascade="cascade-p-{{@index}}" {{/if}}>
-                {{#if (gt count 1)}}<span class="group-count-badge">{{count}} entradas</span>{{/if}}
-                <h5 class="fw-bold mb-0 series-title-hover">
-                    {{title}}
-                    {{#if (gt count 1)}}<i class="fas fa-chevron-down ms-2 cascade-chevron x-small"></i>{{/if}}
-                </h5>
-                <div class="hover-poster-container">
-                    <img src="{{posterUrl}}" alt="{{title}}" class="hover-poster">
-                    <div class="hover-info text-start">
-                        <p class="mb-0 small fw-bold text-white">{{Genre.name}}{{#if Genre2.name}} ·
-                            {{Genre2.name}}{{/if}}</p>
-                        <div class="d-flex align-items-center gap-2 mb-1">
-                            <div class="rating-badge-mini">
-                                <i class="fas fa-star text-warning x-small"></i>
-                                <span class="x-small fw-bold">{{#if
-                                    ratingAverage}}{{ratingAverage}}{{else}}0.0{{/if}}</span>
-                            </div>
+            {{#each planToWatch}}
+            <div class="lv-col">
+                <div class="lv-pcard {{#if (gt count 1)}}lv-pcard-grouped{{/if}}" {{#if (gt count 1)}}data-cascade="cascade-p-{{@index}}"{{/if}}>
+                    {{#if (gt count 1)}}<div class="lv-stack-effect"></div>{{/if}}
+                    {{#if (gt count 1)}}<span class="lv-multi-badge">{{count}} <i class="fas fa-layer-group"></i></span>{{/if}}
+                    <div class="lv-pcard-img-wrap">
+                        <img src="{{posterUrl}}" alt="{{title}}" class="lv-pcard-img" loading="lazy"
+                            onerror="this.onerror=null;this.src='/img/poster-fallback.svg'">
+                    </div>
+                    <div class="lv-pcard-overlay">
+                        <div class="lv-pcard-chips">
+                            <span class="lv-type-chip">{{#if (eq type 'Pelicula')}}<i class="fas fa-film"></i>{{else}}<i class="fas fa-tv"></i>{{/if}}</span>
+                            {{#if (gt count 1)}}<button type="button" class="lv-expand-chip lv-card-toggle" aria-controls="cascade-p-{{@index}}" aria-expanded="false" aria-label="Ver las {{count}} entradas de {{title}}"><i class="fas fa-chevron-down lv-cascade-chev" aria-hidden="true"></i> Ver {{count}}</button>{{/if}}
                         </div>
-                        {{!-- Season/Movie label removed from main group card --}}
+                        <h6 class="lv-pcard-title">{{title}}</h6>
+                        <div class="lv-pcard-genres">
+                            {{#if Genre.name}}<span class="lv-gtag">{{Genre.name}}</span>{{/if}}
+                            {{#if Genre2.name}}<span class="lv-gtag">{{Genre2.name}}</span>{{/if}}
+                        </div>
+                        {{#if @root.canEdit}}<a href="/love-view/edit/{{#if (gt count 1)}}{{items.[0].id}}{{else}}{{id}}{{/if}}" class="lv-edit-overlay-btn" aria-label="Editar {{title}}" title="Editar {{title}}"><i class="fas fa-pen"></i></a>{{/if}}
                     </div>
                 </div>
             </div>
-        </div>
-
-        {{#if (gt count 1)}}
-        <div class="cascade-wrapper" id="cascade-p-{{@index}}">
-            {{#each items}}
-            <div class="col-md-6 col-lg-4 cascade-item">
-                <div class="series-name-card position-relative fade-in">
-                    <h5 class="fw-bold mb-0 series-title-hover">
-                        {{#if (eq type 'Serie')}}Season {{season}}{{else}}Movie{{/if}}
-                    </h5>
-                    <div class="hover-poster-container">
-                        <img src="{{posterUrl}}" alt="{{../title}}" class="hover-poster">
-                        <div class="hover-info text-start">
-                            <p class="mb-0 small fw-bold text-white">{{Genre.name}}{{#if Genre2.name}} ·
-                                {{Genre2.name}}{{/if}}</p>
-                            <div class="d-flex align-items-center justify-content-between mt-1">
-                                <span class="badge bg-dark-accent x-small">PTW</span>
-                                <a href="/love-view/edit/{{id}}" class="btn btn-sm btn-outline-light cascade-edit-btn"
-                                    style="font-size: 0.6rem;">Editar</a>
-                            </div>
-                            <p class="mb-0 x-small text-white-50 mt-1">{{#if (eq type 'Serie')}}Season
-                                {{season}}{{else}}Movie{{/if}}</p>
+            {{#if (gt count 1)}}
+            <div class="lv-cascade-tray" id="cascade-p-{{@index}}">
+                <div class="lv-cascade-heading"><span>Entradas de {{title}}</span><button type="button" data-close-cascade><i class="fas fa-times" aria-hidden="true"></i> Cerrar</button></div>
+                {{#each items}}
+                <div class="lv-col lv-cascade-item">
+                    <div class="lv-pcard lv-pcard-sub">
+                        <div class="lv-pcard-img-wrap">
+                            <img src="{{posterUrl}}" alt="{{../title}}" class="lv-pcard-img" loading="lazy"
+                                onerror="this.onerror=null;this.src='/img/poster-fallback.svg'">
+                        </div>
+                        <div class="lv-pcard-overlay">
+                            <div class="lv-pcard-chips"><span class="lv-season-chip">{{#if (eq type 'Serie')}}T{{season}}{{else}}Film{{/if}}</span></div>
+                            <h6 class="lv-pcard-title" style="font-size:0.78rem;">{{../title}}</h6>
+                            {{#if @root.canEdit}}<a href="/love-view/edit/{{id}}" class="lv-edit-overlay-btn" aria-label="Editar {{title}}" title="Editar {{title}}"><i class="fas fa-pen"></i></a>{{/if}}
                         </div>
                     </div>
                 </div>
+                {{/each}}
             </div>
+            {{/if}}
             {{/each}}
-        </div>
-        {{/if}}
-
-        {{/each}}
         {{else}}
-        <div class="col-12">
-            <p class="text-secondary italic">No series in your watchlist.</p>
-        </div>
+        <div class="lv-empty"><i class="fas fa-bookmark"></i> Lista de pendientes vacía.</div>
         {{/if}}
     </div>
-</div>
+</section>
 {{/if}}
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const POSTER_WIDTH = 220;
-        const POSTER_HEIGHT = 380; // approx height of poster + info panel
-        const MARGIN = 12;         // gap between card and poster
-
-
-        document.querySelectorAll('.series-name-card').forEach(function (card) {
-            const col = card.closest('[class*="col"]');
-            if (col) {
-                col.style.position = 'relative';
-            }
-
-            // Grab poster BEFORE moving it — querySelector won't find it after reparenting
-            const poster = card.querySelector('.hover-poster-container');
-            if (!poster) return;
-
-            // Move to <body> so it escapes any stacking context from Bootstrap grid
-            document.body.appendChild(poster);
-
-            card.addEventListener('mouseenter', function () {
-                if (col) col.style.zIndex = '999999';
-
-                const rect = card.getBoundingClientRect();
-                const viewportH = window.innerHeight;
-
-                // Space available above and below the card in the viewport
-                const spaceAbove = rect.top;
-
-                let topPx;
-                if (spaceAbove >= POSTER_HEIGHT + MARGIN) {
-                    // Enough room above — show poster above the card
-                    poster.classList.remove('poster-below');
-                    topPx = rect.top - POSTER_HEIGHT - MARGIN;
-                } else {
-                    // Not enough room above — show poster below the card
-                    poster.classList.add('poster-below');
-                    topPx = rect.bottom + MARGIN;
-                }
-
-                // Horizontal: anchor to right edge of card, clamped to viewport edges
-                let leftPx = rect.right - 230; // start near right edge of card (slight overlap)
-                leftPx = Math.max(MARGIN, Math.min(leftPx, window.innerWidth - POSTER_WIDTH - MARGIN));
-
-                poster.style.top = topPx + 'px';
-                poster.style.left = leftPx + 'px';
-
-                // Trigger show on next frame so CSS transition fires
-                requestAnimationFrame(function () {
-                    poster.classList.add('poster-visible');
-                });
-            });
-
-            card.addEventListener('mouseleave', function () {
-                if (col) col.style.zIndex = '';
-                poster.classList.remove('poster-visible');
-            });
-        });
-
-        // ─── Cascade expand/collapse ───────────────────────────────────────────
-        document.querySelectorAll('[data-cascade]').forEach(function (card) {
-            card.addEventListener('click', function () {
-                const targetId = card.getAttribute('data-cascade');
-                const wrapper = document.getElementById(targetId);
-                if (!wrapper) return;
-
-                const isOpen = wrapper.classList.contains('cascade-open');
-                const chevron = card.querySelector('.cascade-chevron');
-
-                if (isOpen) {
-                    wrapper.classList.remove('cascade-open');
-                    card.classList.remove('cascade-active');
-                    if (chevron) chevron.style.transform = 'rotate(0deg)';
-                } else {
-                    wrapper.classList.add('cascade-open');
-                    card.classList.add('cascade-active');
-                    if (chevron) chevron.style.transform = 'rotate(180deg)';
-
-                    // Animate entry for children
-                    wrapper.querySelectorAll('.cascade-item').forEach(function (item, i) {
-                        item.style.opacity = '0';
-                        item.style.transform = 'translateY(-10px) scale(0.95)';
-                        setTimeout(function () {
-                            item.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
-                            item.style.opacity = '1';
-                            item.style.transform = 'translateY(0) scale(1)';
-                        }, i * 60);
-                    });
-                }
-            });
-        });
-    });
-</script>

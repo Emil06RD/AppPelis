@@ -1,200 +1,186 @@
-<div class="row justify-content-center fade-in">
-    <div class="col-md-8 col-lg-6">
-        <div class="glass-card p-5">
-            <h2 class="fw-bold mb-4">{{#if isEdit}}Edit Series{{else}}Add New Series{{/if}}</h2>
-            
-            <form action="{{#if isEdit}}/love-view/edit/{{series.id}}{{else}}/love-view/create{{/if}}" method="POST">
-                <div class="mb-4">
-                    <label for="title">Series Title</label>
-                    <input type="text" class="form-control" id="title" name="title" value="{{series.title}}" required placeholder="Enter series title">
-                </div>
+<div class="lv-form-wrap fade-in">
+    <div class="lv-form-card">
 
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label for="GenreId">Género Principal <span class="text-danger">*</span></label>
-                        <select class="form-control" id="GenreId" name="GenreId" required>
-                            <option value="">Select Genre...</option>
-                            {{#each genres}}
-                            <option value="{{id}}" {{#if (eq ../series.GenreId id)}}selected{{/if}}>{{name}}</option>
-                            {{/each}}
-                        </select>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="status">Status</label>
-                        <select class="form-control" id="status" name="status" required>
-                            <option value="Watching" {{#if (eq series.status 'Watching')}}selected{{/if}}>Watching (Viendo)</option>
-                            <option value="Watched" {{#if (eq series.status 'Watched')}}selected{{/if}}>Watched (Vistas)</option>
-                            <option value="Plan to Watch" {{#if (eq series.status 'Plan to Watch')}}selected{{/if}}>Plan to Watch (Por ver)</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="mb-4">
-                    <label class="text-secondary small fw-bold">Géneros Secundarios <span class="text-muted">(máx. 3)</span></label>
-                    <div class="row g-2">
-                        <div class="col-md-4">
-                            <select class="form-control form-control-sm" name="Genre2Id">
-                                <option value="">— Género 2 —</option>
-                                {{#each genres}}
-                                <option value="{{id}}" {{#if (eq ../series.Genre2Id id)}}selected{{/if}}>{{name}}</option>
-                                {{/each}}
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <select class="form-control form-control-sm" name="Genre3Id">
-                                <option value="">— Género 3 —</option>
-                                {{#each genres}}
-                                <option value="{{id}}" {{#if (eq ../series.Genre3Id id)}}selected{{/if}}>{{name}}</option>
-                                {{/each}}
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <select class="form-control form-control-sm" name="Genre4Id">
-                                <option value="">— Género 4 —</option>
-                                {{#each genres}}
-                                <option value="{{id}}" {{#if (eq ../series.Genre4Id id)}}selected{{/if}}>{{name}}</option>
-                                {{/each}}
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <label for="type">Type (Tipo)</label>
-                        <select class="form-control" id="type" name="type" required onchange="toggleSeasonField()">
-                            <option value="Serie" {{#if (eq series.type 'Serie')}}selected{{/if}}>Serie</option>
-                            <option value="Pelicula" {{#if (eq series.type 'Pelicula')}}selected{{/if}}>Película</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6" id="seasonField" style="{{#if (eq series.type 'Pelicula')}}display: none;{{/if}}">
-                        <label for="season">Season (Temporada)</label>
-                        <input type="number" class="form-control" id="season" name="season" value="{{series.season}}" placeholder="e.g. 1" min="1">
-                    </div>
-                </div>
-
-                <script>
-                    function toggleSeasonField() {
-                        const type = document.getElementById('type').value;
-                        const seasonField = document.getElementById('seasonField');
-                        const seasonInput = document.getElementById('season');
-                        
-                        if (type === 'Serie') {
-                            seasonField.style.display = 'block';
-                        } else {
-                            seasonField.style.display = 'none';
-                            seasonInput.value = ''; // Clear if movie
-                        }
-                    }
-                </script>
-
-                <div id="ratingSection" style="{{#unless (eq series.status 'Watched')}}display: none;{{/unless}}">
-                    <div class="row mb-4">
-                        <div class="col-md-6 text-center">
-                            <label class="fw-bold mb-2">Emil's Rating</label>
-                            <div class="star-rating" id="stars-emil" data-target="ratingEmil">
-                                <div class="star-wrap"><i class="fas fa-star"></i><span class="half-zone left" data-value="0.5"></span><span class="half-zone right" data-value="1"></span></div>
-                                <div class="star-wrap"><i class="fas fa-star"></i><span class="half-zone left" data-value="1.5"></span><span class="half-zone right" data-value="2"></span></div>
-                                <div class="star-wrap"><i class="fas fa-star"></i><span class="half-zone left" data-value="2.5"></span><span class="half-zone right" data-value="3"></span></div>
-                                <div class="star-wrap"><i class="fas fa-star"></i><span class="half-zone left" data-value="3.5"></span><span class="half-zone right" data-value="4"></span></div>
-                                <div class="star-wrap"><i class="fas fa-star"></i><span class="half-zone left" data-value="4.5"></span><span class="half-zone right" data-value="5"></span></div>
-                            </div>
-                            <input type="hidden" id="ratingEmil" name="ratingEmil" value="{{series.ratingEmil}}">
-                            <span class="rating-value badge bg-dark text-warning" id="val-emil">{{#if series.ratingEmil}}{{series.ratingEmil}}{{else}}0.0{{/if}}</span>
-                        </div>
-                        <div class="col-md-6 text-center">
-                            <label class="fw-bold mb-2">Deli's Rating</label>
-                            <div class="star-rating" id="stars-deli" data-target="ratingDeli">
-                                <div class="star-wrap"><i class="fas fa-star"></i><span class="half-zone left" data-value="0.5"></span><span class="half-zone right" data-value="1"></span></div>
-                                <div class="star-wrap"><i class="fas fa-star"></i><span class="half-zone left" data-value="1.5"></span><span class="half-zone right" data-value="2"></span></div>
-                                <div class="star-wrap"><i class="fas fa-star"></i><span class="half-zone left" data-value="2.5"></span><span class="half-zone right" data-value="3"></span></div>
-                                <div class="star-wrap"><i class="fas fa-star"></i><span class="half-zone left" data-value="3.5"></span><span class="half-zone right" data-value="4"></span></div>
-                                <div class="star-wrap"><i class="fas fa-star"></i><span class="half-zone left" data-value="4.5"></span><span class="half-zone right" data-value="5"></span></div>
-                            </div>
-                            <input type="hidden" id="ratingDeli" name="ratingDeli" value="{{series.ratingDeli}}">
-                            <span class="rating-value badge bg-dark text-warning" id="val-deli">{{#if series.ratingDeli}}{{series.ratingDeli}}{{else}}0.0{{/if}}</span>
-                        </div>
-                    </div>
-                </div>
-
-                <script>
-                    function updateStatusVisibility() {
-                        const status = document.getElementById('status').value;
-                        const ratingSection = document.getElementById('ratingSection');
-                        const rEmil = document.getElementById('ratingEmil');
-                        const rDeli = document.getElementById('ratingDeli');
-
-                        if (status === 'Watched') {
-                            ratingSection.style.display = 'block';
-                        } else {
-                            ratingSection.style.display = 'none';
-                            // Optional: Clear ratings if not watched
-                            // rEmil.value = 0;
-                            // rDeli.value = 0;
-                        }
-                    }
-
-                    // Handle status change
-                    document.getElementById('status').addEventListener('change', updateStatusVisibility);
-
-                    // Initialize star ratings
-                    document.querySelectorAll('.star-rating').forEach(container => {
-                        const wraps = container.querySelectorAll('.star-wrap');
-                        const zones = container.querySelectorAll('.half-zone');
-                        const targetId = container.getAttribute('data-target');
-                        const input = document.getElementById(targetId);
-                        const valDisplay = document.getElementById('val-' + targetId.replace('rating', '').toLowerCase());
-
-                        const updateUI = (val) => {
-                            val = parseFloat(val) || 0;
-                            wraps.forEach((wrap, i) => {
-                                const star = wrap.querySelector('i');
-                                const fullVal = i + 1;
-                                const halfVal = i + 0.5;
-                                if (val >= fullVal) {
-                                    star.className = 'fas fa-star selected';
-                                } else if (val >= halfVal) {
-                                    star.className = 'fas fa-star-half-alt selected';
-                                } else {
-                                    star.className = 'fas fa-star';
-                                }
-                            });
-                            valDisplay.textContent = val.toFixed(1);
-                        };
-
-                        // Initial state
-                        updateUI(input.value || 0);
-
-                        zones.forEach(zone => {
-                            zone.addEventListener('click', () => {
-                                const value = zone.getAttribute('data-value');
-                                input.value = value;
-                                updateUI(value);
-                            });
-
-                            zone.addEventListener('mouseenter', () => {
-                                updateUI(zone.getAttribute('data-value'));
-                                wraps.forEach(w => w.querySelector('i').classList.add('hovered'));
-                            });
-                        });
-
-                        container.addEventListener('mouseleave', () => {
-                            updateUI(input.value || 0);
-                            wraps.forEach(w => w.querySelector('i').classList.remove('hovered'));
-                        });
-                    });
-                </script>
-
-                <div class="mb-4">
-                    <label for="posterUrl">Poster URL</label>
-                    <input type="url" class="form-control" id="posterUrl" name="posterUrl" value="{{series.posterUrl}}" placeholder="https://image-url.com">
-                </div>
-
-                <div class="d-flex gap-3">
-                    <button type="submit" class="btn btn-primary flex-grow-1">{{#if isEdit}}Update{{else}}Save{{/if}} Series</button>
-                    <a href="/love-view/management" class="btn btn-outline-secondary" style="border-radius: 12px; padding: 10px 25px;">Cancel</a>
-                </div>
-            </form>
+        {{!-- Header --}}
+        <div class="lv-form-header">
+            <a href="/love-view/management" class="lv-back-link">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <div>
+                <h2 class="lv-form-title">{{#if isEdit}}Editar Entrada{{else}}Agregar Contenido{{/if}}</h2>
+                <p class="lv-form-sub">{{#if isEdit}}Modificá los datos de «{{series.title}}»{{else}}Añadí una nueva serie o película a la colección{{/if}}</p>
+            </div>
         </div>
+
+        <form action="{{#if isEdit}}/love-view/edit/{{series.id}}{{else}}/love-view/create{{/if}}" method="POST" class="lv-form">
+
+            {{!-- Title --}}
+            <div class="lv-field">
+                <label class="lv-label" for="title">Título <span class="lv-required">*</span></label>
+                <input type="text" class="lv-input" id="title" name="title"
+                    value="{{series.title}}" required placeholder="ej. Breaking Bad">
+            </div>
+
+            {{!-- Type + Status --}}
+            <div class="lv-field-row">
+                <div class="lv-field">
+                    <label class="lv-label" for="type">Tipo <span class="lv-required">*</span></label>
+                    <select class="lv-input" id="type" name="type" required onchange="toggleSeasonField()">
+                        <option value="Serie"    {{#if (eq series.type 'Serie')}}selected{{/if}}>📺 Serie</option>
+                        <option value="Pelicula" {{#if (eq series.type 'Pelicula')}}selected{{/if}}>🎬 Película</option>
+                    </select>
+                </div>
+                <div class="lv-field" id="seasonField" style="{{#if (eq series.type 'Pelicula')}}display:none;{{/if}}">
+                    <label class="lv-label" for="season">Temporada</label>
+                    <input type="number" class="lv-input" id="season" name="season"
+                        value="{{series.season}}" placeholder="ej. 1" min="1">
+                </div>
+                <div class="lv-field">
+                    <label class="lv-label" for="status">Estado <span class="lv-required">*</span></label>
+                    <select class="lv-input" id="status" name="status" required>
+                        <option value="Watching"      {{#if (eq series.status 'Watching')}}selected{{/if}}>▶ Viendo</option>
+                        <option value="Watched"       {{#if (eq series.status 'Watched')}}selected{{/if}}>✓ Vista</option>
+                        <option value="Plan to Watch" {{#if (eq series.status 'Plan to Watch')}}selected{{/if}}>🔖 Por ver</option>
+                    </select>
+                </div>
+            </div>
+
+            {{!-- Genre principal + secondary --}}
+            <div class="lv-field">
+                <label class="lv-label" for="GenreId">Género Principal <span class="lv-required">*</span></label>
+                <select class="lv-input" id="GenreId" name="GenreId" required>
+                    <option value="">— Seleccioná un género —</option>
+                    {{#each genres}}
+                    <option value="{{id}}" {{#if (eq ../series.GenreId id)}}selected{{/if}}>{{name}}</option>
+                    {{/each}}
+                </select>
+            </div>
+
+            <div class="lv-field">
+                <label class="lv-label">Géneros Secundarios <span class="lv-optional">(máx. 3)</span></label>
+                <div class="lv-field-row">
+                    <select class="lv-input" name="Genre2Id">
+                        <option value="">— Género 2 —</option>
+                        {{#each genres}}<option value="{{id}}" {{#if (eq ../series.Genre2Id id)}}selected{{/if}}>{{name}}</option>{{/each}}
+                    </select>
+                    <select class="lv-input" name="Genre3Id">
+                        <option value="">— Género 3 —</option>
+                        {{#each genres}}<option value="{{id}}" {{#if (eq ../series.Genre3Id id)}}selected{{/if}}>{{name}}</option>{{/each}}
+                    </select>
+                    <select class="lv-input" name="Genre4Id">
+                        <option value="">— Género 4 —</option>
+                        {{#each genres}}<option value="{{id}}" {{#if (eq ../series.Genre4Id id)}}selected{{/if}}>{{name}}</option>{{/each}}
+                    </select>
+                </div>
+            </div>
+
+            {{!-- Poster URL with preview --}}
+            <div class="lv-field">
+                <label class="lv-label" for="posterUrl">URL del Poster</label>
+                <div class="lv-poster-input-row">
+                    <input type="url" class="lv-input" id="posterUrl" name="posterUrl"
+                        value="{{series.posterUrl}}" placeholder="https://..." oninput="previewPoster(this.value)">
+                    <div class="lv-poster-preview" id="posterPreview">
+                        <img id="previewImg"
+                            src="{{#if series.posterUrl}}{{series.posterUrl}}{{else}}https://via.placeholder.com/120x180/1a1a2e/ff85a1?text=Poster{{/if}}"
+                            alt="Preview" onerror="this.src='https://via.placeholder.com/120x180/1a1a2e/ff85a1?text=Sin+imagen'">
+                    </div>
+                </div>
+            </div>
+
+            {{!-- Ratings (only when Watched) --}}
+            <div id="ratingSection" class="lv-rating-section" style="{{#unless (eq series.status 'Watched')}}display:none;{{/unless}}">
+                <div class="lv-rating-divider">
+                    <span><i class="fas fa-star me-2"></i>Ratings</span>
+                </div>
+                <div class="lv-field-row">
+                    <div class="lv-field text-center">
+                        <label class="lv-label">Emil ⭐</label>
+                        <div class="star-rating" id="stars-emil" data-target="ratingEmil">
+                            <div class="star-wrap"><i class="fas fa-star"></i><span class="half-zone left" data-value="0.5"></span><span class="half-zone right" data-value="1"></span></div>
+                            <div class="star-wrap"><i class="fas fa-star"></i><span class="half-zone left" data-value="1.5"></span><span class="half-zone right" data-value="2"></span></div>
+                            <div class="star-wrap"><i class="fas fa-star"></i><span class="half-zone left" data-value="2.5"></span><span class="half-zone right" data-value="3"></span></div>
+                            <div class="star-wrap"><i class="fas fa-star"></i><span class="half-zone left" data-value="3.5"></span><span class="half-zone right" data-value="4"></span></div>
+                            <div class="star-wrap"><i class="fas fa-star"></i><span class="half-zone left" data-value="4.5"></span><span class="half-zone right" data-value="5"></span></div>
+                        </div>
+                        <input type="hidden" id="ratingEmil" name="ratingEmil" value="{{series.ratingEmil}}">
+                        <span class="rating-value badge lv-rating-badge" id="val-emil">{{#if series.ratingEmil}}{{series.ratingEmil}}{{else}}0.0{{/if}}</span>
+                    </div>
+                    <div class="lv-field text-center">
+                        <label class="lv-label">Deli ⭐</label>
+                        <div class="star-rating" id="stars-deli" data-target="ratingDeli">
+                            <div class="star-wrap"><i class="fas fa-star"></i><span class="half-zone left" data-value="0.5"></span><span class="half-zone right" data-value="1"></span></div>
+                            <div class="star-wrap"><i class="fas fa-star"></i><span class="half-zone left" data-value="1.5"></span><span class="half-zone right" data-value="2"></span></div>
+                            <div class="star-wrap"><i class="fas fa-star"></i><span class="half-zone left" data-value="2.5"></span><span class="half-zone right" data-value="3"></span></div>
+                            <div class="star-wrap"><i class="fas fa-star"></i><span class="half-zone left" data-value="3.5"></span><span class="half-zone right" data-value="4"></span></div>
+                            <div class="star-wrap"><i class="fas fa-star"></i><span class="half-zone left" data-value="4.5"></span><span class="half-zone right" data-value="5"></span></div>
+                        </div>
+                        <input type="hidden" id="ratingDeli" name="ratingDeli" value="{{series.ratingDeli}}">
+                        <span class="rating-value badge lv-rating-badge" id="val-deli">{{#if series.ratingDeli}}{{series.ratingDeli}}{{else}}0.0{{/if}}</span>
+                    </div>
+                </div>
+            </div>
+
+            {{!-- Actions --}}
+            <div class="lv-form-actions">
+                <button type="submit" class="lv-submit-btn">
+                    <span>{{#if isEdit}}Guardar cambios{{else}}Agregar a la colección{{/if}}</span>
+                    <i class="fas fa-heart lv-btn-icon"></i>
+                </button>
+                <a href="/love-view/management" class="lv-cancel-btn">Cancelar</a>
+            </div>
+        </form>
     </div>
 </div>
+
+<script>
+    function toggleSeasonField() {
+        const type = document.getElementById('type').value;
+        const sf   = document.getElementById('seasonField');
+        const si   = document.getElementById('season');
+        sf.style.display = type === 'Serie' ? '' : 'none';
+        if (type !== 'Serie') si.value = '';
+    }
+
+    function updateStatusVisibility() {
+        const status = document.getElementById('status').value;
+        document.getElementById('ratingSection').style.display = status === 'Watched' ? '' : 'none';
+    }
+    document.getElementById('status').addEventListener('change', updateStatusVisibility);
+
+    function previewPoster(url) {
+        const img = document.getElementById('previewImg');
+        if (url) {
+            img.src = url;
+            img.onerror = function() { this.src = 'https://via.placeholder.com/120x180/1a1a2e/ff85a1?text=Sin+imagen'; };
+        }
+    }
+
+    // Star ratings
+    document.querySelectorAll('.star-rating').forEach(container => {
+        const wraps = container.querySelectorAll('.star-wrap');
+        const zones = container.querySelectorAll('.half-zone');
+        const targetId = container.getAttribute('data-target');
+        const input = document.getElementById(targetId);
+        const valDisplay = document.getElementById('val-' + targetId.replace('rating', '').toLowerCase());
+
+        const updateUI = (val) => {
+            val = parseFloat(val) || 0;
+            wraps.forEach((wrap, i) => {
+                const star = wrap.querySelector('i');
+                if (val >= i + 1)         star.className = 'fas fa-star selected';
+                else if (val >= i + 0.5)  star.className = 'fas fa-star-half-alt selected';
+                else                       star.className = 'fas fa-star';
+            });
+            valDisplay.textContent = val.toFixed(1);
+        };
+
+        updateUI(input.value || 0);
+
+        zones.forEach(zone => {
+            zone.addEventListener('click',      () => { input.value = zone.getAttribute('data-value'); updateUI(input.value); });
+            zone.addEventListener('mouseenter', () => updateUI(zone.getAttribute('data-value')));
+        });
+        container.addEventListener('mouseleave', () => updateUI(input.value || 0));
+    });
+</script>

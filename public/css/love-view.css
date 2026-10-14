@@ -1,0 +1,170 @@
+.lv-love-page {
+    --lv-ui-accent: #efabc2;
+    --lv-ui-muted: #aca3b4;
+    --lv-ui-border: #332c3d;
+    --lv-ui-surface: #19151f;
+    background: #100d15;
+}
+.lv-love-page [hidden] { display: none !important; }
+.lv-love-page .lv-bg-canvas { opacity: .48; }
+body.lv-dark-body.lv-love-page .navbar { position: sticky !important; top: 0; z-index: 1030; padding: 13px 0; background: rgba(17, 13, 23, .94) !important; border-bottom: 1px solid #342739 !important; }
+.lv-love-page .navbar > .container { display: flex; flex-wrap: nowrap; justify-content: space-between; gap: 25px; max-width: 1250px; padding-left: 24px; padding-right: 24px; }
+.lv-nav-brand-group { display: flex; align-items: center; gap: 15px; flex-shrink: 0; }
+.lv-apps-link { display: flex; align-items: center; justify-content: center; width: 35px; height: 35px; border: 1px solid #393041; border-radius: 10px; color: #b8a8c4; text-decoration: none; transition: background .2s, color .2s; }
+.lv-apps-link:hover { color: #f8deeb; background: #2d2235; }
+.lv-nav-brand-divider { width: 1px; height: 21px; background: #362b40; }
+.lv-love-page .lv-navbar-brand { margin: 0; padding: 0; font-size: 1.15rem; letter-spacing: -.5px; }
+.lv-nav-film { color: var(--lv-ui-accent); margin-right: 5px; font-size: .9rem; }
+.lv-love-page .lv-brand-accent { color: var(--lv-ui-accent); }
+.lv-main-nav { display: flex; gap: 4px; padding: 4px; border: 1px solid #322838; border-radius: 12px; background: #19141f; }
+.lv-main-nav > a { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 35px; padding: 7px 15px; border-radius: 8px; color: #b0a1bc; font-size: .77rem; font-weight: 500; text-decoration: none; white-space: nowrap; transition: color .2s, background .2s; }
+.lv-main-nav > a i { font-size: .7rem; }
+.lv-main-nav > a:hover { background: #292033; color: #f5e3ee; }
+.lv-main-nav > a.is-active { color: #f8c1d5; background: #392436; box-shadow: inset 0 0 0 1px #5a354c; }
+.lv-nav-actions { display: flex; align-items: center; gap: 16px; }
+.lv-love-page .lv-nav-add-btn { background: #3c2537; color: #ffd7e7; border: 1px solid #664255; padding: 10px 14px; font-size: .74rem; box-shadow: none; }
+.lv-love-page .lv-nav-add-btn:hover { background: #512d45; transform: none; }
+.lv-user-menu { display: flex; align-items: center; gap: 8px; min-height: 40px; padding: 0; border: 0; background: transparent; color: #d7c8e1; font-size: .75rem; }
+.lv-user-menu:hover { color: #ffe5f2; }
+.lv-user-menu .lv-nav-avatar { width: 33px; height: 33px; border: 1px solid #805669; background: #3e293b; font-size: .72rem; }
+.lv-love-page .lv-dropdown { margin-top: 14px !important; background: #211829 !important; }
+.lv-mobile-nav { display: none; }
+.lv-love-page .lv-main-container { max-width: 1250px; padding: 32px 24px 40px; margin-top: 0 !important; }
+.lv-love-page .lv-header { margin-bottom: 24px; }
+.lv-love-page .lv-header-inner { align-items: center; }
+.lv-header-kicker { display: block; margin-bottom: 11px; color: #be92a8; font-size: .59rem; font-weight: 500; letter-spacing: 2px; }
+.lv-love-page .lv-h1 { font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight: 600; letter-spacing: -1.3px; line-height: 1.2; }
+.lv-love-page .lv-h1 > span { color: var(--lv-ui-accent); }
+.lv-love-page .lv-h1-sub { color: var(--lv-ui-muted); font-size: .79rem; margin-top: 9px; }
+.lv-love-page .lv-cta-btn { min-height: 42px; padding: 10px 17px; border-radius: 10px; background: #e6a3bd; color: #291522; font-size: .76rem; font-weight: 600; box-shadow: none; }
+.lv-love-page .lv-cta-btn:hover { background: #f0b3cb; transform: translateY(-1px); }
+.lv-search-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-bottom: 17px; }
+.lv-search-box { display: flex; align-items: center; gap: 12px; width: 100%; max-width: 480px; min-height: 45px; padding: 0 14px; border: 1px solid #3c2f46; border-radius: 11px; background: #19131f; }
+.lv-search-box:focus-within { border-color: #b07b95; box-shadow: 0 0 0 3px rgba(214, 137, 173, .08); }
+.lv-search-box > i { color: #a789b5; font-size: .8rem; }
+.lv-search-box > input { width: 100%; min-width: 0; min-height: 43px; padding: 0; border: 0; outline: 0; background: transparent; color: #f1e5f4; font-family: inherit; font-size: .78rem; }
+.lv-search-box > input::placeholder { color: #a797b3; }
+.lv-search-box > input::-webkit-search-cancel-button { display: none; }
+.lv-search-box > button { display: flex; justify-content: center; align-items: center; flex-shrink: 0; width: 32px; height: 32px; border: 0; border-radius: 7px; background: #302335; color: #d1b9d3; font-size: .7rem; }
+.lv-result-count { color: #b29dbe; font-size: .72rem; white-space: nowrap; }
+.lv-love-page .lv-filter-bar { display: grid; grid-template-columns: auto 1fr; align-items: start; gap: 14px 30px; padding: 18px; border: 1px solid #332839; border-radius: 14px; background: rgba(25, 20, 31, .88); margin-bottom: 29px; }
+.lv-love-page .lv-filter-row { margin: 0; gap: 12px; min-width: 0; }
+.lv-filter-label { color: #b49bbc; font-size: .66rem; font-weight: 500; min-width: 32px; }
+.lv-filter-options { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+.lv-love-page .lv-pill { min-height: 34px; padding: 6px 12px; font-size: .69rem; border-width: 1px; border-color: #403246; background: #241b2c; color: #beaec9; }
+.lv-love-page .lv-pill i { font-size: .67rem; }
+.lv-love-page .lv-pill-active { box-shadow: none; background: #402636 !important; border-color: #9b5e7b !important; color: #f5bfd5 !important; }
+.lv-love-page .lv-pill-watching.lv-pill-active { box-shadow: none; }
+.lv-love-page .lv-pill-ptw.lv-pill-active { box-shadow: none; }
+.lv-love-page .lv-pill-watched.lv-pill-active { box-shadow: none; }
+.lv-love-page .lv-genre-row { grid-column: 1 / -1; display: flex; align-items: center; flex-wrap: wrap; gap: 12px; min-width: 0; padding-top: 12px; border-top: 1px solid #302435; }
+.lv-love-page .lv-genre-toggle-btn { min-height: 32px; margin: 0; padding: 5px 10px; border-radius: 8px; font-size: .68rem; color: #c6a9cb; background: transparent; border: 1px solid #45304c; }
+.lv-love-page .lv-genre-row > .collapse, .lv-love-page .lv-genre-row > .collapsing { width: 100%; }
+.lv-love-page .lv-genre-panel { margin-top: 0; padding: 12px; background: #1d1525; border-color: #45304c; }
+.lv-love-page .lv-gpill { font-size: .7rem; }
+.lv-reset-filters { display: inline-flex; align-items: center; gap: 6px; margin-left: auto; min-height: 32px; padding: 5px 4px; color: #bfa3c5; font-size: .65rem; text-decoration: none; }
+.lv-reset-filters:hover { color: #f6d2e5; }
+.lv-love-page .lv-section { margin-bottom: 34px; }
+.lv-love-page .lv-section-head { gap: 10px; margin-bottom: 16px; }
+.lv-love-page .lv-section-title { font-size: 1.07rem; font-weight: 600; letter-spacing: -.25px; }
+.lv-love-page .lv-sdot { width: 7px; height: 7px; }
+.lv-love-page .lv-scount { font-size: .65rem; border: 1px solid #45304b; padding: 2px 8px; background: #281e32; color: #c2a8ce; }
+.lv-love-page .lv-grid { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 18px; align-items: stretch; }
+.lv-love-page .lv-col { min-width: 0; height: 100%; }
+.lv-love-page .lv-pcard { display: flex; flex-direction: column; aspect-ratio: auto; height: 100%; background: #1c1523; border: 1px solid #3a2b44; border-radius: 13px; overflow: hidden; cursor: default; box-shadow: 0 4px 14px rgba(0, 0, 0, .16); }
+.lv-love-page .lv-pcard-grouped { cursor: pointer; }
+.lv-love-page .lv-pcard:hover { transform: translateY(-3px); border-color: #81506f; box-shadow: 0 8px 24px rgba(0, 0, 0, .2); }
+.lv-love-page .lv-pcard-img-wrap { position: relative; inset: auto; width: 100%; aspect-ratio: 2 / 3; overflow: hidden; background: #201828; border-bottom: 1px solid #3c2b48; }
+.lv-love-page .lv-pcard-img { position: absolute; inset: 0; }
+.lv-love-page .lv-pcard-overlay { position: static; display: flex; flex: 1; flex-direction: column; padding: 12px 12px 10px; background: none; transform: none; transition: none; }
+.lv-love-page .lv-pcard:hover .lv-pcard-overlay { transform: none; }
+.lv-love-page .lv-pcard-title { min-height: 37px; margin: 7px 0 7px; font-size: .8rem; line-height: 1.45; font-weight: 600; color: #f5e8f7; }
+.lv-love-page .lv-pcard-chips { align-items: center; gap: 6px; margin: 0; }
+.lv-love-page .lv-type-chip, .lv-love-page .lv-season-chip { padding: 3px 6px; font-size: .58rem; }
+.lv-love-page .lv-type-chip { background: #35273e; color: #d5bfdf; }
+.lv-love-page .lv-pcard-genres { min-height: 17px; margin-bottom: 8px; }
+.lv-love-page .lv-gtag { font-size: .58rem; padding: 2px 6px; background: #352338; color: #e2b1ce; border-color: #664161; }
+.lv-love-page .lv-pcard-rating { flex-wrap: wrap; margin-top: auto; margin-bottom: 0; gap: 5px; }
+.lv-love-page .lv-rval { color: #f2dca9; font-size: .78rem; }
+.lv-love-page .lv-rsub { font-size: .59rem; color: #b9a1c4; }
+.lv-unrated-badge { display: inline-flex; align-items: center; align-self: flex-start; gap: 5px; margin-bottom: 8px; padding: 4px 7px; border: 1px solid #78613c; border-radius: 6px; background: #352b21; color: #efd29b; font-size: .61rem; line-height: 1.25; white-space: nowrap; }
+.lv-unrated-badge > i { font-size: .6rem; }
+.lv-love-page .lv-multi-badge { top: 11px; right: 11px; padding: 4px 8px; border: 1px solid #d6a3c6; border-radius: 7px; background: #3d2349; color: #f4d2e9; font-size: .61rem; }
+.lv-love-page .lv-edit-overlay-btn { position: absolute; left: 11px; top: 11px; width: 33px; height: 33px; margin: 0; border: 1px solid rgba(255, 216, 241, .35); border-radius: 8px; background: rgba(27, 18, 35, .87); color: #f5d9ed; backdrop-filter: blur(10px); z-index: 2; font-size: .7rem; }
+.lv-love-page .lv-edit-overlay-btn:hover { background: #513148; color: #fff1fa; }
+.lv-love-page .lv-expand-chip { display: inline-flex; align-items: center; gap: 5px; margin-left: auto; min-height: 27px; padding: 4px 7px; border: 1px solid #66405c; border-radius: 7px; background: #3d233c; color: #ecc0db; font-family: inherit; font-size: .6rem; cursor: pointer; }
+.lv-love-page .lv-expand-chip:hover { background: #5b304f; }
+.lv-love-page .lv-stack-effect { display: none; }
+.lv-love-page .lv-cascade-tray { grid-template-columns: repeat(auto-fill, minmax(135px, 1fr)); padding: 16px; border: 1px solid #67455f; background: #24182c; border-radius: 13px; }
+.lv-cascade-heading { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 2px; color: #ecd3e7; font-size: .77rem; font-weight: 500; }
+.lv-cascade-heading button { display: flex; align-items: center; gap: 6px; min-height: 32px; padding: 5px 9px; border: 1px solid #694663; border-radius: 7px; background: #39263e; color: #dbc0d8; font-family: inherit; font-size: .65rem; }
+.lv-love-page .lv-pcard-sub { border-style: solid; border-color: #5b3b58; }
+.lv-search-empty { padding: 46px 20px; text-align: center; border: 1px dashed #624361; border-radius: 15px; background: #201626; }
+.lv-search-empty > i { margin-bottom: 16px; color: #d6abc8; font-size: 1.6rem; }
+.lv-search-empty h2 { color: #f0d9ed !important; font-size: 1.1rem; font-weight: 500; }
+.lv-search-empty p { color: #bca2c2; font-size: .79rem; }
+.lv-search-empty button { min-height: 40px; padding: 9px 15px; border: 1px solid #8d5d7d; border-radius: 9px; background: #422941; color: #f1ccdf; font-family: inherit; font-size: .75rem; }
+.lv-love-page .lv-empty { padding: 18px; border: 1px dashed #48314e; border-radius: 10px; background: #201628; color: #baa3c4; font-size: .76rem; }
+.lv-love-page .lv-table { --bs-table-bg: transparent; --bs-table-color: #e4d4ec; --bs-table-border-color: #3d2c45; --bs-table-hover-bg: #33203c; }
+.lv-love-page .lv-table-card { background: #1c1424; border: 1px solid #48304f; }
+.lv-love-page .lv-th { background: #271a30 !important; color: #c1a1cc !important; font-size: .65rem; }
+.lv-love-page .lv-td { padding: 13px 15px !important; }
+.lv-love-page .lv-mgmt-title { font-size: .79rem; }
+.lv-love-page .lv-mgmt-sub { color: #baa0c8; font-size: .7rem; }
+.lv-love-page .lv-mgmt-edit-btn, .lv-love-page .lv-mgmt-del-btn { width: 36px; height: 36px; }
+.lv-love-page .lv-mgmt-header { align-items: center; margin-bottom: 23px; }
+.lv-love-page .lv-status-badge { font-size: .65rem; }
+.lv-love-page .lv-empty-td { color: #baa0c8; }
+.lv-table-hint { display: none; }
+.lv-love-page .lv-form-card { background: #211728; border-color: #543551; }
+.lv-love-page #floating-message-container { bottom: 20px !important; left: 20px !important; max-width: 410px; }
+.lv-love-page #floating-message-container > div { padding: 12px 15px !important; border: 1px solid #65405d !important; border-radius: 12px; }
+.lv-love-page #floating-message-text { font-size: .82rem !important; }
+.lv-love-page a:focus-visible, .lv-love-page button:focus-visible { outline: 2px solid #f4bcdb; outline-offset: 3px; }
+@media (max-width: 1050px) { .lv-user-menu-name, .lv-nav-add-desktop { display: none !important; } .lv-main-nav > a { padding-left: 11px; padding-right: 11px; } .lv-love-page .lv-filter-bar { grid-template-columns: 1fr; gap: 12px; } }
+@media (max-width: 760px) {
+    body.lv-dark-body.lv-love-page { padding-bottom: calc(82px + env(safe-area-inset-bottom)); }
+    .lv-love-page .navbar { padding: 12px 0 !important; }
+    .lv-love-page .navbar > .container { padding-left: 17px; padding-right: 17px; gap: 10px; }
+    .lv-nav-brand-group { gap: 11px; }
+    .lv-love-page .lv-navbar-brand { font-size: 1.04rem; }
+    .lv-nav-film { font-size: .76rem; }
+    .lv-main-nav { display: none; }
+    .lv-user-menu { min-width: 43px; }
+    .lv-mobile-nav { display: grid; grid-template-columns: repeat(3, 1fr); position: fixed; left: 0; right: 0; bottom: 0; z-index: 1040; padding: 7px 13px calc(7px + env(safe-area-inset-bottom)); background: rgba(22, 14, 30, .97); backdrop-filter: blur(20px); border-top: 1px solid #54344f; }
+    .lv-mobile-nav > a { display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 5px; min-height: 48px; border-radius: 9px; color: #af91bf; font-size: .59rem; text-decoration: none; }
+    .lv-mobile-nav > a i { font-size: .95rem; }
+    .lv-mobile-nav > a.is-active { color: #f5b7d3; background: #382237; }
+    .lv-love-page .lv-main-container { padding: 25px 16px 25px; }
+    .lv-header-kicker { font-size: .5rem; letter-spacing: 1.4px; margin-bottom: 8px; }
+    .lv-love-page .lv-h1 { font-size: 1.7rem; letter-spacing: -.8px; }
+    .lv-love-page .lv-h1-sub { max-width: 245px; font-size: .7rem; line-height: 1.6; }
+    .lv-love-page .lv-header-inner { gap: 12px; align-items: center; }
+    .lv-love-page .lv-cta-btn { padding: 9px 12px; font-size: .68rem; }
+    .lv-search-toolbar { flex-direction: column; align-items: stretch; gap: 9px; }
+    .lv-search-box { max-width: none; }
+    .lv-result-count { font-size: .64rem; }
+    .lv-love-page .lv-filter-bar { padding: 13px; margin-bottom: 24px; }
+    .lv-love-page .lv-filter-row { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+    .lv-filter-label { font-size: .6rem; }
+    .lv-filter-options { width: 100%; gap: 5px; }
+    .lv-love-page .lv-pill { min-height: 38px; padding: 6px 10px; font-size: .64rem; }
+    .lv-love-page .lv-genre-row { gap: 8px; }
+    .lv-love-page .lv-genre-toggle-btn, .lv-reset-filters { min-height: 38px; }
+    .lv-love-page .lv-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .lv-love-page .lv-pcard-overlay { padding: 10px; }
+    .lv-love-page .lv-pcard-title { font-size: .75rem; min-height: 35px; }
+    .lv-love-page .lv-rsub { flex-basis: 100%; font-size: .59rem; }
+    .lv-love-page .lv-pcard-rating { row-gap: 2px; }
+    .lv-love-page .lv-edit-overlay-btn { width: 36px; height: 36px; top: 9px; left: 9px; }
+    .lv-love-page .lv-multi-badge { right: 9px; top: 9px; }
+    .lv-love-page .lv-expand-chip { min-height: 32px; padding: 5px 6px; font-size: .6rem; }
+    .lv-love-page .lv-cascade-tray { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 12px; gap: 10px; }
+    .lv-love-page .lv-mgmt-header { flex-direction: column; align-items: flex-start; gap: 14px; }
+    .lv-love-page .lv-td { padding: 10px 12px !important; }
+    .lv-love-page .lv-mgmt-genres { min-width: 145px; }
+    .lv-table-hint { display: flex; align-items: center; gap: 7px; margin: 12px 0 0; color: #baa0c8; font-size: .67rem; }
+    .lv-love-page .lv-status-badge { white-space: nowrap; }
+    .lv-love-page #floating-message-container { bottom: calc(78px + env(safe-area-inset-bottom)) !important; left: 12px !important; width: calc(100% - 24px) !important; max-width: none; }
+}
+@media (prefers-reduced-motion: reduce) { .lv-love-page *, .lv-love-page *::before, .lv-love-page *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }

@@ -32,7 +32,7 @@ const AuthController = {
         }
 
         if (!username || !password) {
-            return res.render('login', { title: 'Login', error: 'Please enter both username and password', isLogin: true });
+            return res.render('login', { title: 'Login', error: 'Por favor ingresá usuario y contraseña', isLogin: true, username });
         }
 
         const user = users[username.toLowerCase()];
@@ -46,7 +46,7 @@ const AuthController = {
             return res.redirect('/');
         }
 
-        return res.render('login', { title: 'Login', error: 'Invalid credentials', isLogin: true });
+        return res.render('login', { title: 'Login', error: 'Contraseña incorrecta, intentá de nuevo', isLogin: true, username });
     },
 
     getLogout: (req, res) => {

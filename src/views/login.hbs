@@ -1,52 +1,104 @@
-<div class="row min-vh-100 align-items-center justify-content-center fade-in">
-    <div class="col-md-6 col-lg-5 text-center">
+<link rel="stylesheet" href="/css/login.css">
+<section class="night-login" lang="es" data-profile="{{#if (eq username 'deli')}}deli{{else}}emi{{/if}}" aria-label="Acceso a Love App">
+    <canvas class="night-sky" id="nightSky" aria-hidden="true"></canvas>
+    <header class="night-header">
+        <a class="night-brand" href="/login" aria-label="Love App, inicio">
+            <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 26S4 19 4 11a6 6 0 0 1 12-1 6 6 0 0 1 12 1c0 8-12 15-12 15Z"/><path d="M8 17c6-9 14-9 17-5"/></svg>
+            <span>love app.</span>
+        </a>
+        <span class="night-header-note">EMI & DELI</span>
+    </header>
 
-        <div class="mb-4">
-            <h1 class="display-5 fw-bold mb-3"><span class="text-primary">Love App</span> Access</h1>
-            <p class="text-secondary">Please identify yourself to continue.</p>
+    <main class="night-main">
+        <div class="night-intro">
+            <span class="night-eyebrow">NUESTRO RINCÓN DEL UNIVERSO</span>
+            <h1>En cualquier<br class="night-desktop-break"> universo,<br><em>te elegiría a vos.</em></h1>
+            <p class="night-intro-description">Las películas, las escapadas y todos esos pequeños momentos que son tan nuestros.</p>
+
+            <div class="night-universe" aria-hidden="true">
+                <svg viewBox="0 0 600 300">
+                    <defs>
+                        <path id="nightOrbitPath" d="M75 215 A234 78 -16 1 1 525 85 A234 78 -16 1 1 75 215"/>
+                        <path id="nightSecondPath" d="M156 72 A164 59 32 1 1 444 228 A164 59 32 1 1 156 72"/>
+                    </defs>
+                    <ellipse class="night-orbit" cx="300" cy="150" rx="234" ry="78" transform="rotate(-16 300 150)"/>
+                    <ellipse class="night-orbit night-orbit-inner" cx="300" cy="150" rx="164" ry="59" transform="rotate(32 300 150)"/>
+                    <use class="night-orbit-trail" href="#nightOrbitPath"/>
+                    <circle class="night-heart-halo" cx="300" cy="150" r="39"/>
+                    <path class="night-heart" d="M300 175C282 163 271 154 271 141C271 124 291 120 300 136C309 120 329 124 329 141C329 154 318 163 300 175Z"/>
+                    <circle class="night-planet" r="3"><animateMotion dur="18s" repeatCount="indefinite"><mpath href="#nightOrbitPath"/></animateMotion></circle>
+                    <circle class="night-planet-deli" r="2.5"><animateMotion dur="24s" repeatCount="indefinite"><mpath href="#nightSecondPath"/></animateMotion></circle>
+                    <path class="night-orbit-cross" d="M473 39v8m-4-4h8M102 152v6m-3-3h6M395 242v8m-4-4h8"/>
+                    <circle cx="204" cy="38" r="1" fill="#c0a0b6" opacity=".5"/>
+                    <circle cx="480" cy="210" r="1.2" fill="#c0a0b6" opacity=".5"/>
+                    <text class="night-orbit-label" x="69" y="237">E</text>
+                    <text class="night-orbit-label" x="515" y="70">D</text>
+                </svg>
+                <p class="night-universe-caption">Dos órbitas. Un mismo lugar.</p>
+            </div>
         </div>
 
-        <div class="glass-card p-5 text-start shadow-lg" style="border-top: 5px solid var(--accent-color);">
+        <section class="night-card" aria-labelledby="nightFormTitle">
+            <div class="night-card-decoration" aria-hidden="true"><i class="far fa-heart"></i></div>
+            <span class="night-card-kicker">ACÁ SIEMPRE ES CON VOS</span>
+            <h2 id="nightFormTitle">Hola, mi amor.</h2>
+            <p class="night-card-intro" id="nightGreeting" aria-live="polite">Qué bueno que estés acá, {{#if (eq username 'deli')}}Deli{{else}}Emi{{/if}}.</p>
+
             {{#if error}}
-            <div class="alert alert-danger shadow-sm border-0" role="alert">
-                <i class="fas fa-exclamation-circle me-2"></i>{{error}}
+            <div class="night-error" id="nightLoginError" role="alert">
+                <i class="fas fa-circle-exclamation" aria-hidden="true"></i>
+                <span>{{error}}</span>
             </div>
             {{/if}}
 
-            <form action="/login" method="POST">
-                <div class="mb-4">
-                    <label for="username" class="form-label fw-bold small text-secondary">USER</label>
-                    <select class="form-select form-control-lg" id="username" name="username" required>
-                        <option value="" disabled selected>Select your user...</option>
-                        <option value="emi">Emi</option>
-                        <option value="deli">Deli</option>
-                    </select>
+            <form action="/login" method="POST" class="night-form" id="loginForm">
+                <fieldset class="night-profiles">
+                    <legend>¿Quién llega a casa?</legend>
+                    <div class="night-profile-grid">
+                        <label class="night-profile">
+                            <input type="radio" name="username" value="emi" {{#unless (eq username 'deli')}}checked{{/unless}} required autocomplete="username">
+                            <span class="night-profile-content">
+                                <span class="night-avatar" aria-hidden="true">E</span>
+                                <span class="night-profile-name">Emi<small>Mi lugar favorito</small></span>
+                                <span class="night-profile-check" aria-hidden="true"></span>
+                            </span>
+                        </label>
+                        <label class="night-profile">
+                            <input type="radio" name="username" value="deli" {{#if (eq username 'deli')}}checked{{/if}} required>
+                            <span class="night-profile-content">
+                                <span class="night-avatar night-avatar-deli" aria-hidden="true">D</span>
+                                <span class="night-profile-name">Deli<small>Mi bonita casualidad</small></span>
+                                <span class="night-profile-check" aria-hidden="true"></span>
+                            </span>
+                        </label>
+                    </div>
+                </fieldset>
+
+                <div class="night-password-field">
+                    <label for="password">La llave de nuestro mundo</label>
+                    <div class="night-password-wrap">
+                        <input type="password" id="password" name="password" placeholder="Tu contraseña" autocomplete="current-password" aria-label="Contraseña" required {{#if error}}aria-invalid="true" aria-describedby="nightLoginError"{{/if}}>
+                        <button type="button" class="night-password-toggle" id="passwordToggle" aria-label="Mostrar contraseña" aria-pressed="false" aria-controls="password">
+                            <i class="far fa-eye" aria-hidden="true"></i>
+                        </button>
+                    </div>
                 </div>
 
-                <div class="mb-5">
-                    <label for="password" class="form-label fw-bold small text-secondary">PASSWORD</label>
-                    <input type="password" class="form-control form-control-lg" id="password" name="password"
-                        placeholder="••••••••" required>
-                </div>
-
-                <button type="submit" class="btn btn-primary w-100 py-3 mb-4 fw-bold shadow-sm"
-                    style="border-radius: 15px;">Login securely <i class="fas fa-lock ms-2"></i></button>
+                <button type="submit" class="night-submit"><span>Entrar a nuestro universo</span><i class="fas fa-arrow-right" aria-hidden="true"></i></button>
             </form>
 
-            <div class="position-relative text-center my-4">
-                <hr class="text-secondary" style="opacity: 0.3;">
-                <span class="position-absolute top-50 start-50 translate-middle px-3 text-secondary small fw-bold"
-                    style="background: rgba(255,255,255,0.9);">OR</span>
-            </div>
-
-            <!-- Guest Login Shortcut -->
-            <form action="/login" method="POST">
+            <div class="night-divider"><span>una ventanita a nuestra historia</span></div>
+            <form action="/login" method="POST" class="night-guest-form">
                 <input type="hidden" name="guestLogin" value="true">
-                <button type="submit" class="btn w-100 py-3 fw-bold"
-                    style="border: 2px solid var(--primary-color); color: var(--primary-color); border-radius: 15px; background: transparent;">
-                    Enter as Guest (Invitado) <i class="fas fa-user-circle ms-2"></i>
-                </button>
+                <button type="submit" class="night-guest-btn">Entrar como invitado <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></button>
             </form>
-        </div>
-    </div>
-</div>
+            <p class="night-card-footer">Todo es más lindo cuando es con vos.</p>
+        </section>
+    </main>
+
+    <footer class="night-footer">
+        <span>UN POQUITO DE NOSOTROS, GUARDADO ACÁ.</span>
+        <span class="night-footer-heart">Emi & Deli · siempre de a dos</span>
+    </footer>
+</section>
+<script src="/js/login.js" defer></script>

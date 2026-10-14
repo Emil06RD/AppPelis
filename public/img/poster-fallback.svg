@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 450">
+  <rect width="300" height="450" fill="#21162c"/>
+  <rect x="85" y="156" width="130" height="105" rx="14" fill="none" stroke="#725076" stroke-width="2"/>
+  <path d="M109 157v104m82-104v104M86 180h22m-22 26h22m-22 27h22m84-53h22m-22 26h22m-22 27h22" stroke="#725076" stroke-width="2"/>
+  <path d="m138 188 27 21-27 21Z" fill="#b886b0"/>
+  <text x="150" y="305" fill="#c4a4cf" font-family="Arial,sans-serif" font-size="14" text-anchor="middle">Sin portada</text>
+</svg>

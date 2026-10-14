@@ -5,13 +5,13 @@ exports.getIndex = async (req, res) => {
         const genreId = req.query.genre || null;
         const type = req.query.type || null;
         const status = req.query.status || null;
-        
+
         // Fetch all genres for the filter UI (matching GenreController logic)
         const { data: genresData, error: gError } = await supabase
             .from('Genres')
             .select('*')
             .order('name');
-            
+
         if (gError) console.error('Home Page - Genre Fetch Error:', gError);
         const genres = genresData || [];
 
@@ -19,7 +19,7 @@ exports.getIndex = async (req, res) => {
         let query = supabase
             .from('Series')
             .select('*, Genre:Genres!GenreId(*), Genre2:Genres!Genre2Id(*), Genre3:Genres!Genre3Id(*), Genre4:Genres!Genre4Id(*)');
-            
+
         if (genreId) {
             query = query.eq('GenreId', genreId);
         }
@@ -31,10 +31,10 @@ exports.getIndex = async (req, res) => {
         if (status) {
             query = query.eq('status', status);
         }
-        
+
         const { data: allSeries, error: sError } = await query;
         if (sError) throw sError;
-        
+
         const plainSeries = allSeries.map(s => ({
             ...s,
             Genre: s.Genre || null,
@@ -56,7 +56,7 @@ exports.getIndex = async (req, res) => {
                     group.count++;
                 }
             }
-            
+
             // Calculate averages for the main group card
             const result = Array.from(map.values());
             result.forEach(group => {
@@ -64,22 +64,23 @@ exports.getIndex = async (req, res) => {
                     const sumAvg = group.items.reduce((acc, curr) => acc + (parseFloat(curr.ratingAverage) || 0), 0);
                     const sumEmil = group.items.reduce((acc, curr) => acc + (parseFloat(curr.ratingEmil) || 0), 0);
                     const sumDeli = group.items.reduce((acc, curr) => acc + (parseFloat(curr.ratingDeli) || 0), 0);
-                    
+
                     group.ratingAverage = (sumAvg / group.count).toFixed(1);
                     group.ratingEmil = (sumEmil / group.count).toFixed(1);
                     group.ratingDeli = (sumDeli / group.count).toFixed(1);
                 }
             });
-            
+
             return result;
         };
-        
+
         const watching = groupSeries(plainSeries.filter(s => s.status === 'Watching'));
         const watched = groupSeries(plainSeries.filter(s => s.status === 'Watched'));
         const planToWatch = groupSeries(plainSeries.filter(s => s.status === 'Plan to Watch'));
 
-        res.render('index', { 
-            title: 'My Collection',
+        res.render('index', {
+            title: 'Mi Colección',
+            isLoveView: true,
             watching,
             watched,
             planToWatch,
@@ -112,15 +113,16 @@ exports.getManagement = async (req, res) => {
         const { data: allSeries, error } = await query;
 
         if (error) throw error;
-        
-        res.render('management', { 
-            title: 'Manage Series',
-            series: allSeries.map(s => ({ 
-                ...s, 
-                Genre: s.Genre || null, 
-                Genre2: s.Genre2 || null, 
-                Genre3: s.Genre3 || null, 
-                Genre4: s.Genre4 || null 
+
+        res.render('management', {
+            title: 'Gestión',
+            isLoveView: true,
+            series: allSeries.map(s => ({
+                ...s,
+                Genre: s.Genre || null,
+                Genre2: s.Genre2 || null,
+                Genre3: s.Genre3 || null,
+                Genre4: s.Genre4 || null
             })),
             currentStatus: status
         });
@@ -134,10 +136,11 @@ exports.getCreate = async (req, res) => {
     try {
         const { data: genres, error } = await supabase.from('Genres').select('*');
         if (error) throw error;
-        
-        res.render('form', { 
-            title: 'Add New Series',
-            genres: genres 
+
+        res.render('form', {
+            title: 'Agregar Serie / Película',
+            isLoveView: true,
+            genres: genres
         });
     } catch (error) {
         console.error('Error in getCreate:', error.message);
@@ -148,17 +151,17 @@ exports.getCreate = async (req, res) => {
 exports.postCreate = async (req, res) => {
     try {
         const { title, posterUrl, status, GenreId, Genre2Id, Genre3Id, Genre4Id, type, season, ratingEmil, ratingDeli } = req.body;
-        
+
         const rEmil = parseFloat(ratingEmil) || 0;
         const rDeli = parseFloat(ratingDeli) || 0;
         const rAvg = (rEmil + rDeli) / 2;
 
         const { error } = await supabase
             .from('Series')
-            .insert([{ 
-                title, 
-                posterUrl: posterUrl || undefined, 
-                status, 
+            .insert([{
+                title,
+                posterUrl: posterUrl || undefined,
+                status,
                 GenreId: GenreId ? parseInt(GenreId) : null,
                 Genre2Id: Genre2Id ? parseInt(Genre2Id) : null,
                 Genre3Id: Genre3Id ? parseInt(Genre3Id) : null,
@@ -169,7 +172,7 @@ exports.postCreate = async (req, res) => {
                 ratingDeli: rDeli,
                 ratingAverage: rAvg
             }]);
-            
+
         if (error) throw error;
         res.redirect('/love-view/management');
     } catch (error) {
@@ -185,14 +188,15 @@ exports.getEdit = async (req, res) => {
             .select('*, Genre:Genres!GenreId(*), Genre2:Genres!Genre2Id(*), Genre3:Genres!Genre3Id(*), Genre4:Genres!Genre4Id(*)')
             .eq('id', req.params.id)
             .single();
-            
+
         const { data: genres, error: gError } = await supabase.from('Genres').select('*');
-        
+
         if (sError || gError) throw (sError || gError);
         if (!series) return res.status(404).send('Series not found');
-        
-        res.render('form', { 
-            title: 'Edit Series', 
+
+        res.render('form', {
+            title: 'Editar',
+            isLoveView: true,
             series: {
                     ...series,
                     Genre: series.Genre || null,
@@ -201,7 +205,7 @@ exports.getEdit = async (req, res) => {
                     Genre4: series.Genre4 || null
                 },
             genres: genres,
-            isEdit: true 
+            isEdit: true
         });
     } catch (error) {
         console.error('Error in getEdit:', error.message);
@@ -219,10 +223,10 @@ exports.postEdit = async (req, res) => {
 
         const { error } = await supabase
             .from('Series')
-            .update({ 
-                title, 
-                posterUrl, 
-                status, 
+            .update({
+                title,
+                posterUrl,
+                status,
                 GenreId: GenreId ? parseInt(GenreId) : null,
                 Genre2Id: Genre2Id ? parseInt(Genre2Id) : null,
                 Genre3Id: Genre3Id ? parseInt(Genre3Id) : null,
@@ -234,7 +238,7 @@ exports.postEdit = async (req, res) => {
                 ratingAverage: rAvg
             })
             .eq('id', req.params.id);
-            
+
         if (error) throw error;
         res.redirect('/love-view/management');
     } catch (error) {
@@ -249,7 +253,7 @@ exports.getDelete = async (req, res) => {
             .from('Series')
             .delete()
             .eq('id', req.params.id);
-            
+
         if (error) throw error;
         res.redirect('/love-view/management');
     } catch (error) {
