@@ -25,8 +25,8 @@ const DateController = {
         try {
             const { data: dates, error } = await supabase
                 .from('Dates')
-                .select('*, Places(name), DatePhotos(photo_url)')
-                .order('date_time', { ascending: true });
+                .select('id, title, date_time, Places(name), DatePhotos(photo_url)')
+                .order('date_time', { ascending: false });
 
             if (error) throw error;
 
@@ -34,6 +34,9 @@ const DateController = {
                 const dt = new Date(d.date_time);
                 return {
                     ...d,
+                    day: dt.toLocaleDateString('es-ES', { day: '2-digit' }),
+                    month: dt.toLocaleDateString('es-ES', { month: 'short' }).replace('.', ''),
+                    year: dt.getFullYear(),
                     formattedDateTime: dt.toLocaleString('es-ES', {
                         day: '2-digit', month: 'short', year: 'numeric',
                         hour: '2-digit', minute: '2-digit'
@@ -42,8 +45,9 @@ const DateController = {
             });
 
             res.render('planner/dates-list', {
-                title: 'Mis Citas / Planes',
+                title: 'Entre Dos · Recuerdos',
                 dates: formattedDates,
+                featuredDate: formattedDates.find(date => date.DatePhotos?.length) || formattedDates[0],
                 isPlanner: true
             });
         } catch (error) {
@@ -55,10 +59,12 @@ const DateController = {
     getView: async (req, res) => {
         try {
             const id = req.params.id;
+            const canViewDescription = req.session?.user?.role === 'editor';
+            const dateFields = canViewDescription ? '*' : 'id, title, date_time, collage_photo_ids';
 
             const { data: dateRec, error: dateError } = await supabase
                 .from('Dates')
-                .select('*, DatePhotos(id, photo_url), Places(name)')
+                .select(`${dateFields}, DatePhotos(id, photo_url), Places(name)`)
                 .eq('id', id)
                 .single();
 
@@ -78,10 +84,11 @@ const DateController = {
             const galleryPhotos = annotated;
 
             res.render('planner/date-view', {
-                title: 'Recuerdo',
+                title: `Entre Dos · ${dateRec.title || 'Recuerdo'}`,
                 date: dateRec,
                 collagePhotos,
                 galleryPhotos,
+                canViewDescription,
                 isPlanner: true
             });
         } catch (error) {

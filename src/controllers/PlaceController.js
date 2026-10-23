@@ -11,7 +11,7 @@ const PlaceController = {
             if (error) throw error;
 
             res.render('planner/places-list', {
-                title: 'Lugares por Visitar',
+                title: 'Entre Dos · Por descubrir',
                 places: places || [],
                 isPlanner: true
             });

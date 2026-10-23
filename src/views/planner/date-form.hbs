@@ -1,8 +1,9 @@
-<div class="row justify-content-center fade-in">
+<header class="ed-form-heading"><span class="ed-kicker">NUESTRO ÁLBUM, UNA PÁGINA MÁS</span><h1>{{#if editMode}}Volver a ese <em>momento.</em>{{else}}Que este momento <em>se quede.</em>{{/if}}</h1><p>Las fotos, el lugar y esos detalles que hacen nuestra la historia.</p></header>
+<div class="row justify-content-center ed-form-row">
     <div class="col-md-9 col-lg-7">
-        <div class="glass-card p-5">
+        <div class="glass-card p-5 ed-form-card">
             <div class="d-flex align-items-center mb-4">
-                <a href="/dates" class="btn btn-outline-secondary btn-sm me-3 transition-all">
+                <a href="/dates" class="btn btn-outline-secondary btn-sm me-3 transition-all" aria-label="Volver al álbum">
                     <i class="fas fa-arrow-left"></i>
                 </a>
                 <h3 class="fw-bold mb-0 text-light">{{title}}</h3>
@@ -45,6 +46,7 @@
 
                 <div class="mb-4">
                     <label for="description" class="form-label fw-semibold">Nuestra Experiencia / Recuerdos</label>
+                    <p class="ed-field-hint"><i class="fas fa-lock" aria-hidden="true"></i> Solo los usuarios registrados pueden leer esta historia.</p>
                     <textarea class="form-control" id="description" name="description" rows="4" 
                         placeholder="Escribe aquí los mejores momentos de esa cita, anécdotas, etc."
                         style="background-color: rgba(255,255,255,0.5);">{{date.description}}</textarea>

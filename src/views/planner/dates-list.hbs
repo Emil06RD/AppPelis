@@ -1,70 +1,61 @@
-<div class="row mb-4 align-items-center fade-in">
-    <div class="col">
-        <h2 class="fw-bold mb-0" style="color: var(--dark-accent);">
-            <i class="fas fa-heart text-primary me-2"></i>Nuestras Citas Anteriores
-        </h2>
-    </div>
-    <div class="col-auto d-flex gap-2">
-        <a href="/places" class="btn btn-outline-secondary transition-all">
-            <i class="fas fa-map-marked-alt me-2"></i>Lugares Recomendados
-        </a>
-        {{#if canEdit}}
-        <a href="/dates/create" class="btn btn-primary transition-all shadow-sm">
-            <i class="fas fa-plus me-2"></i>Registrar Cita
-        </a>
-        {{/if}}
-    </div>
-</div>
-
-<div class="row g-4 fade-in" style="animation-delay: 0.1s;">
-    {{#if dates.length}}
-    {{#each dates}}
-    <!-- Elegante Tarjeta Fija -->
-    <div class="col-6 col-md-4 col-lg-3">
-        <a href="/dates/view/{{this.id}}" class="text-decoration-none d-block h-100">
-            <div class="glass-card p-2 h-100 transition-all app-card border-0 shadow-sm" style="border-radius: 16px; background: rgba(255,255,255,0.05);">
-                <div class="position-relative overflow-hidden" style="border-radius: 12px; height: 180px;">
-                    {{#if this.DatePhotos.length}}
-                    <img src="{{this.DatePhotos.[0].photo_url}}" alt="Cita" class="w-100 h-100 transition-all card-img-hover" style="object-fit: cover;">
-                    {{else}}
-                    <div class="w-100 h-100 bg-dark d-flex align-items-center justify-content-center">
-                        <i class="fas fa-camera text-muted fs-1 opacity-25 text-white"></i>
-                    </div>
-                    {{/if}}
-                </div>
-                <div class="p-3 pb-2 text-start">
-                    <h6 class="fw-bold mb-1 text-light text-truncate" title="{{this.title}}">{{#if this.title}}{{this.title}}{{else}}Cita Especial{{/if}}</h6>
-                    <p class="mb-2 small text-primary fw-bold text-truncate"><i class="fas fa-map-marker-alt me-1"></i>{{this.Places.name}}</p>
-                    <div class="text-muted border-top pt-2 mt-2" style="font-size: 0.75rem;">
-                        <i class="fas fa-calendar-alt me-1"></i>{{this.formattedDateTime}}
-                    </div>
-                </div>
-            </div>
-        </a>
-    </div>
-    {{/each}}
-    {{/if}}
-</div>
-
-
-    {{#unless dates.length}}
-    <div class="col-12 text-center py-5">
-        <div class="glass-card p-5">
-            <i class="fas fa-camera-retro text-muted fs-1 mb-3"></i>
-            <h4 class="text-secondary">Aún no hay citas registradas</h4>
-            <p class="text-muted mb-4">¡Guarda el recuerdo de su primera salida juntos!</p>
-            {{#if canEdit}}
-            <a href="/dates/create" class="btn btn-primary">
-                <i class="fas fa-plus me-2"></i>Registrar Cita
-            </a>
-            {{/if}}
+<section class="ed-hero">
+    <div class="ed-hero-copy">
+        <span class="ed-kicker"><span></span> NUESTRA PEQUEÑA GRAN HISTORIA</span>
+        <h1>Hay lugares.<br>Y luego, <em>los nuestros.</em></h1>
+        <p>Las citas que se vuelven recuerdos.<br>Los momentos a los que siempre queremos volver.</p>
+        <div class="ed-hero-actions">
+            {{#if canEdit}}<a href="/dates/create" class="ed-button"><i class="fas fa-plus" aria-hidden="true"></i> Guardar un recuerdo</a>{{/if}}
+            <a href="/places" class="ed-text-link">Nuestro próximo lugar <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
         </div>
+        <div class="ed-hero-footnote"><span class="ed-tiny-heart" aria-hidden="true"><i class="fas fa-heart"></i></span> Un álbum de nosotros, siempre creciendo.</div>
     </div>
-    {{/unless}}
-</div>
-
-<style>
-    .app-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(255,105,180,0.15) !important; }
-    .card-img-hover { transition: transform 0.4s ease, filter 0.4s ease; }
-    .app-card:hover .card-img-hover { transform: scale(1.08); filter: brightness(1.05); }
-</style>
+    <div class="ed-hero-art">
+        <span class="ed-orbit ed-orbit-one" aria-hidden="true"></span><span class="ed-orbit ed-orbit-two" aria-hidden="true"></span>
+        <span class="ed-art-spark ed-spark-one" aria-hidden="true">✧</span><span class="ed-art-spark ed-spark-two" aria-hidden="true">✦</span>
+        <div class="ed-postcard-back" aria-hidden="true"><i class="far fa-heart"></i><span>vos + yo</span></div>
+        {{#if dates.length}}
+        <a href="/dates/view/{{featuredDate.id}}" class="ed-postcard" aria-label="Volver al recuerdo: {{featuredDate.title}}">
+            <div class="ed-postcard-image">
+                {{#if featuredDate.DatePhotos.length}}<img src="{{featuredDate.DatePhotos.[0].photo_url}}" alt="{{featuredDate.title}}" fetchpriority="high">{{else}}<div class="ed-photo-placeholder"><i class="far fa-heart" aria-hidden="true"></i><span>Un momento para guardar</span></div>{{/if}}
+            </div>
+            <div class="ed-postcard-caption"><span>{{#if featuredDate.title}}{{featuredDate.title}}{{else}}Cita especial{{/if}}</span><i class="far fa-heart" aria-hidden="true"></i></div>
+            <span class="ed-postcard-date">{{featuredDate.formattedDateTime}}</span>
+        </a>
+        {{else}}
+        <div class="ed-postcard"><div class="ed-postcard-image ed-photo-placeholder"><i class="far fa-heart" aria-hidden="true"></i><span>Lo mejor está por venir</span></div><div class="ed-postcard-caption"><span>Nuestra primera página</span><i class="far fa-heart" aria-hidden="true"></i></div><span class="ed-postcard-date">Un lugar. Un momento. Nosotros.</span></div>
+        {{/if}}
+        <span class="ed-art-label">pequeños momentos, grandes recuerdos</span>
+    </div>
+</section>
+<section class="ed-collection" aria-labelledby="ed-collection-title" data-ed-collection>
+    <div class="ed-section-heading">
+        <div><span class="ed-kicker">EL ÁLBUM</span><h2 id="ed-collection-title">Momentos que se quedan <span class="ed-count">{{dates.length}}</span></h2></div>
+        <span class="ed-section-aside"><i class="far fa-heart" aria-hidden="true"></i> Hechos de tiempo juntos</span>
+    </div>
+    {{#if dates.length}}
+    <div class="ed-toolbar">
+        <div class="ed-search"><i class="fas fa-search" aria-hidden="true"></i><label for="ed-search" class="visually-hidden">Buscar recuerdos por nombre o lugar</label><input id="ed-search" type="search" placeholder="Buscá un recuerdo o un lugar…" data-ed-search autocomplete="off"></div>
+        <div class="ed-sort"><label for="ed-sort"><i class="fas fa-arrow-down-wide-short" aria-hidden="true"></i> Ordenar</label><select id="ed-sort" data-ed-sort><option value="recent">Más recientes</option><option value="oldest">Más antiguos</option></select></div>
+    </div>
+    <p class="ed-result-status visually-hidden" data-ed-results role="status" aria-live="polite"></p>
+    <div class="ed-memory-grid" data-ed-grid>
+        {{#each dates}}
+        <article class="ed-memory-card" data-ed-card data-ed-title="{{this.title}}" data-ed-place="{{this.Places.name}}" data-ed-time="{{this.date_time}}">
+            <a href="/dates/view/{{this.id}}" class="ed-memory-link">
+                <div class="ed-memory-image">
+                    {{#if this.DatePhotos.length}}<img src="{{this.DatePhotos.[0].photo_url}}" alt="{{this.title}}" loading="lazy">{{else}}<div class="ed-photo-placeholder"><i class="far fa-heart" aria-hidden="true"></i><span>Lo vivido no se olvida</span></div>{{/if}}
+                    <div class="ed-date-stamp"><strong>{{this.day}}</strong><span>{{this.month}}</span></div>
+                    {{#if this.DatePhotos.length}}<span class="ed-photo-count"><i class="far fa-images" aria-hidden="true"></i> {{this.DatePhotos.length}}<span class="visually-hidden"> fotos</span></span>{{/if}}
+                    <span class="ed-card-open" aria-hidden="true"><i class="fas fa-arrow-up-right-from-square"></i></span>
+                </div>
+                <div class="ed-memory-info"><span class="ed-card-year">{{this.year}} <span aria-hidden="true">·</span> NUESTROS RECUERDOS</span><h3>{{#if this.title}}{{this.title}}{{else}}Cita especial{{/if}}</h3><p><i class="fas fa-map-marker-alt" aria-hidden="true"></i> {{#if this.Places.name}}{{this.Places.name}}{{else}}Un lugar especial{{/if}}</p></div>
+            </a>
+        </article>
+        {{/each}}
+    </div>
+    <div class="ed-empty" data-ed-no-results hidden><i class="fas fa-search" aria-hidden="true"></i><h3>No encontramos ese recuerdo</h3><p>Probá con otro nombre o lugar.</p><button type="button" class="ed-button ed-button-secondary" data-ed-reset>Ver todos los recuerdos</button></div>
+    {{else}}
+    <div class="ed-empty"><span class="ed-empty-symbol"><i class="far fa-images" aria-hidden="true"></i></span><h3>Toda historia tiene un primer recuerdo.</h3><p>Una salida, una escapada o ese café que duró horas.<br>Este es su lugar para quedarse.</p>{{#if canEdit}}<a href="/dates/create" class="ed-button"><i class="fas fa-plus" aria-hidden="true"></i> Guardar el primer recuerdo</a>{{/if}}</div>
+    {{/if}}
+</section>
+<aside class="ed-discover-banner"><div class="ed-discover-icon" aria-hidden="true"><i class="fas fa-map-location-dot"></i></div><div><span class="ed-kicker">LA HISTORIA SIGUE</span><h2>¿Y si el próximo recuerdo empieza acá?</h2><p>Todos esos lugares que algún día vamos a conocer.</p></div><a href="/places" class="ed-button ed-button-secondary">Lugares por descubrir <i class="fas fa-arrow-right" aria-hidden="true"></i></a></aside>

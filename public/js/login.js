@@ -19,7 +19,7 @@
             if (!radio.checked) return;
             const name = radio.value === 'deli' ? 'Deli' : 'Emi';
             root.dataset.profile = radio.value === 'deli' ? 'deli' : 'emi';
-            greeting.textContent = 'Qué bueno que estés acá, ' + name + '.';
+            greeting.textContent = 'Qué bueno que estés aquí, ' + name + '.';
         });
     });
 

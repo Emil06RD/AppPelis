@@ -1,79 +1,22 @@
-<div class="row mb-4 align-items-center fade-in">
-    <div class="col">
-        <h2 class="fw-bold mb-0" style="color: var(--dark-accent);">
-            <i class="fas fa-map-marked-alt text-primary me-2"></i>Lugares por Visitar
-        </h2>
-    </div>
-    <div class="col-auto d-flex gap-2">
-        <a href="/dates" class="btn btn-outline-primary transition-all">
-            <i class="fas fa-calendar-alt me-2"></i>Ver Citas
-        </a>
-        {{#if canEdit}}
-        <a href="/places/create" class="btn btn-primary transition-all shadow-sm">
-            <i class="fas fa-plus me-2"></i>Nuevo Lugar
-        </a>
-        {{/if}}
-    </div>
-</div>
-
-<div class="row g-4 fade-in" style="animation-delay: 0.1s;">
+<header class="ed-places-hero">
+    <div><span class="ed-kicker"><span></span> COORDENADAS PARA NUEVOS RECUERDOS</span><h1>La próxima parada,<br><em>con vos.</em></h1><p>Ese café pendiente, una escapada, un rincón nuevo.<br>Guardamos las ganas de ir y después escribimos la historia.</p></div>
+    <div class="ed-places-art" aria-hidden="true"><span class="ed-map-line"></span><span class="ed-map-pin ed-map-pin-one"><i class="fas fa-mug-hot"></i></span><span class="ed-map-pin ed-map-pin-two"><i class="fas fa-heart"></i></span><span class="ed-map-pin ed-map-pin-three"><i class="fas fa-map-marker-alt"></i></span><span class="ed-map-caption">cualquier lugar, si es con vos.</span></div>
+</header>
+<section class="ed-collection" aria-labelledby="ed-places-title" data-ed-collection>
+    <div class="ed-section-heading"><div><span class="ed-kicker">NUESTRO MAPA DE PENDIENTES</span><h2 id="ed-places-title">Lugares por descubrir <span class="ed-count">{{places.length}}</span></h2></div>{{#if canEdit}}<a href="/places/create" class="ed-button"><i class="fas fa-plus" aria-hidden="true"></i> Guardar un lugar</a>{{/if}}</div>
     {{#if places.length}}
-    {{#each places}}
-    <div class="col-md-6 col-lg-4">
-        <div class="glass-card p-4 transition-all h-100 position-relative app-card d-flex flex-column">
-            
-            {{#if this.photo_url}}
-            <div class="mb-3 overflow-hidden rounded shadow-sm" style="height: 160px;">
-                <img src="{{this.photo_url}}" alt="{{this.name}}" class="w-100 h-100" style="object-fit: cover; transition: transform 0.3s ease-in-out;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-            </div>
-            {{/if}}
-
-            <h5 class="fw-bold mb-2">{{this.name}}</h5>
-            
-            {{#if this.description}}
-            <p class="text-secondary small mb-3">{{this.description}}</p>
-            {{else}}
-            <p class="text-secondary small mb-3 fst-italic">Sin descripción</p>
-            {{/if}}
-
-            <div class="d-flex flex-wrap gap-2 mt-auto pt-3 border-top" style="border-color: rgba(255,105,180,0.1) !important;">
-                {{#if this.location_url}}
-                <a href="{{this.location_url}}" target="_blank" class="btn btn-sm btn-outline-info">
-                    <i class="fas fa-map-marker-alt"></i> Mapa
-                </a>
-                {{/if}}
-                <div class="ms-auto d-flex gap-2">
-                    {{#if ../canEdit}}
-                    <a href="/places/edit/{{this.id}}" class="btn btn-sm btn-outline-primary" title="Editar">
-                        <i class="fas fa-edit"></i>
-                    </a>
-                    <form action="/places/delete/{{this.id}}" method="GET" class="d-inline" onsubmit="return confirm('¿Eliminar este lugar?');">
-                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </form>
-                    {{/if}}
-                </div>
-            </div>
-        </div>
+    <div class="ed-toolbar"><div class="ed-search"><i class="fas fa-search" aria-hidden="true"></i><label for="ed-search" class="visually-hidden">Buscar un lugar</label><input id="ed-search" type="search" placeholder="¿A dónde nos vamos? Buscá un lugar…" data-ed-search autocomplete="off"></div><span class="ed-section-aside">Una lista de futuras aventuras</span></div>
+    <p class="visually-hidden" data-ed-results role="status" aria-live="polite"></p>
+    <div class="ed-memory-grid ed-places-grid" data-ed-grid>
+        {{#each places}}
+        <article class="ed-memory-card ed-place-card" data-ed-card data-ed-title="{{this.name}}">
+            <div class="ed-memory-image">{{#if this.photo_url}}<img src="{{this.photo_url}}" alt="{{this.name}}" loading="lazy">{{else}}<div class="ed-photo-placeholder"><i class="fas fa-map-marker-alt" aria-hidden="true"></i><span>Una nueva coordenada</span></div>{{/if}}<span class="ed-place-tag"><i class="far fa-compass" aria-hidden="true"></i> Por descubrir</span></div>
+            <div class="ed-memory-info"><h3>{{this.name}}</h3><p class="ed-place-description">{{#if this.description}}{{this.description}}{{else}}Un lugar más para nuestra próxima aventura.{{/if}}</p><div class="ed-place-actions">{{#if this.location_url}}<a href="{{this.location_url}}" target="_blank" rel="noopener noreferrer" class="ed-map-link"><i class="fas fa-location-arrow" aria-hidden="true"></i> Ver en el mapa <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a>{{/if}}{{#if ../canEdit}}<div class="ed-place-edit"><a href="/places/edit/{{this.id}}" class="ed-icon-button" aria-label="Editar {{this.name}}"><i class="far fa-pen-to-square" aria-hidden="true"></i></a><form action="/places/delete/{{this.id}}" method="GET" onsubmit="return confirm('¿Eliminar este lugar?');"><button type="submit" class="ed-icon-button ed-danger" aria-label="Eliminar {{this.name}}"><i class="far fa-trash-can" aria-hidden="true"></i></button></form></div>{{/if}}</div></div>
+        </article>
+        {{/each}}
     </div>
-    {{/each}}
+    <div class="ed-empty" data-ed-no-results hidden><i class="fas fa-search" aria-hidden="true"></i><h3>Ese lugar todavía no está en el mapa</h3><p>Probá con otro nombre.</p><button type="button" class="ed-button ed-button-secondary" data-ed-reset>Ver todos los lugares</button></div>
     {{else}}
-    <div class="col-12 text-center py-5">
-        <div class="glass-card p-5">
-            <i class="fas fa-map-signs text-muted fs-1 mb-3"></i>
-            <h4 class="text-secondary">Aún no hay lugares registrados</h4>
-            <p class="text-muted mb-4">Empieza agregando lugares que quieran visitar juntos.</p>
-            {{#if canEdit}}
-            <a href="/places/create" class="btn btn-primary">
-                <i class="fas fa-plus me-2"></i>Agregar Primer Lugar
-            </a>
-            {{/if}}
-        </div>
-    </div>
+    <div class="ed-empty"><span class="ed-empty-symbol"><i class="far fa-compass" aria-hidden="true"></i></span><h3>Hay mucho por descubrir.</h3><p>Empecemos por ese lugar del que siempre hablamos.</p>{{#if canEdit}}<a href="/places/create" class="ed-button"><i class="fas fa-plus" aria-hidden="true"></i> Guardar el primer lugar</a>{{/if}}</div>
     {{/if}}
-</div>
-
-<style>
-    .app-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(255,105,180,0.15) !important; }
-</style>
+</section>

@@ -13,12 +13,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/style.css">
+    {{#if isPlanner}}
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/planner.css">
+    {{/if}}
     {{#unless isLogin}}{{#unless isHub}}{{#unless isPlanner}}
     <link rel="stylesheet" href="/css/love-view.css">
     {{/unless}}{{/unless}}{{/unless}}
 </head>
 
-<body class="{{#if isLogin}}login-page{{else}}lv-dark-body{{#unless isHub}}{{#unless isPlanner}} lv-love-page{{/unless}}{{/unless}}{{/if}}">
+<body class="{{#if isLogin}}login-page{{else}}lv-dark-body{{#if isPlanner}} ed-page{{/if}}{{#unless isHub}}{{#unless isPlanner}} lv-love-page{{/unless}}{{/unless}}{{/if}}">
 
     {{!-- Animated dark background globally --}}
     {{#unless isLogin}}
@@ -45,18 +49,19 @@
                 </div>
             </div>
             {{else if isPlanner}}
-            <a class="navbar-brand lv-navbar-brand d-flex align-items-center gap-2" href="/" title="Volver al Hub">
-                <i class="fas fa-th lv-hub-icon"></i>
-                <span>Planes y <span>Citas</span></span>
-            </a>
+            <div class="ed-brand-group">
+                <a href="/" class="ed-apps-link" aria-label="Volver a mis aplicaciones" title="Mis aplicaciones"><i class="fas fa-th-large" aria-hidden="true"></i></a>
+                <span class="ed-brand-divider" aria-hidden="true"></span>
+                <a class="navbar-brand lv-navbar-brand ed-brand" href="/dates"><span class="ed-brand-mark" aria-hidden="true"><i class="fas fa-heart"></i></span> Entre <span>Dos</span><span class="ed-brand-caption">PLANES & RECUERDOS</span></a>
+            </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarPlanner"
-                aria-controls="navbarPlanner" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+                aria-controls="navbarPlanner" aria-expanded="false" aria-label="Abrir navegación">
+                <i class="fas fa-bars" aria-hidden="true"></i>
             </button>
             <div class="collapse navbar-collapse" id="navbarPlanner">
                 <div class="navbar-nav ms-auto gap-2 align-items-center mt-3 mt-lg-0">
-                    <a href="/dates" class="nav-link lv-nav-link fw-semibold">Citas</a>
-                    <a href="/places" class="nav-link lv-nav-link fw-semibold">Lugares</a>
+                    <a href="/dates" data-ed-nav="dates" class="nav-link lv-nav-link fw-semibold"><i class="far fa-images" aria-hidden="true"></i> Recuerdos</a>
+                    <a href="/places" data-ed-nav="places" class="nav-link lv-nav-link fw-semibold"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Por descubrir</a>
                     <div class="d-none d-lg-block lv-nav-divider"></div>
                     <div class="dropdown">
                         <a class="nav-link lv-nav-link dropdown-toggle d-flex align-items-center gap-2" href="#"
@@ -108,6 +113,10 @@
     <div class="container mt-5 lv-main-container">
         {{{body}}}
     </div>
+    {{#if isPlanner}}
+    <footer class="ed-footer container"><a href="/dates">Entre Dos <i class="far fa-heart" aria-hidden="true"></i></a><span>Lo bonito es compartir el camino.</span><a href="/">Volver a Love App <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a></footer>
+    <script src="/js/planner.js" defer></script>
+    {{/if}}
 
     {{#unless isLogin}}{{#unless isHub}}{{#unless isPlanner}}
     <nav class="lv-mobile-nav" aria-label="Secciones de Love View en celular">
